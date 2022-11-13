@@ -6,6 +6,7 @@ import searchengine.dto.PageDto;
 import searchengine.entity.PageEntity;
 import static org.junit.jupiter.api.Assertions.*;
 
+@Disabled
 class WebPageMapperTest {
 
     private static final int ID = 1;

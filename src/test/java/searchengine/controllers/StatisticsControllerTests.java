@@ -1,5 +1,6 @@
 package searchengine.controllers;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +17,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@Disabled
 class StatisticsControllerTests {
 
     @Autowired
     private MockMvc mockMvc;
 
     @Test
-    @DisplayName("Get statistics test")
+    @DisplayName("Statistics get controller test")
     void statistics() throws Exception {
         mockMvc.perform(get("/api/statistics"))
                 .andDo(print())
