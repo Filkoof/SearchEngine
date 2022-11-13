@@ -3,11 +3,18 @@ name: CI-CD
 on: [ push ]
 
 jobs:
+  compile:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Compile with maven
+        run: mvn compile
+
   testing:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Testing
+      - name: Testing with maven
         run: mvn test
 
   build:
