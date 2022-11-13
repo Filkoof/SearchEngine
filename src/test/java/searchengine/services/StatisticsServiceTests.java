@@ -12,7 +12,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@Disabled
 class StatisticsServiceTests {
 
     @Autowired
