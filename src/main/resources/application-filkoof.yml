@@ -1,12 +1,14 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/search_engine?useSSL=false&requireSSL=false&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://localhost:3306/search_engine?createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true&useSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&stringtype=unspecified
     username: root
     password: testtest
   jpa:
     hibernate:
       ddl-auto: create-drop
     show-sql: true
+  liquibase:
+    enabled: false
 
 server:
   port: 9090

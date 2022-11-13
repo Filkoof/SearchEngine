@@ -8,10 +8,12 @@ import javax.persistence.Table;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 @Entity
 @Getter
 @Setter
+@Accessors(chain = true)
 @Table(name = "page")
 public class PageEntity {
 

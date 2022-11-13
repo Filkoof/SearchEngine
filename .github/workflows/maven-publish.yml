@@ -1,8 +1,14 @@
 name: Maven Package
 
 on:
-  release:
-    types: [created]
+  push:
+    branches:
+      - dev
+      - master
+    pull_request:
+      branches:
+        - dev
+        - master
 
 jobs:
   build:
@@ -19,11 +25,14 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
-        server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
-        settings-path: ${{ github.workspace }} # location for the settings.xml file
+        server-id: github
+        settings-path: ${{ github.workspace }}
 
     - name: Build with Maven
       run: mvn -B package --file pom.xml
+
+    - name: Test
+      run: mvn test
 
     - name: Publish to GitHub Packages Apache Maven
       run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml

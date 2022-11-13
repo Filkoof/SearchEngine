@@ -1,0 +1,119 @@
+databaseChangeLog:
+  - logicalFilePath: db/changelog/db.changelog.yaml
+
+#  - changeSet:
+#      id: 1
+#      author: filkoof
+#      comment: "Структура базы данных"
+#      changes:
+#        - createTable:
+#            tableName: site
+#            columns:
+#              - column:
+#                  name: id
+#                  type: bigint
+#                  autoIncrement: true
+#                  constraints:
+#                    primaryKey: true
+#                    nullable: false
+#              - column:
+#                  name: status
+#                  type: enum
+#                  constraints:
+#                    nullable: false
+#              - column:
+#                  name: status_time
+#                  type: datetime
+#                  constraints:
+#                    nullable: false
+#              - column:
+#                  name: last_error
+#                  type: text
+#              - column:
+#                  name: url
+#                  type: varchar(255)
+#                  constraints:
+#                    nullable: false
+#              - column:
+#                  name: name
+#                  type: varchar(255)
+#                  constraints:
+#                    nullable: false
+#
+#        - createTable:
+#            tableName: page
+#            columns:
+#              - column:
+#                  name: id
+#                  type: bigint
+#                  autoIncrement: true
+#                  constraints:
+#                    primaryKey: true
+#                    nullable: false
+#              - column:
+#                  name: site_id
+#                  type: bigint
+#                  constraints:
+#                    nullable: false
+#              - column:
+#                  name: path
+#                  type: text
+#                  constraints:
+#                    nullable: false
+#              - column:
+#                  name: code
+#                  type: int
+#                  constraints:
+#                    nullable: false
+#              - column:
+#                  name: content
+#                  type: mediumtext
+#                  constraints:
+#                    nullable: false
+#
+#        - createTable:
+#            tableName: lemma
+#            columns:
+#              - column:
+#                  name: id
+#                  type: bigint
+#                  autoIncrement: true
+#                  constraints:
+#                    primaryKey: true
+#                    nullable: false
+#              - column:
+#                  name: site_id
+#                  type: bigint
+#                  constraints:
+#                    nullable: false
+#              - column:
+#                  name: frequency
+#                  type: int
+#                  constraints:
+#                    nullable: false
+#
+#        - createTable:
+#            tableName: index
+#            columns:
+#              - column:
+#                  name: id
+#                  type: bigint
+#                  autoIncrement: true
+#                  constraints:
+#                    primaryKey: true
+#                    nullable: false
+#              - column:
+#                  name: page_id
+#                  type: int
+#                  constraints:
+#                    nullable: false
+#              - column:
+#                  name: lemma_id
+#                  type: int
+#                  constraints:
+#                    nullable: false
+#              - column:
+#                  name: rank
+#                  type: float
+#                  constraints:
+#                    nullable: false

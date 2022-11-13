@@ -1,14 +1,17 @@
 package searchengine.dto;
 
-import lombok.Builder;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 @Data
-@Builder
+@Accessors(chain = true)
 public class PageDto {
 
     private int id;
+    private int siteId;
     private String path;
     private int code;
     private String content;
 }
+
+

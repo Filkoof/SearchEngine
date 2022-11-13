@@ -6,4 +6,6 @@ import searchengine.entity.PageEntity;
 
 @Repository
 public interface PageRepository extends JpaRepository<PageEntity, Long> {
+
+    boolean existsByPath(String path);
 }
