@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Table(name = "search_index")
-public class IndexEntity {
+public class SearchIndexEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

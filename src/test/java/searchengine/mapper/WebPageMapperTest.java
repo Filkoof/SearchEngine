@@ -14,6 +14,7 @@ class WebPageMapperTest {
     private static final String CONTENT = "<!DOCTYPE html><html><head>";
     private final PageMapper pageMapper = Mappers.getMapper(PageMapper.class);
 
+    //TODO: решить вопрос с setSite
 
     @Test
     @DisplayName("Map Entity to DTO")
@@ -21,7 +22,7 @@ class WebPageMapperTest {
         assertNotNull(pageMapper);
 
         PageEntity pageEntity = new PageEntity();
-        pageEntity.setId(ID).setSiteId(ID).setPath(PATH).setCode(CODE).setContent(CONTENT);
+        pageEntity.setId(ID).setSite(ID).setPath(PATH).setCode(CODE).setContent(CONTENT);
 
         PageDto pageDto = new PageDto();
         pageDto.setId(ID).setSiteId(ID).setPath(PATH).setCode(CODE).setContent(CONTENT);
@@ -40,7 +41,7 @@ class WebPageMapperTest {
         PageEntity pageEntity = pageMapper.pageDtoToEntity(pageDto);
 
         assertAll(() -> assertEquals(pageDto.getId(), pageEntity.getId()),
-                () -> assertEquals(pageDto.getSiteId(), pageEntity.getSiteId()),
+                () -> assertEquals(pageDto.getSiteId(), pageEntity.getSite()),
                 () -> assertEquals(pageDto.getPath(), pageEntity.getPath()),
                 () -> assertEquals(pageDto.getCode(), pageEntity.getCode()),
                 () -> assertEquals(pageDto.getContent(), pageEntity.getContent())

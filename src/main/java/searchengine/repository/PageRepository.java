@@ -8,4 +8,6 @@ import searchengine.entity.PageEntity;
 public interface PageRepository extends JpaRepository<PageEntity, Long> {
 
     boolean existsByPath(String path);
+
+    void deleteAllBySiteId(long siteId);
 }

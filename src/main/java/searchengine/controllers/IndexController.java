@@ -2,26 +2,22 @@ package searchengine.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import searchengine.dto.ResponseDto;
+import searchengine.services.IndexServiceImpl;
+
+import java.io.IOException;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
 public class IndexController {
 
-    @GetMapping("/startIndexing")
-    public void startIndexing() {
-        /**
-         Формат ответа в случае успеха:
-         {
-         'result': true
-         }
+    private final IndexServiceImpl indexService;
 
-         Формат ответа в случае ошибки:
-         {
-         'result': false,
-         'error': "Индексация уже запущена"
-         }
-         */
+    @GetMapping("/startIndexing")
+    public ResponseDto<Map<String, Boolean>> startIndexing() throws IOException, InterruptedException {
+        return indexService.indexing();
     }
 
     @GetMapping("/stopIndexing")

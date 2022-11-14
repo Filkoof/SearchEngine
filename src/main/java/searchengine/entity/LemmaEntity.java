@@ -14,7 +14,9 @@ public class LemmaEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private int siteId;
+    @ManyToOne
+    @JoinColumn(name = "site_id")
+    private SiteEntity site;
     private String lemma;
     private int frequency;
 }
