@@ -10,9 +10,6 @@ spring:
     enabled: false
     change-log: db/changelog/db.changelog-master.yaml
     drop-first: true
-  test:
-    database:
-      replace: none
 
 server:
   port: 9090
