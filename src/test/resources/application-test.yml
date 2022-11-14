@@ -3,8 +3,8 @@ spring:
 #    url: jdbc:mysql://localhost:3306/search_engine?createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true&useSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&stringtype=unspecified
 #    username: root
 #    password: testtest
-#  jpa:
-  hibernate:
+  jpa:
+    hibernate:
       ddl-auto: none
   liquibase:
     enabled: false
