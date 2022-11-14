@@ -4,13 +4,14 @@ spring:
     username: root
     password: testtest
   jpa:
-    hibernate:
-      ddl-auto: validate
     show-sql: true
   liquibase:
     enabled: true
     change-log: db/changelog/db.changelog-master.yaml
     drop-first: true
+  test:
+    database:
+      replace: none
 
 server:
   port: 9090
