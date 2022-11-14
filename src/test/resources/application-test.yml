@@ -6,10 +6,10 @@
 #  jpa:
 #    hibernate:
 #      ddl-auto: none
-#  liquibase:
-#    enabled: false
-#    change-log: db/changelog/db.changelog-master.yaml
-#    drop-first: true
+  liquibase:
+    enabled: false
+    change-log: db/changelog/db.changelog-master.yaml
+    drop-first: true
 
 server:
   port: 9090
