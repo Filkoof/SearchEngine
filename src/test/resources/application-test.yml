@@ -6,7 +6,7 @@ spring:
   jpa:
     show-sql: true
   liquibase:
-    enabled: true
+    enabled: false
     change-log: db/changelog/db.changelog-master.yaml
     drop-first: true
   test:
