@@ -5,10 +5,10 @@ spring:
     password: testtest
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: validate
     show-sql: true
   liquibase:
-    enabled: false
+    enabled: true
 
 server:
   port: 9090
