@@ -8,13 +8,13 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
-@Table(name = "index")
+@Table(name = "search_index")
 public class IndexEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private int id;
     private int pageId;
     private int lemmaId;
-    private float rank;
+    private float lemmaRank;
 }
