@@ -4,8 +4,8 @@ spring:
 #    username: root
 #    password: testtest
 #  jpa:
-#    hibernate:
-#      ddl-auto: none
+  hibernate:
+      ddl-auto: none
   liquibase:
     enabled: false
     change-log: db/changelog/db.changelog-master.yaml
