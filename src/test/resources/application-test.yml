@@ -4,9 +4,11 @@ spring:
     username: root
     password: testtest
   jpa:
+    hibernate:
+      ddl-auto: none
     show-sql: true
   liquibase:
-    enabled: false
+    enabled: true
     change-log: db/changelog/db.changelog-master.yaml
     drop-first: true
   test:
