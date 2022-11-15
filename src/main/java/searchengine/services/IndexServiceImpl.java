@@ -13,6 +13,7 @@ import searchengine.entity.enumerated.StatusType;
 import searchengine.repository.PageRepository;
 import searchengine.repository.SiteRepository;
 import searchengine.services.interfaces.IndexService;
+
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -27,47 +28,64 @@ public class IndexServiceImpl implements IndexService {
     private final SitesList sites;
 
     /*
-    * TODO:
-    *  1. Реализовать рекурсивный парсинг
-    *  2. Реализовать многопоточный парсинг
-    *  3. Придумать как получать корневой сайт в getWebPage
-    *  4. В indexing подумать как получать информацию об ошибке для return
-    *  5. Реализовать метод stopIndexing
+     * TODO:
+     *  1. Реализовать метод stopIndexing
+     *  2. Протестировать!
      * */
+
+    public ResponseDto<Map<String, Boolean>> stopIndexing() {
+
+        return ResponseDto.<Map<String, Boolean>>builder()
+                .data(Map.of("result", true))
+                .error(true ? "Индексация не запущена" : "")
+                .timeStamp(LocalDateTime.now())
+                .build();
+    }
 
     @Override
     public ResponseDto<Map<String, Boolean>> indexing() throws IOException, InterruptedException {
         var sitesList = sites.getSites();
 
-        for (Site site : sitesList) {
-            deleteSiteFromDataBase(site);
-            saveSiteInDataBase(site);
-            webCrawl(site.getUrl());
+        sitesList.parallelStream().forEach(site -> {
+            try {
+                deleteAllInfoFromDataBase(site);
+                saveSiteInDataBase(site);
+                webCrawl(site.getUrl());
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
+        for(Site site : sitesList) {
+            var status = siteRepository.findByUrl(site.getUrl()).getStatus();
+            return ResponseDto.<Map<String, Boolean>>builder()
+                    .data(Map.of("result", !status.equals(StatusType.INDEXING)))
+                    .error(status.equals(StatusType.INDEXING) ? "Индексация  уже запущена" : "")
+                    .timeStamp(LocalDateTime.now())
+                    .build();
         }
 
-        return ResponseDto.<Map<String, Boolean>>builder()
-                .data(Map.of("result", true)) // false в случае ошибки
-                .error("") //'result': false ? 'error': "Индексация не запущена"
-                .timeStamp(LocalDateTime.now())
-                .build();
+        return null;
     }
 
-    private void webCrawl(String rootURL) throws InterruptedException {
+    private void webCrawl(String path) throws InterruptedException {
         Thread.sleep(150);
 
-        var siteEntity = siteRepository.findByUrl(rootURL);
+        var isPageExist = pageRepository.existsByPath(path);
+        var siteEntity = isPageExist ? pageRepository.findByPath(path).getSite() : siteRepository.findByUrl(path);
 
         Document document;
         try {
-            document = jsoupConnect(rootURL);
+            document = jsoupConnect(path);
             var elements = document.select("a[href]");
 
             for (Element element : elements) {
                 updateStatusTime(siteEntity);
 
-                var url = element.attr("abs:href");
-                if (isNeedSave(url)) pageRepository.save(getWebPage(url, siteEntity));
+                var subPath = element.attr("abs:href");
+                if (isNeedSave(subPath, siteEntity.getUrl())) savePageAndStartWebCrawl(subPath, siteEntity);
             }
+
         } catch (IOException e) {
             setStatusFailedAndErrorMessage(siteEntity, e.toString());
             throw new RuntimeException(e);
@@ -76,7 +94,12 @@ public class IndexServiceImpl implements IndexService {
         setStatusIndexed(siteEntity);
     }
 
-    private void deleteSiteFromDataBase(Site site) {
+    private void savePageAndStartWebCrawl(String url, SiteEntity siteEntity) throws IOException, InterruptedException {
+        pageRepository.save(getWebPage(url, siteEntity));
+        webCrawl(url);
+    }
+
+    private void deleteAllInfoFromDataBase(Site site) {
         var siteForDelete = siteRepository.findByUrl(site.getUrl());
         siteRepository.deleteById(siteForDelete.getId());
         pageRepository.deleteAllBySiteId(siteForDelete.getId());
@@ -92,8 +115,9 @@ public class IndexServiceImpl implements IndexService {
         siteRepository.save(siteEntity);
     }
 
-    private boolean isNeedSave(String path) {
+    private boolean isNeedSave(String path, String siteUrl) {
         return !pageRepository.existsByPath(path)
+                && path.contains(siteUrl)
                 && path.startsWith("http")
                 && !path.contains("#")
                 && !path.matches("(\\S+(\\.(?i)(jpg|png|gif|bmp|pdf|xml))$)")

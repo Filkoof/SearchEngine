@@ -21,22 +21,9 @@ public class IndexController {
     }
 
     @GetMapping("/stopIndexing")
-    public void stopIndexing() {
-        /**
-         Формат ответа в случае успеха:
-
-         {
-         'result': true
-         }
-
-         Формат ответа в случае ошибки:
-
-         {
-         'result': false,
-         'error': "Индексация не запущена"
-         }
-         */
-    }
+    public ResponseDto<Map<String, Boolean>> stopIndexing() {
+        return indexService.stopIndexing();
+            }
 
     @PostMapping("/indexPage")
     public void indexPage (@RequestParam(name = "url", defaultValue = "") String url) {
