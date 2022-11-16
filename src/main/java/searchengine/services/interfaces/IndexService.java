@@ -7,5 +7,7 @@ import java.util.Map;
 
 public interface IndexService {
 
-    ResponseDto<Map<String, Boolean>> indexing() throws IOException, InterruptedException;
+    ResponseDto<Map<String, Boolean>> startIndexing() throws IOException, InterruptedException;
+
+    ResponseDto<Map<String, Boolean>> stopIndexing() throws InterruptedException;
 }

@@ -17,7 +17,7 @@ public class IndexController {
 
     @GetMapping("/startIndexing")
     public ResponseDto<Map<String, Boolean>> startIndexing() throws IOException, InterruptedException {
-        return indexService.indexing();
+        return indexService.startIndexing();
     }
 
     @GetMapping("/stopIndexing")

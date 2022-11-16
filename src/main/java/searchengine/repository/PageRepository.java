@@ -1,18 +1,24 @@
 package searchengine.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import searchengine.entity.PageEntity;
-import searchengine.entity.SiteEntity;
+
+import javax.transaction.Transactional;
 
 @Repository
 public interface PageRepository extends JpaRepository<PageEntity, Long> {
-
-    PageEntity findBySite(SiteEntity siteEntity);
 
     PageEntity findByPath(String path);
 
     boolean existsByPath(String path);
 
-    void deleteAllBySiteId(long siteId);
+    boolean existsBySiteId(int siteId);
+
+    @Transactional
+    @Modifying
+    @Query("DELETE FROM PageEntity p WHERE p.site.id = :siteId")
+    void deleteAllBySiteId(int siteId);
 }

@@ -17,9 +17,12 @@ public class SiteEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private int id;
+    @Column(columnDefinition = "ENUM")
+    @Enumerated(EnumType.STRING)
     private StatusType status;
     private LocalDateTime statusTime;
+    @Column(columnDefinition = "TEXT)")
     private String lastError;
     private String url;
     private String name;
