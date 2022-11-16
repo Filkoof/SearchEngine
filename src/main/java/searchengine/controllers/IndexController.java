@@ -23,10 +23,10 @@ public class IndexController {
     @GetMapping("/stopIndexing")
     public ResponseDto<Map<String, Boolean>> stopIndexing() {
         return indexService.stopIndexing();
-            }
+    }
 
     @PostMapping("/indexPage")
-    public void indexPage (@RequestParam(name = "url", defaultValue = "") String url) {
+    public void indexPage(@RequestParam(name = "url", defaultValue = "") String url) {
         /**
          Формат ответа в случае успеха:
          {

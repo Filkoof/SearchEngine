@@ -1,11 +1,10 @@
 package searchengine.entity;
 
-import javax.persistence.*;
-
-import com.mysql.cj.protocol.ColumnDefinition;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+
+import javax.persistence.*;
 
 @Entity
 @Getter

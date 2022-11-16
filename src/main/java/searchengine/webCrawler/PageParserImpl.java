@@ -1,6 +1,5 @@
-package WebCrawler;
+package searchengine.webCrawler;
 
-import WebCrawler.interfaces.PageParser;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -12,6 +11,7 @@ import searchengine.entity.SiteEntity;
 import searchengine.entity.enumerated.StatusType;
 import searchengine.repository.PageRepository;
 import searchengine.repository.SiteRepository;
+import searchengine.webCrawler.interfaces.PageParser;
 
 import javax.persistence.EntityNotFoundException;
 import java.io.IOException;

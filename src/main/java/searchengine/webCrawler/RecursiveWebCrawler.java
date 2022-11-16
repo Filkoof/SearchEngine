@@ -1,9 +1,9 @@
-package WebCrawler;
+package searchengine.webCrawler;
 
-import WebCrawler.interfaces.PageParser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import searchengine.dto.NodePage;
+import searchengine.webCrawler.interfaces.PageParser;
 
 import java.util.ArrayList;
 import java.util.List;

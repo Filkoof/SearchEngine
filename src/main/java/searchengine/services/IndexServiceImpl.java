@@ -1,7 +1,5 @@
 package searchengine.services;
 
-import WebCrawler.RecursiveWebCrawler;
-import WebCrawler.interfaces.PageParser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import searchengine.config.Site;
@@ -13,6 +11,8 @@ import searchengine.entity.enumerated.StatusType;
 import searchengine.repository.PageRepository;
 import searchengine.repository.SiteRepository;
 import searchengine.services.interfaces.IndexService;
+import searchengine.webCrawler.RecursiveWebCrawler;
+import searchengine.webCrawler.interfaces.PageParser;
 
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -31,9 +31,8 @@ public class IndexServiceImpl implements IndexService {
 
     /*
      * TODO:
-     *  1. Реализовать метод stopIndexing
-     *  2. Придумать как в startIndexing реализовать верно ответ для списка сайтов
-     *  3. Протестировать!
+     *  1. Придумать как в startIndexing реализовать верно обработку листа сайтов
+     *  2. Протестировать!
      * */
 
     @Override
@@ -90,7 +89,7 @@ public class IndexServiceImpl implements IndexService {
 
         return ResponseDto.<Map<String, Boolean>>builder()
                 .data(Map.of("result", isIndexing))
-                .error(isIndexing ? "" :"Индексация не запущена")
+                .error(isIndexing ? "" : "Индексация не запущена")
                 .build();
     }
 }
