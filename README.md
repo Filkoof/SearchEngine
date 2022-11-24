@@ -5,3 +5,16 @@
 <div id="header" align="center">
 <img src="https://media.giphy.com/media/Dh5q0sShxgp13DwrvG/giphy.gif" width="1000"/>
 </div>
+
+## О проекте
+
+Поисковый движок по сайту — многопоточное приложение, которое позволяет индексировать страницы и осуществлять по ним быстрый поиск. Движок разрабатывается на фреймворке Spring.
+
+### В проекте было использавно:
+- Spring:
+    - Sprin Boot
+    - Spring Data
+- Docker
+- Liquibase
+- GitHab Actions(CI/CD)
+- MapStruct
