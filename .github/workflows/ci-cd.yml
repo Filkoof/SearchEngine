@@ -42,7 +42,6 @@ jobs:
       - name: Maven testing
         run: mvn test
 
-
   sonar:
     name: Sonar analyze
     runs-on: ubuntu-latest
