@@ -1,49 +1,30 @@
 package searchengine.controllers;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import searchengine.dto.IndexResponse;
+import searchengine.services.IndexServiceImpl;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
 public class IndexController {
 
-    @GetMapping("/startIndexing")
-    public void startIndexing() {
-        /**
-         Формат ответа в случае успеха:
-         {
-         'result': true
-         }
+    private final IndexServiceImpl indexService;
 
-         Формат ответа в случае ошибки:
-         {
-         'result': false,
-         'error': "Индексация уже запущена"
-         }
-         */
+    @GetMapping("/startIndexing")
+    public ResponseEntity<IndexResponse> startIndexing() {
+        return ResponseEntity.ok(indexService.startIndexing());
     }
 
     @GetMapping("/stopIndexing")
-    public void stopIndexing() {
-        /**
-         Формат ответа в случае успеха:
-
-         {
-         'result': true
-         }
-
-         Формат ответа в случае ошибки:
-
-         {
-         'result': false,
-         'error': "Индексация не запущена"
-         }
-         */
+    public ResponseEntity<IndexResponse> stopIndexing() {
+        return ResponseEntity.ok(indexService.stopIndexing());
     }
 
     @PostMapping("/indexPage")
-    public void indexPage (@RequestParam(name = "url", defaultValue = "") String url) {
+    public void indexPage(@RequestParam(name = "url", defaultValue = "") String url) {
         /**
          Формат ответа в случае успеха:
          {

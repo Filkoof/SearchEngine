@@ -4,6 +4,11 @@ import org.junit.jupiter.api.*;
 import org.mapstruct.factory.Mappers;
 import searchengine.dto.PageDto;
 import searchengine.entity.PageEntity;
+import searchengine.entity.SiteEntity;
+import searchengine.entity.enumerated.StatusType;
+
+import java.time.LocalDateTime;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class WebPageMapperTest {
@@ -14,14 +19,21 @@ class WebPageMapperTest {
     private static final String CONTENT = "<!DOCTYPE html><html><head>";
     private final PageMapper pageMapper = Mappers.getMapper(PageMapper.class);
 
-
     @Test
     @DisplayName("Map Entity to DTO")
     void pageEntityToDto() {
         assertNotNull(pageMapper);
 
+        SiteEntity siteEntity = new SiteEntity();
+        siteEntity.setId(ID)
+                .setStatus(StatusType.INDEXED)
+                .setStatusTime(LocalDateTime.now())
+                .setLastError("")
+                .setUrl("")
+                .setName("");
+
         PageEntity pageEntity = new PageEntity();
-        pageEntity.setId(ID).setSiteId(ID).setPath(PATH).setCode(CODE).setContent(CONTENT);
+        pageEntity.setId(ID).setSite(siteEntity).setPath(PATH).setCode(CODE).setContent(CONTENT);
 
         PageDto pageDto = new PageDto();
         pageDto.setId(ID).setSiteId(ID).setPath(PATH).setCode(CODE).setContent(CONTENT);
@@ -37,10 +49,18 @@ class WebPageMapperTest {
         PageDto pageDto = new PageDto();
         pageDto.setId(ID).setSiteId(ID).setPath(PATH).setCode(CODE).setContent(CONTENT);
 
-        PageEntity pageEntity = pageMapper.pageDtoToEntity(pageDto);
+        SiteEntity siteEntity = new SiteEntity();
+        siteEntity.setId(ID)
+                .setStatus(StatusType.INDEXED)
+                .setStatusTime(LocalDateTime.now())
+                .setLastError("")
+                .setUrl("")
+                .setName("");
+
+        PageEntity pageEntity = pageMapper.pageDtoToEntity(pageDto, siteEntity);
 
         assertAll(() -> assertEquals(pageDto.getId(), pageEntity.getId()),
-                () -> assertEquals(pageDto.getSiteId(), pageEntity.getSiteId()),
+                () -> assertEquals(pageDto.getSiteId(), pageEntity.getSite().getId()),
                 () -> assertEquals(pageDto.getPath(), pageEntity.getPath()),
                 () -> assertEquals(pageDto.getCode(), pageEntity.getCode()),
                 () -> assertEquals(pageDto.getContent(), pageEntity.getContent())
