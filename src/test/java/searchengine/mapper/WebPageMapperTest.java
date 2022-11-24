@@ -2,10 +2,12 @@ package searchengine.mapper;
 
 import org.junit.jupiter.api.*;
 import org.mapstruct.factory.Mappers;
+import org.springframework.test.context.ActiveProfiles;
 import searchengine.dto.PageDto;
 import searchengine.entity.PageEntity;
 import static org.junit.jupiter.api.Assertions.*;
 
+@ActiveProfiles("test")
 class WebPageMapperTest {
 
     private static final int ID = 1;
