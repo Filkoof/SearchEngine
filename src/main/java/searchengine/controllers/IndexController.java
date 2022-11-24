@@ -1,12 +1,10 @@
 package searchengine.controllers;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import searchengine.dto.ResponseDto;
+import searchengine.dto.IndexResponse;
 import searchengine.services.IndexServiceImpl;
-
-import java.io.IOException;
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -16,13 +14,13 @@ public class IndexController {
     private final IndexServiceImpl indexService;
 
     @GetMapping("/startIndexing")
-    public ResponseDto<Map<String, Boolean>> startIndexing() throws IOException, InterruptedException {
-        return indexService.startIndexing();
+    public ResponseEntity<IndexResponse> startIndexing() {
+        return ResponseEntity.ok(indexService.startIndexing());
     }
 
     @GetMapping("/stopIndexing")
-    public ResponseDto<Map<String, Boolean>> stopIndexing() {
-        return indexService.stopIndexing();
+    public ResponseEntity<IndexResponse> stopIndexing() {
+        return ResponseEntity.ok(indexService.stopIndexing());
     }
 
     @PostMapping("/indexPage")

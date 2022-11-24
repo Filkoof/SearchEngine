@@ -1,13 +1,12 @@
 package searchengine.services.interfaces;
 
-import searchengine.dto.ResponseDto;
+import searchengine.dto.IndexResponse;
 
 import java.io.IOException;
-import java.util.Map;
 
 public interface IndexService {
 
-    ResponseDto<Map<String, Boolean>> startIndexing() throws IOException, InterruptedException;
+    IndexResponse startIndexing() throws IOException, InterruptedException;
 
-    ResponseDto<Map<String, Boolean>> stopIndexing() throws InterruptedException;
+    IndexResponse stopIndexing() throws InterruptedException;
 }

@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import searchengine.dto.NodePage;
 import searchengine.entity.PageEntity;
 import searchengine.entity.SiteEntity;
@@ -15,11 +15,9 @@ import searchengine.webCrawler.interfaces.PageParser;
 
 import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.time.LocalDateTime;
 
-@Service
+@Component
 @RequiredArgsConstructor
 public class PageParserImpl implements PageParser {
 
@@ -39,14 +37,18 @@ public class PageParserImpl implements PageParser {
             for (Element element : elements) {
                 updateStatusTime(siteEntity);
                 var subPath = element.attr("abs:href");
+                var pageEntity = getPageEntity(subPath, siteEntity, document);
+                var referenceOnChildSet = nodePage.getReferenceOnChildSet();
 
-                if (isNeedSave(subPath) && siteEntity != null) pageRepository.save(getPageEntity(subPath, siteEntity));
+                if (isNeedSave(subPath, siteEntity)) {
+                    pageRepository.save(pageEntity);
+                    referenceOnChildSet.add(subPath);
+                }
             }
         } catch (IOException e) {
             setStatusFailedAndErrorMessage(siteEntity, e.toString());
             throw new RuntimeException(e);
         }
-        setStatusIndexed(siteEntity);
     }
 
     private Document jsoupConnect(String path) throws IOException {
@@ -56,32 +58,18 @@ public class PageParserImpl implements PageParser {
                 .get();
     }
 
-    private boolean isNeedSave(String path) {
+    private boolean isNeedSave(String path, SiteEntity site) {
         return !pageRepository.existsByPath(path)
-                && path.startsWith("http")
-                && !path.contains("#")
+                && path.startsWith(site.getUrl())
                 && !path.matches("(\\S+(\\.(?i)(jpg|png|gif|bmp|pdf|xml))$)")
-                && !path.matches("(instagram|twitter|facebook|vkontakte)");
-//                && !path.matches("#([\\w\\-]+)?$")
-//                && !path.contains("?method=");
+                && !path.contains("#");
     }
 
-    private PageEntity getPageEntity(String path, SiteEntity siteEntity) {
-        URL url;
-        try {
-            url = new URL(path);
-
-            var httpURLConnection = (HttpURLConnection) url.openConnection();
-
-            var pageEntity = new PageEntity();
-            return pageEntity.setSite(siteEntity)
-                    .setPath(path)
-                    .setCode(httpURLConnection.getResponseCode())
-                    .setContent(url.getContent().toString());
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    private PageEntity getPageEntity(String path, SiteEntity site, Document document) {
+        return new PageEntity().setSite(site)
+                .setPath(path)
+                .setCode(document.connection().response().statusCode())
+                .setContent(document.html());
     }
 
     private void updateStatusTime(SiteEntity siteEntity) {
@@ -90,10 +78,5 @@ public class PageParserImpl implements PageParser {
 
     private void setStatusFailedAndErrorMessage(SiteEntity siteEntity, String error) {
         if (siteEntity != null) siteRepository.save(siteEntity.setStatus(StatusType.FAILED).setLastError(error));
-    }
-
-
-    private void setStatusIndexed(SiteEntity siteEntity) {
-        if (siteEntity != null) siteRepository.save(siteEntity.setStatus(StatusType.INDEXED));
     }
 }
