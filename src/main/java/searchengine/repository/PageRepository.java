@@ -9,9 +9,7 @@ import searchengine.entity.PageEntity;
 import javax.transaction.Transactional;
 
 @Repository
-public interface PageRepository extends JpaRepository<PageEntity, Long> {
-
-    PageEntity findByPath(String path);
+public interface PageRepository extends JpaRepository<PageEntity, Integer> {
 
     boolean existsByPath(String path);
 
