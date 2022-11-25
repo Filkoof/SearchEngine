@@ -1,8 +1,9 @@
 package searchengine.mapper;
 
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
-import org.springframework.test.context.ActiveProfiles;
+import searchengine.ContextLoad;
 import searchengine.dto.PageDto;
 import searchengine.entity.PageEntity;
 import searchengine.entity.SiteEntity;
@@ -12,8 +13,7 @@ import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@ActiveProfiles("test")
-class WebPageMapperTest {
+class WebPageMapperTest extends ContextLoad {
 
     private static final int ID = 1;
     private static final String PATH = "https://github.com/Filkoof";
