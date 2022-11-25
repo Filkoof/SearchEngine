@@ -22,14 +22,11 @@ public class RecursiveWebCrawler extends RecursiveAction {
         List<RecursiveWebCrawler> taskList = new ArrayList<>();
 
         nodePage.setPath(nodePage.getPrefix() + nodePage.getSuffix());
+
         try {
             pageParser.parsePage(nodePage);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
 
-
-        for (String refOnChild : nodePage.getReferenceOnChildSet()) {
+            for (String refOnChild : nodePage.getReferenceOnChildSet()) {
             NodePage nodePageChild = new NodePage();
             nodePageChild.setPrefix(nodePage.getPrefix())
                     .setSuffix(refOnChild)
@@ -37,14 +34,15 @@ public class RecursiveWebCrawler extends RecursiveAction {
                     .setSiteId(nodePage.getSiteId());
 
             RecursiveWebCrawler task = new RecursiveWebCrawler(pageParser, nodePageChild);
+            Thread.sleep(nodePage.getTimeBetweenRequest());
 
-            try {
-                Thread.sleep(nodePage.getTimeBetweenRequest());
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
             task.fork();
             taskList.add(task);
+            }
+
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException(e);
         }
 
         taskList.forEach(ForkJoinTask::join);
