@@ -7,9 +7,10 @@ import org.springframework.stereotype.Repository;
 import search_engine.entity.PageEntity;
 
 import javax.transaction.Transactional;
+import java.io.Serializable;
 
 @Repository
-public interface PageRepository extends JpaRepository<PageEntity, Integer> {
+public interface PageRepository extends JpaRepository<PageEntity, Integer>, Serializable {
 
     boolean existsByPath(String path);
 
