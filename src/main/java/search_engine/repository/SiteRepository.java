@@ -5,10 +5,11 @@ import org.springframework.stereotype.Repository;
 import search_engine.entity.SiteEntity;
 import search_engine.entity.enumerated.StatusType;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Repository
-public interface SiteRepository extends JpaRepository<SiteEntity, Integer> {
+public interface SiteRepository extends JpaRepository<SiteEntity, Integer>, Serializable {
 
     List<SiteEntity> findAllByStatus(StatusType status);
 

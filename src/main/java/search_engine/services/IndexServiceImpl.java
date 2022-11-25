@@ -11,8 +11,8 @@ import search_engine.entity.enumerated.StatusType;
 import search_engine.repository.PageRepository;
 import search_engine.repository.SiteRepository;
 import search_engine.services.interfaces.IndexService;
-import search_engine.webCrawler.MultithreadedWebCrawler;
-import search_engine.webCrawler.interfaces.PageParser;
+import search_engine.web_crawler.MultithreadedWebCrawler;
+import search_engine.web_crawler.interfaces.PageParser;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

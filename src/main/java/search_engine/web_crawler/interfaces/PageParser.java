@@ -1,4 +1,4 @@
-package search_engine.webCrawler.interfaces;
+package search_engine.web_crawler.interfaces;
 
 import search_engine.dto.NodePage;
 
