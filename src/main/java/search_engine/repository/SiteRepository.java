@@ -17,4 +17,6 @@ public interface SiteRepository extends JpaRepository<SiteEntity, Integer>, Seri
     SiteEntity findByUrl(String url);
 
     boolean existsByUrl(String url);
+
+    boolean existsByStatus(StatusType status);
 }

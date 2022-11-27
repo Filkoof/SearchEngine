@@ -21,10 +21,6 @@ public class Lemmatizer {
         this.luceneMorphology = luceneMorphology;
     }
 
-    private Lemmatizer(){
-        throw new RuntimeException("Disallow construct");
-    }
-
     public Map<String, Integer> collectLemmas(String text) {
         String[] words = arrayContainsRussianWords(text);
         Map<String, Integer> lemmas = new HashMap<>();

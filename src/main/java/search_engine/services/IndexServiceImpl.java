@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ForkJoinPool;
 
 @RequiredArgsConstructor
 @Service
@@ -33,7 +32,6 @@ public class IndexServiceImpl implements IndexService {
     private final IndexRepository indexRepository;
     private final PageParser pageParser;
     private final SitesList sites;
-    private final ForkJoinPool forkJoinPool = new ForkJoinPool();
 
     @Override
     public IndexResponse startIndexing() {
@@ -47,37 +45,36 @@ public class IndexServiceImpl implements IndexService {
                     .setResult(false)
                     .setError("Индексация уже запущена");
 
-            if (isSiteExist(site)) deleteAllSiteInfoFromDataBase(site);
+            if (isSiteExist(site)) deleteAllInfoFromDataBase(site);
             createAndSaveSiteEntity(site);
 
             NodePage nodePage = getNodePage(site.getUrl(), site.getUrl(), "");
             nodePages.add(nodePage);
         }
 
-        nodePages.forEach(nodePage -> new MultithreadedWebCrawler(forkJoinPool, pageParser, nodePage, siteRepository).start());
+        nodePages.forEach(nodePage -> new MultithreadedWebCrawler(pageParser, nodePage).start());
 
         return new IndexResponse().setResult(true);
     }
 
-    private void deleteAllSiteInfoFromDataBase(Site site) {
-        var siteEntity = siteRepository.findByUrl(site.getUrl());
-        var pages = pageRepository.findAllBySiteId(siteEntity.getId());
-
-        pages.forEach(page -> indexRepository.deleteAllByPageId(page.getId()));
-        lemmaRepository.deleteAllBySiteId(siteEntity.getId());
-        pageRepository.deleteAllBySiteId(siteEntity.getId());
-        siteRepository.deleteById(siteEntity.getId());
+    private void deleteAllInfoFromDataBase(Site site) {
+        if (isSiteExist(site)) {
+            indexRepository.deleteAll();
+            lemmaRepository.deleteAll();
+            pageRepository.deleteAll();
+            siteRepository.deleteAll();
+        }
     }
 
     @Override
     public IndexResponse stopIndexing() {
-        if (forkJoinPool.isShutdown()) {
-            return new IndexResponse().setResult(false).setError("Индексация не запущена");
-        } else {
-            forkJoinPool.shutdown();
-            setStatusFailedForNotIndexedSites();
-        }
+        boolean isSitesNotIndexing = !siteRepository.existsByStatus(StatusType.INDEXING);
+        if (isSitesNotIndexing) return new IndexResponse().setResult(false).setError("Индексация не запущена");
 
+        var threads = Thread.getAllStackTraces().keySet();
+        threads.forEach(Thread::interrupt);
+
+        setStatusFailedForNotIndexedSites();
         return new IndexResponse().setResult(true);
     }
 
