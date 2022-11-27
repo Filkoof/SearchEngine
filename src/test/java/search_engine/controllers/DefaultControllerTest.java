@@ -16,7 +16,7 @@ class DefaultControllerTest extends ContextLoad {
     private MockMvc mockMvc;
 
     @Test
-    @DisplayName("Default get controller test")
+    @DisplayName("Проверка default контроллера")
     void index() throws Exception {
         mockMvc.perform(get("/"))
                 .andDo(print())

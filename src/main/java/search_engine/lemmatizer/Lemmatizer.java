@@ -1,19 +1,29 @@
 package search_engine.lemmatizer;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.lucene.morphology.LuceneMorphology;
-import org.springframework.stereotype.Component;
+import org.apache.lucene.morphology.russian.RussianLuceneMorphology;
 
+import java.io.IOException;
 import java.util.*;
 
-@Slf4j
-@Component
-@RequiredArgsConstructor
 public class Lemmatizer {
-    private static final String WORDS_TYPE = "\\W\\w&&[^а-яА-Я\\s]";
-    private final List<String> particlesNames = List.of("МЕЖД", "ПРЕДЛ", "СОЮЗ");
+
     private final LuceneMorphology luceneMorphology;
+    private static final String WORD_TYPE_REGEX = "\\W\\w&&[^а-яА-Я\\s]";
+    private static final String[] particlesNames = new String[]{"МЕЖД", "ПРЕДЛ", "СОЮЗ"};
+
+    public static Lemmatizer getInstance() throws IOException {
+        LuceneMorphology morphology= new RussianLuceneMorphology();
+        return new Lemmatizer(morphology);
+    }
+
+    private Lemmatizer(LuceneMorphology luceneMorphology) {
+        this.luceneMorphology = luceneMorphology;
+    }
+
+    private Lemmatizer(){
+        throw new RuntimeException("Disallow construct");
+    }
 
     public Map<String, Integer> collectLemmas(String text) {
         String[] words = arrayContainsRussianWords(text);
@@ -22,10 +32,10 @@ public class Lemmatizer {
         for (String word : words) {
             if (word.isBlank()) continue;
 
-            var wordBaseForms = luceneMorphology.getMorphInfo(word);
+            List<String> wordBaseForms = luceneMorphology.getMorphInfo(word);
             if (anyWordBaseBelongToParticle(wordBaseForms)) continue;
 
-            var normalForms = luceneMorphology.getNormalForms(word);
+            List<String> normalForms = luceneMorphology.getNormalForms(word);
             if (normalForms.isEmpty()) continue;
 
             String normalWord = normalForms.get(0);
@@ -42,24 +52,23 @@ public class Lemmatizer {
     public Set<String> getLemmaSet(String text) {
         String[] textArray = arrayContainsRussianWords(text);
         Set<String> lemmaSet = new HashSet<>();
-
         for (String word : textArray) {
-            List<String> wordBaseForms = luceneMorphology.getMorphInfo(word);
-            if (isNeedAddToLemmaSet(word, wordBaseForms)) lemmaSet.addAll(luceneMorphology.getNormalForms(word));
+            if (!word.isEmpty() && isCorrectWordForm(word)) {
+                List<String> wordBaseForms = luceneMorphology.getMorphInfo(word);
+                if (anyWordBaseBelongToParticle(wordBaseForms)) {
+                    continue;
+                }
+                lemmaSet.addAll(luceneMorphology.getNormalForms(word));
+            }
         }
-
         return lemmaSet;
     }
 
-    private boolean isNeedAddToLemmaSet(String word, List<String> wordBaseForms) {
-        return !word.isEmpty() && isCorrectWordForm(word) && !anyWordBaseBelongToParticle(wordBaseForms);
-    }
-
     private boolean anyWordBaseBelongToParticle(List<String> wordBaseForms) {
-        return wordBaseForms.stream().anyMatch(this::isThisParticle);
+        return wordBaseForms.stream().anyMatch(this::hasParticleProperty);
     }
 
-    private boolean isThisParticle(String wordBase) {
+    private boolean hasParticleProperty(String wordBase) {
         for (String property : particlesNames) {
             if (wordBase.toUpperCase().contains(property)) {
                 return true;
@@ -77,11 +86,11 @@ public class Lemmatizer {
 
     private boolean isCorrectWordForm(String word) {
         List<String> wordInfo = luceneMorphology.getMorphInfo(word);
-
         for (String morphInfo : wordInfo) {
-            if (morphInfo.matches(WORDS_TYPE)) return false;
+            if (morphInfo.matches(WORD_TYPE_REGEX)) {
+                return false;
+            }
         }
-
         return true;
     }
 }

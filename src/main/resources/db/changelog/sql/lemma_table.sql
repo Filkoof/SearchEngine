@@ -1,4 +1,4 @@
-create table lemma
+create table lemmas
 (
 id INT not null auto_increment,
 site_id INT not null,

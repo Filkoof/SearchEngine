@@ -11,10 +11,10 @@ databaseChangeLog:
             path: db/changelog/sql/site_table.sql
         - sqlFile:
             encoding: utf8
-            path: db/changelog/sql/index_table.sql
-        - sqlFile:
-            encoding: utf8
             path: db/changelog/sql/lemma_table.sql
         - sqlFile:
             encoding: utf8
             path: db/changelog/sql/page_table.sql
+        - sqlFile:
+            encoding: utf8
+            path: db/changelog/sql/index_table.sql

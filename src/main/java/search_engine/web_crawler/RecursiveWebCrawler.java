@@ -24,7 +24,7 @@ public class RecursiveWebCrawler extends RecursiveAction {
         nodePage.setPath(nodePage.getPrefix() + nodePage.getSuffix());
 
         try {
-            pageParser.parsePage(nodePage);
+            pageParser.startPageParser(nodePage);
 
             for (String refOnChild : nodePage.getReferenceOnChildSet()) {
             NodePage nodePageChild = new NodePage();

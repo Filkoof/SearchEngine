@@ -6,5 +6,7 @@ import java.io.Serializable;
 
 public interface PageParser extends Serializable {
 
-    void parsePage(NodePage nodePage) throws InterruptedException;
+    void startPageParser(NodePage nodePage);
+
+    void parseSinglePage(NodePage nodePage);
 }

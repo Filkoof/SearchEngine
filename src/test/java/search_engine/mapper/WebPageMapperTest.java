@@ -22,7 +22,7 @@ class WebPageMapperTest extends ContextLoad {
     private final PageMapper pageMapper = Mappers.getMapper(PageMapper.class);
 
     @Test
-    @DisplayName("Map Entity to DTO")
+    @DisplayName("Маппер Entity в DTO")
     void pageEntityToDto() {
         assertNotNull(pageMapper);
 
@@ -44,7 +44,7 @@ class WebPageMapperTest extends ContextLoad {
     }
 
     @Test
-    @DisplayName("Map DTO to Entity")
+    @DisplayName("Маппер DTO в Entity")
     void pageDtoToEntity() {
         assertNotNull(pageMapper);
 

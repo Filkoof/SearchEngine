@@ -9,4 +9,6 @@ public interface IndexService {
     IndexResponse startIndexing() throws IOException, InterruptedException;
 
     IndexResponse stopIndexing() throws InterruptedException;
+
+    IndexResponse indexPage(String url) throws InterruptedException, IOException;
 }

@@ -8,58 +8,77 @@ import search_engine.dto.statistics.DetailedStatisticsItem;
 import search_engine.dto.statistics.StatisticsData;
 import search_engine.dto.statistics.StatisticsResponse;
 import search_engine.dto.statistics.TotalStatistics;
+import search_engine.entity.SiteEntity;
+import search_engine.entity.enumerated.StatusType;
+import search_engine.repository.LemmaRepository;
+import search_engine.repository.PageRepository;
+import search_engine.repository.SiteRepository;
 import search_engine.services.interfaces.StatisticsService;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
 public class StatisticsServiceImpl implements StatisticsService {
 
-    private final Random random = new Random();
+    private final SiteRepository siteRepository;
+    private final PageRepository pageRepository;
+    private final LemmaRepository lemmaRepository;
     private final SitesList sites;
 
     @Override
     public StatisticsResponse getStatistics() {
-        String[] statuses = {"INDEXED", "FAILED", "INDEXING"};
-        String[] errors = {
-                "Ошибка индексации: главная страница сайта не доступна",
-                "Ошибка индексации: сайт не доступен",
-                ""
-        };
-
-        TotalStatistics total = new TotalStatistics();
-        total.setSites(sites.getSites().size());
-        total.setIndexing(true);
+        List<Site> siteList = sites.getSites();
 
         List<DetailedStatisticsItem> detailed = new ArrayList<>();
-        List<Site> sitesList = sites.getSites();
-        for (int i = 0; i < sitesList.size(); i++) {
-            Site site = sitesList.get(i);
-            DetailedStatisticsItem item = new DetailedStatisticsItem();
-            item.setName(site.getName());
-            item.setUrl(site.getUrl());
-            int pages = random.nextInt(1_000);
-            int lemmas = pages * random.nextInt(1_000);
-            item.setPages(pages);
-            item.setLemmas(lemmas);
-            item.setStatus(statuses[i % 3]);
-            item.setError(errors[i % 3]);
-            item.setStatusTime(System.currentTimeMillis() -
-                    (random.nextInt(10_000)));
-            total.setPages(total.getPages() + pages);
-            total.setLemmas(total.getLemmas() + lemmas);
-            detailed.add(item);
+        siteList.forEach(site -> detailed.add(getDetailedStatistic(site)));
+
+        TotalStatistics total = getTotalStatistic();
+
+        return new StatisticsResponse()
+                .setResult(true)
+                .setStatistics(getStatistic(total, detailed));
+    }
+
+    private DetailedStatisticsItem getDetailedStatistic(Site site) {
+        boolean isSiteExist = siteRepository.existsByUrl(site.getUrl());
+        SiteEntity siteEntity = null;
+        int pagesCount = 0;
+        int lemmasCount = 0;
+
+        if (isSiteExist) {
+            siteEntity = siteRepository.findByUrl(site.getUrl());
+            pagesCount = pageRepository.countAllBySiteId(siteEntity.getId());
+            lemmasCount = lemmaRepository.countAllBySiteId(siteEntity.getId());
         }
 
-        StatisticsResponse response = new StatisticsResponse();
-        StatisticsData data = new StatisticsData();
-        data.setTotal(total);
-        data.setDetailed(detailed);
-        response.setStatistics(data);
-        response.setResult(true);
-        return response;
+        return new DetailedStatisticsItem()
+                .setUrl(site.getUrl())
+                .setName(site.getName())
+                .setStatus(isSiteExist ? siteEntity.getStatus() : null)
+                .setStatusTime(isSiteExist ? siteEntity.getStatusTime() : LocalDateTime.now())
+                .setError(isSiteExist ? siteEntity.getLastError() : null)
+                .setPages(pagesCount)
+                .setLemmas(lemmasCount);
+    }
+
+    private TotalStatistics getTotalStatistic() {
+        int sitesCount = siteRepository.findAll().size();
+        int pagesCount = pageRepository.findAll().size();
+        int lemmaCount = lemmaRepository.findAll().size();
+        var indexingSites = siteRepository.findAllByStatus(StatusType.INDEXING);
+        return new TotalStatistics()
+                .setSites(sitesCount)
+                .setPages(pagesCount)
+                .setLemmas(lemmaCount)
+                .setIndexing(indexingSites.isPresent());
+    }
+
+    private StatisticsData getStatistic(TotalStatistics  total, List<DetailedStatisticsItem> detailed) {
+        return new StatisticsData()
+                .setTotal(total)
+                .setDetailed(detailed);
     }
 }

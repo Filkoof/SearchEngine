@@ -6,9 +6,14 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.springframework.stereotype.Component;
 import search_engine.dto.NodePage;
+import search_engine.entity.LemmaEntity;
 import search_engine.entity.PageEntity;
+import search_engine.entity.SearchIndexEntity;
 import search_engine.entity.SiteEntity;
 import search_engine.entity.enumerated.StatusType;
+import search_engine.lemmatizer.Lemmatizer;
+import search_engine.repository.IndexRepository;
+import search_engine.repository.LemmaRepository;
 import search_engine.repository.PageRepository;
 import search_engine.repository.SiteRepository;
 import search_engine.web_crawler.interfaces.PageParser;
@@ -16,6 +21,7 @@ import search_engine.web_crawler.interfaces.PageParser;
 import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
@@ -23,25 +29,26 @@ public class PageParserImpl implements PageParser {
 
     private final PageRepository pageRepository;
     private final SiteRepository siteRepository;
-
+    private final LemmaRepository lemmaRepository;
+    private final IndexRepository indexRepository;
 
     @Override
-    public void parsePage(NodePage nodePage) {
+    public void startPageParser(NodePage nodePage) {
         var siteEntity = siteRepository.findById(nodePage.getSiteId()).orElseThrow(EntityNotFoundException::new);
+        updateStatusTime(siteEntity);
 
-        Document document;
         try {
-            document = jsoupConnect(nodePage.getPath());
+            Document document = jsoupConnect(nodePage.getPath());
             var elements = document.select("a[href]");
 
             for (Element element : elements) {
-                updateStatusTime(siteEntity);
                 var subPath = element.attr("abs:href");
-                var pageEntity = getPageEntity(subPath, siteEntity, document);
+                var page = getPageEntity(subPath, siteEntity, document);
                 var referenceOnChildSet = nodePage.getReferenceOnChildSet();
 
                 if (isNeedSave(subPath, siteEntity)) {
-                    pageRepository.save(pageEntity);
+                    pageRepository.save(page);
+                    saveLemmaAndIndex(page);
                     referenceOnChildSet.add(subPath);
                 }
             }
@@ -51,18 +58,63 @@ public class PageParserImpl implements PageParser {
         }
     }
 
-    private Document jsoupConnect(String path) throws IOException {
-        return Jsoup.connect(path)
-                .userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rvl.8.1.6) Gecko/20070725 Firefox/2.0.0.6")
-                .referrer("https://www.google.com")
-                .get();
-    }
-
     private boolean isNeedSave(String path, SiteEntity site) {
         return !pageRepository.existsByPath(path)
                 && path.startsWith(site.getUrl())
                 && !path.matches("(\\S+(\\.(?i)(jpg|png|gif|bmp|pdf|xml))$)")
                 && !path.contains("#");
+    }
+
+    @Override
+    public void parseSinglePage(NodePage nodePage) {
+        var siteEntity = siteRepository.findById(nodePage.getSiteId()).orElseThrow(EntityNotFoundException::new);
+        siteRepository.save(siteEntity.setStatus(StatusType.INDEXING));
+        updateStatusTime(siteEntity);
+
+        try {
+            Document document = jsoupConnect(nodePage.getPath());
+
+            var page = getPageEntity(nodePage.getPath(), siteEntity, document);
+            pageRepository.save(page);
+            saveLemmaAndIndex(page);
+        } catch (IOException e) {
+            setStatusFailedAndErrorMessage(siteEntity, e.toString());
+            throw new RuntimeException(e);
+        }
+
+        siteRepository.save(siteEntity.setStatus(StatusType.INDEXED));
+    }
+
+    private void saveLemmaAndIndex(PageEntity page) throws IOException {
+        Lemmatizer lemmatizer = Lemmatizer.getInstance();
+        Map<String, Integer> lemmas = lemmatizer.collectLemmas(page.getContent());
+
+        for (Map.Entry<String, Integer> word : lemmas.entrySet()) {
+
+            LemmaEntity lemma;
+            if (lemmaRepository.existsByLemma(word.getKey())) {
+                lemma = lemmaRepository.findByLemma(word.getKey());
+                lemma.setFrequency(lemma.getFrequency() + 1);
+            } else {
+                lemma = new LemmaEntity()
+                        .setSite(page.getSite())
+                        .setLemma(word.getKey())
+                        .setFrequency(1);
+            }
+            lemmaRepository.save(lemma);
+
+            indexRepository.save(new SearchIndexEntity()
+                    .setPage(page)
+                    .setLemma(lemma)
+                    .setLemmaRank(word.getValue()));
+        }
+    }
+
+    private Document jsoupConnect(String path) throws IOException {
+        return Jsoup.connect(path)
+                .userAgent("Mozilla/5.0 (Windows; U; WindowsNT 5.1; en-US; rvl.8.1.6) Gecko/20070725 Firefox/2.0.0.6")
+                .referrer("https://www.google.com")
+                .get();
     }
 
     private PageEntity getPageEntity(String path, SiteEntity site, Document document) {

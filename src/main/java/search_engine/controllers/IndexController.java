@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.*;
 import search_engine.dto.IndexResponse;
 import search_engine.services.IndexServiceImpl;
 
+import java.io.IOException;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
@@ -24,21 +26,7 @@ public class IndexController {
     }
 
     @PostMapping("/indexPage")
-    public void indexPage(@RequestParam(name = "url", defaultValue = "") String url) {
-        /**
-         Формат ответа в случае успеха:
-         {
-         'result': true
-         }
-
-         Формат ответа в случае ошибки:
-
-         {
-         'result': false,
-         'error': "Данная страница находится за пределами сайтов,
-         указанных в конфигурационном файле"
-         }
-
-         */
+    public ResponseEntity<IndexResponse> indexPage(@RequestParam(name = "url", defaultValue = "") String url) throws IOException {
+        return ResponseEntity.ok(indexService.indexPage(url));
     }
 }

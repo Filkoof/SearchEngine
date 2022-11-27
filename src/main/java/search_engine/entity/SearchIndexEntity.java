@@ -2,19 +2,25 @@ package search_engine.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
 @Setter
+@Accessors(chain = true)
 @Table(name = "search_index")
 public class SearchIndexEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private int pageId;
-    private int lemmaId;
+    @ManyToOne
+    @JoinColumn(name = "page_id")
+    private PageEntity page;
+    @ManyToOne
+    @JoinColumn(name = "lemma_id")
+    private LemmaEntity lemma;
     private float lemmaRank;
 }

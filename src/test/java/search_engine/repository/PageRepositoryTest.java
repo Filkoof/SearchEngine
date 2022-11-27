@@ -2,6 +2,7 @@ package search_engine.repository;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import search_engine.ContextLoad;
@@ -42,24 +43,35 @@ class PageRepositoryTest extends ContextLoad {
     }
 
     @Test
+    @DisplayName("Найти сущность по id")
     void findPageById() {
         var page = pageRepository.findById(pageEntity.getId()).orElseThrow(EntityNotFoundException::new);
         assertNotNull(page);
     }
 
     @Test
+    @DisplayName("Проверка наличия по пути страницы")
     void existByPath() {
         boolean isExist = pageRepository.existsByPath(pageEntity.getPath());
         assertTrue(isExist);
     }
 
     @Test
+    @DisplayName("Проверка наличия по id сайта")
     void existsBySiteId() {
         boolean isExist = pageRepository.existsBySiteId(siteEntity.getId());
         assertTrue(isExist);
     }
 
     @Test
+    @DisplayName("Количество всех сущностей по id сайта")
+    void countAllBySiteId() {
+        int pageCount = pageRepository.countAllBySiteId(siteEntity.getId());
+        assertEquals(1, pageCount);
+    }
+
+    @Test
+    @DisplayName("Удалить сущность")
     void deletePage() {
         pageRepository.delete(pageEntity);
         boolean isExist = pageRepository.existsById(pageEntity.getId());
