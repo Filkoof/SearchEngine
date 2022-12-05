@@ -43,14 +43,14 @@ class LemmaRepositoryTest extends ContextLoad {
     @Test
     @DisplayName("Проверка наличия по лемме")
     void existsByLemma() {
-        boolean isExist = lemmaRepository.existsByLemma(lemmaEntity.getLemma());
+        boolean isExist = lemmaRepository.existsBySiteIdAndLemma(siteEntity.getId(), lemmaEntity.getLemma());
         assertTrue(isExist);
     }
 
     @Test
     @DisplayName("Найти сущность по лемме")
     void findByLemma() {
-        var lemma = lemmaRepository.findByLemma(lemmaEntity.getLemma());
+        var lemma = lemmaRepository.findBySiteIdAndLemma(siteEntity.getId(), lemmaEntity.getLemma());
         assertNotNull(lemma);
     }
 
@@ -65,15 +65,15 @@ class LemmaRepositoryTest extends ContextLoad {
     @DisplayName("Удалить всё по id сайта")
     void deleteAllBySiteId() {
         lemmaRepository.deleteAllBySiteId(siteEntity.getId());
-        boolean isExist = lemmaRepository.existsByLemma(lemmaEntity.getLemma());
+        boolean isExist = lemmaRepository.existsBySiteIdAndLemma(siteEntity.getId(), lemmaEntity.getLemma());
         assertFalse(isExist);
     }
 
     @Test
     @DisplayName("Декремент значения frequency по лемме")
     void decrementAllFrequencyByLemma() {
-        lemmaRepository.decrementAllFrequencyByLemma(lemmaEntity.getLemma());
-        var lemma = lemmaRepository.findByLemma(lemmaEntity.getLemma());
+        lemmaRepository.decrementAllFrequencyBySiteIdAndLemma(siteEntity.getId() ,lemmaEntity.getLemma());
+        var lemma = lemmaRepository.findBySiteIdAndLemma(siteEntity.getId(), lemmaEntity.getLemma()).orElseThrow();
         assertEquals(1, lemma.getFrequency());
     }
 

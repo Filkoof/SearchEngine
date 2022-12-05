@@ -2,6 +2,7 @@ package search_engine.lemmatizer;
 
 import org.apache.lucene.morphology.LuceneMorphology;
 import org.apache.lucene.morphology.russian.RussianLuceneMorphology;
+import search_engine.dto.LemmaDto;
 
 import java.io.IOException;
 import java.util.*;
@@ -51,10 +52,26 @@ public class Lemmatizer {
         for (String word : textArray) {
             if (!word.isEmpty() && isCorrectWordForm(word)) {
                 List<String> wordBaseForms = luceneMorphology.getMorphInfo(word);
-                if (anyWordBaseBelongToParticle(wordBaseForms)) {
-                    continue;
-                }
+                if (anyWordBaseBelongToParticle(wordBaseForms)) continue;
+
                 lemmaSet.addAll(luceneMorphology.getNormalForms(word));
+            }
+        }
+        return lemmaSet;
+    }
+
+    public Set<LemmaDto> getLemmaDtoSet(String text) {
+        String[] textArray = arrayContainsRussianWords(text);
+        Set<LemmaDto> lemmaSet = new HashSet<>();
+        for (String word : textArray) {
+            if (!word.isEmpty() && isCorrectWordForm(word)) {
+                List<String> wordBaseForms = luceneMorphology.getMorphInfo(word);
+                if (anyWordBaseBelongToParticle(wordBaseForms)) continue;
+
+                var lemmaDto = new LemmaDto()
+                        .setIncomingForm(word)
+                        .setNormalForm(luceneMorphology.getNormalForms(word).get(0));
+                lemmaSet.add(lemmaDto);
             }
         }
         return lemmaSet;

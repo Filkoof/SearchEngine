@@ -16,10 +16,10 @@ public class SearchIndexEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "page_id")
     private PageEntity page;
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "lemma_id")
     private LemmaEntity lemma;
     private float lemmaRank;

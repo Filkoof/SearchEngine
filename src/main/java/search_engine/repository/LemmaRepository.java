@@ -7,12 +7,33 @@ import org.springframework.stereotype.Repository;
 import search_engine.entity.LemmaEntity;
 
 import javax.transaction.Transactional;
+import java.util.Optional;
 
 @Repository
 public interface LemmaRepository extends JpaRepository<LemmaEntity, Long> {
-    boolean existsByLemma(String lemma);
+    boolean existsBySiteIdAndLemma(int siteId, String lemma);
 
-    LemmaEntity findByLemma(String lemma);
+    Optional<LemmaEntity> findBySiteIdAndLemma(int siteId, String lemma);
+
+    @Query(value = """
+                  SELECT l.frequency / count(p.id) as percent
+                  FROM lemmas as l
+                  JOIN page as p ON l.site_id = p.site_id
+                  WHERE l.id = :id
+                  """, nativeQuery = true)
+    double percentageLemmaOnPagesById(int id);
+
+    @Query(value = """
+                  SELECT max(percentage_lemma) FROM
+                  (
+                  SELECT l.frequency / count(p.id) as percentage_lemma
+                  FROM lemmas as l
+                  JOIN page as p ON l.site_id = p.site_id
+                  WHERE l.site_id = 1
+                  GROUP BY l.id
+                  ) as percentage_lemmas_on_page
+                  """, nativeQuery = true)
+    double findMaxPercentageLemmaOnPagesBySiteId(int siteId);
 
     int countAllBySiteId(int siteId);
 
@@ -22,6 +43,6 @@ public interface LemmaRepository extends JpaRepository<LemmaEntity, Long> {
 
     @Transactional
     @Modifying
-    @Query("UPDATE LemmaEntity l SET l.frequency = l.frequency - 1 WHERE l.lemma = :lemma")
-    void decrementAllFrequencyByLemma(String lemma);
+    @Query("UPDATE LemmaEntity l SET l.frequency = l.frequency - 1 WHERE l.site.id = :siteId AND l.lemma = :lemma")
+    void decrementAllFrequencyBySiteIdAndLemma(int siteId, String lemma);
 }

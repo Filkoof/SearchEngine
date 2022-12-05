@@ -32,6 +32,7 @@ public class IndexServiceImpl implements IndexService {
     private final IndexRepository indexRepository;
     private final PageParser pageParser;
     private final SitesList sites;
+    private final List<Thread> threads = new ArrayList<>();
 
     @Override
     public IndexResponse startIndexing() {
@@ -45,24 +46,27 @@ public class IndexServiceImpl implements IndexService {
                     .setResult(false)
                     .setError("Индексация уже запущена");
 
-            if (isSiteExist(site)) deleteAllInfoFromDataBase(site);
+            deleteAllInfoFromDataBase(site);
             createAndSaveSiteEntity(site);
 
             NodePage nodePage = getNodePage(site.getUrl(), site.getUrl(), "");
             nodePages.add(nodePage);
         }
 
-        nodePages.forEach(nodePage -> new MultithreadedWebCrawler(pageParser, nodePage).start());
+        nodePages.forEach(nodePage -> threads.add(new MultithreadedWebCrawler(pageParser, nodePage, siteRepository)));
+        threads.forEach(Thread::start);
 
         return new IndexResponse().setResult(true);
     }
 
     private void deleteAllInfoFromDataBase(Site site) {
         if (isSiteExist(site)) {
-            indexRepository.deleteAll();
-            lemmaRepository.deleteAll();
-            pageRepository.deleteAll();
-            siteRepository.deleteAll();
+            var siteEntity = siteRepository.findByUrl(site.getUrl());
+
+            if (!indexRepository.findAll().isEmpty()) indexRepository.deleteAll();
+            lemmaRepository.deleteAllBySiteId(siteEntity.getId());
+            pageRepository.deleteAllBySiteId(siteEntity.getId());
+            siteRepository.deleteById(siteEntity.getId());
         }
     }
 
@@ -71,17 +75,9 @@ public class IndexServiceImpl implements IndexService {
         boolean isSitesNotIndexing = !siteRepository.existsByStatus(StatusType.INDEXING);
         if (isSitesNotIndexing) return new IndexResponse().setResult(false).setError("Индексация не запущена");
 
-        var threads = Thread.getAllStackTraces().keySet();
         threads.forEach(Thread::interrupt);
 
-        setStatusFailedForNotIndexedSites();
         return new IndexResponse().setResult(true);
-    }
-
-    private void setStatusFailedForNotIndexedSites() {
-        List<SiteEntity> notIndexedSites = siteRepository.findAllByStatus(StatusType.INDEXING).orElseThrow();
-        notIndexedSites.forEach(site -> site.setStatus(StatusType.FAILED).setLastError("Индексация остановлена пользователем"));
-        siteRepository.saveAll(notIndexedSites);
     }
 
     @Override
@@ -95,7 +91,7 @@ public class IndexServiceImpl implements IndexService {
                 .setError("Данная страница находится за пределами сайтов, указанных в конфигурационном файле");
 
         if (!isSiteExist(site)) createAndSaveSiteEntity(site);
-        if (pageRepository.existsByPath(url)) deleteAllPageInfoFromDatabase(url);
+        if (pageRepository.existsByPath(suffix)) deleteAllPageInfoFromDatabase(suffix);
 
         NodePage nodePage = getNodePage(url, prefix, suffix);
         pageParser.parseSinglePage(nodePage);
@@ -107,13 +103,13 @@ public class IndexServiceImpl implements IndexService {
         return sites.getSites().stream().filter(s -> s.getUrl().equals(url)).findFirst().orElse(null);
     }
 
-    private void deleteAllPageInfoFromDatabase(String pageUrl) throws IOException {
+    private void deleteAllPageInfoFromDatabase(String pagePath) throws IOException {
         Lemmatizer lemmatizer = Lemmatizer.getInstance();
 
-        var page = pageRepository.findByPath(pageUrl);
+        var page = pageRepository.findByPath(pagePath);
         var lemmas = lemmatizer.getLemmaSet(page.getContent());
 
-        lemmas.forEach(lemmaRepository::decrementAllFrequencyByLemma);
+        lemmas.forEach(lemma -> lemmaRepository.decrementAllFrequencyBySiteIdAndLemma(page.getSite().getId(), lemma));
         indexRepository.deleteAllByPageId(page.getId());
         pageRepository.delete(page);
     }
@@ -135,7 +131,7 @@ public class IndexServiceImpl implements IndexService {
         return new NodePage().setPath(path)
                 .setSuffix(suffix)
                 .setPrefix(prefix)
-                .setTimeBetweenRequest(150)
+                .setTimeBetweenRequest(50)
                 .setSiteId(siteEntity.getId());
     }
 }
