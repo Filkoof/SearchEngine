@@ -7,10 +7,11 @@ import org.springframework.stereotype.Repository;
 import search_engine.entity.LemmaEntity;
 
 import javax.transaction.Transactional;
+import java.io.Serializable;
 import java.util.Optional;
 
 @Repository
-public interface LemmaRepository extends JpaRepository<LemmaEntity, Long> {
+public interface LemmaRepository extends JpaRepository<LemmaEntity, Long>, Serializable {
     boolean existsBySiteIdAndLemma(int siteId, String lemma);
 
     Optional<LemmaEntity> findBySiteIdAndLemma(int siteId, String lemma);

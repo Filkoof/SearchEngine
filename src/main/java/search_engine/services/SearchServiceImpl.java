@@ -92,33 +92,21 @@ public class SearchServiceImpl implements SearchService {
         for (LemmaEntity lemmaEntity : queryLemmas) {
             int countMatches = 0;
             for (LemmaDto lemmaDto : contentLemmas) {
-                if (lemmaDto.getNormalForm().equals(lemmaEntity.getLemma())) {
-                    countMatches++;
+                if (!lemmaDto.getNormalForm().equals(lemmaEntity.getLemma())) continue;
+                countMatches++;
 
-                    String regex = "[\\s*()A-Za-zА-Яа-я-,\\d/]*";
-                    Pattern pattern = Pattern.compile( regex + lemmaDto.getIncomingForm().trim() + regex);
-                    Matcher matcher = pattern.matcher(content);
+                String regex = "[\\s*()A-Za-zА-Яа-я-,\\d/]*";
+                Pattern pattern = Pattern.compile( regex + lemmaDto.getIncomingForm().trim() + regex);
+                Matcher matcher = pattern.matcher(content);
 
-                    while(matcher.find()) {
-                        String match = matcher.group();
-                        snippets.put(match, countMatches);
-                    }
+                while(matcher.find()) {
+                    String match = matcher.group();
+                    snippets.put(match.replaceAll(lemmaDto.getIncomingForm(), "<b>" + lemmaDto.getIncomingForm() + "<b>"), countMatches);
                 }
             }
         }
 
-
-        String snippet = Objects.requireNonNull(snippets.entrySet().stream().max(Map.Entry.comparingByValue()).orElse(null)).getKey();
-        var snippetLemmas = getLemmatizer().getLemmaDto(snippet);
-        for (LemmaEntity lemmaEntity : queryLemmas) {
-            for (LemmaDto lemmaDto : snippetLemmas) {
-                if (lemmaDto.getNormalForm().equals(lemmaEntity.getLemma())) {
-                    snippet = snippet.replaceAll(lemmaDto.getIncomingForm(), "<b>" + lemmaDto.getIncomingForm() + "<b>");
-                }
-            }
-        }
-
-        return snippet;
+        return Objects.requireNonNull(snippets.entrySet().stream().max(Map.Entry.comparingByValue()).orElse(null)).getKey();
     }
 
     private String getTitleFromContent(String content) {
@@ -157,7 +145,7 @@ public class SearchServiceImpl implements SearchService {
         try {
             return Lemmatizer.getInstance();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(e.getMessage());
         }
     }
 }

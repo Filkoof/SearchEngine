@@ -42,7 +42,7 @@ public class RecursiveWebCrawler extends RecursiveAction {
 
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            throw new RuntimeException(e);
+            throw new RuntimeException(e.toString());
         }
 
         taskList.forEach(ForkJoinTask::join);

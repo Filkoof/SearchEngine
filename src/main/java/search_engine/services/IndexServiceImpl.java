@@ -40,9 +40,7 @@ public class IndexServiceImpl implements IndexService {
         List<NodePage> nodePages = new ArrayList<>();
 
         for (Site site : sitesList) {
-            StatusType status = isSiteExist(site) ? siteRepository.findByUrl(site.getUrl()).getStatus() : StatusType.INDEXED;
-
-            if (status.equals(StatusType.INDEXING)) return new IndexResponse()
+            if (threads.stream().anyMatch(Thread::isAlive)) return new IndexResponse()
                     .setResult(false)
                     .setError("Индексация уже запущена");
 

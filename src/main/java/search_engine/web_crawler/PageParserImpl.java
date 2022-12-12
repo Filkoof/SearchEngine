@@ -53,7 +53,7 @@ public class PageParserImpl implements PageParser {
             }
         } catch (IOException e) {
             setStatusFailedAndErrorMessage(siteEntity, e.toString());
-            throw new RuntimeException(e);
+            throw new RuntimeException(e.getMessage());
         }
     }
 
@@ -78,7 +78,7 @@ public class PageParserImpl implements PageParser {
             saveLemmaAndIndex(page);
         } catch (IOException e) {
             setStatusFailedAndErrorMessage(siteEntity, e.toString());
-            throw new RuntimeException(e);
+            throw new RuntimeException(e.getMessage());
         }
 
         siteRepository.save(siteEntity.setStatus(StatusType.INDEXED));

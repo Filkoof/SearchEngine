@@ -28,13 +28,9 @@ public class Lemmatizer {
         Map<String, Integer> lemmas = new HashMap<>();
 
         for (String word : words) {
-            if (word.isBlank()) continue;
-
             List<String> wordBaseForms = luceneMorphology.getMorphInfo(word);
-            if (anyWordBaseBelongToParticle(wordBaseForms)) continue;
-
             List<String> normalForms = luceneMorphology.getNormalForms(word);
-            if (normalForms.isEmpty()) continue;
+            if (word.isBlank() || anyWordBaseBelongToParticle(wordBaseForms) || normalForms.isEmpty()) continue;
 
             String normalWord = normalForms.get(0);
             if (lemmas.containsKey(normalWord)) {
