@@ -8,7 +8,6 @@ import search_engine.entity.enumerated.StatusType;
 import search_engine.repository.SiteRepository;
 import search_engine.web_crawler.interfaces.PageParser;
 
-import java.util.List;
 import java.util.concurrent.ForkJoinPool;
 
 @Component
@@ -23,17 +22,21 @@ public class MultithreadedWebCrawler extends Thread {
     @Override
     public void run() {
         forkJoinPool.execute(new RecursiveWebCrawler(pageParser, nodePage));
+        var site = siteRepository.findById(nodePage.getSiteId()).orElseThrow();
 
         while (isAlive()) {
-            if (isInterrupted()) shutdownAndSetStatusFailed();
+            if (isInterrupted()) shutdownAndSetStatusFailed(site);
         }
+
+        site.setStatus(StatusType.INDEXED);
+        siteRepository.save(site);
+        interrupt();
     }
 
-    private void shutdownAndSetStatusFailed() {
+    private void shutdownAndSetStatusFailed(SiteEntity site) {
         forkJoinPool.shutdownNow();
 
-        List<SiteEntity> notIndexedSites = siteRepository.findAllByStatus(StatusType.INDEXING).orElseThrow();
-        notIndexedSites.forEach(site -> site.setStatus(StatusType.FAILED).setLastError("Индексация остановлена пользователем"));
-        siteRepository.saveAll(notIndexedSites);
+        site.setStatus(StatusType.FAILED).setLastError("Индексация остановлена пользователем");
+        siteRepository.save(site);
     }
 }

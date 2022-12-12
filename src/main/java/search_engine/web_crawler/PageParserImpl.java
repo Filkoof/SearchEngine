@@ -42,24 +42,17 @@ public class PageParserImpl implements PageParser {
             Document document = jsoupConnect(nodePage.getPath());
             var elements = document.select("a[href]");
 
-            List<PageEntity> pages = new ArrayList<>();
             for (Element element : elements) {
                 var subPath = element.attr("abs:href");
                 var page = getPageEntity(subPath, siteEntity, document);
                 var referenceOnChildSet = nodePage.getReferenceOnChildSet();
 
                 if (isNeedSave(page.getPath())) {
-                    if (pages.size() >= 50) {
-                        pageRepository.saveAll(pages);
-                        pages.clear();
-                    }
-                    pages.add(page);
+                    pageRepository.save(page);
                     saveLemmaAndIndex(page);
                     referenceOnChildSet.add(subPath);
                 }
             }
-            pageRepository.saveAll(pages);
-
         } catch (IOException e) {
             setStatusFailedAndErrorMessage(siteEntity, e.toString());
             throw new RuntimeException(e.getMessage());
@@ -97,7 +90,6 @@ public class PageParserImpl implements PageParser {
         Lemmatizer lemmatizer = Lemmatizer.getInstance();
         int siteId = page.getSite().getId();
 
-        List<LemmaEntity> lemmaEntities = new ArrayList<>();
         List<SearchIndexEntity> searchIndexEntities = new ArrayList<>();
 
         Map<String, Integer> lemmas = lemmatizer.collectLemmas(page.getContent());
@@ -108,17 +100,13 @@ public class PageParserImpl implements PageParser {
             if (lemmaRepository.existsBySiteIdAndLemma(siteId, lemma)) {
                 lemmaEntity = lemmaRepository.findBySiteIdAndLemma(siteId, lemma).orElseThrow();
                 lemmaEntity.setFrequency(Math.incrementExact(lemmaEntity.getFrequency()));
+                lemmaRepository.save(lemmaEntity);
             } else {
                 lemmaEntity = new LemmaEntity()
                         .setSite(page.getSite())
                         .setLemma(lemma)
                         .setFrequency(1);
-            }
-            lemmaEntities.add(lemmaEntity);
-
-            if (lemmaEntities.size() >= 100) {
-                lemmaRepository.saveAll(lemmaEntities);
-                lemmaEntities.clear();
+                lemmaRepository.save(lemmaEntity);
             }
 
             searchIndexEntities.add(new SearchIndexEntity()
@@ -130,7 +118,6 @@ public class PageParserImpl implements PageParser {
                 searchIndexEntities.clear();
             }
         }
-        lemmaRepository.saveAll(lemmaEntities);
         indexRepository.saveAll(searchIndexEntities);
     }
 
