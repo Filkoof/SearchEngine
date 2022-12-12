@@ -36,13 +36,14 @@ public class IndexServiceImpl implements IndexService {
 
     @Override
     public IndexResponse startIndexing() {
-        var sitesList = sites.getSites();
+        if (threads.stream().anyMatch(Thread::isAlive)) return new IndexResponse()
+                .setResult(false)
+                .setError("Индексация уже запущена");
+
         List<NodePage> nodePages = new ArrayList<>();
 
+        var sitesList = sites.getSites();
         for (Site site : sitesList) {
-            if (threads.stream().anyMatch(Thread::isAlive)) return new IndexResponse()
-                    .setResult(false)
-                    .setError("Индексация уже запущена");
 
             deleteAllInfoFromDataBase(site);
             createAndSaveSiteEntity(site);

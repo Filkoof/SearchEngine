@@ -20,6 +20,8 @@ import search_engine.web_crawler.interfaces.PageParser;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Component
@@ -40,17 +42,24 @@ public class PageParserImpl implements PageParser {
             Document document = jsoupConnect(nodePage.getPath());
             var elements = document.select("a[href]");
 
+            List<PageEntity> pages = new ArrayList<>();
             for (Element element : elements) {
                 var subPath = element.attr("abs:href");
                 var page = getPageEntity(subPath, siteEntity, document);
                 var referenceOnChildSet = nodePage.getReferenceOnChildSet();
 
                 if (isNeedSave(page.getPath())) {
-                    pageRepository.save(page);
+                    if (pages.size() >= 50) {
+                        pageRepository.saveAll(pages);
+                        pages.clear();
+                    }
+                    pages.add(page);
                     saveLemmaAndIndex(page);
                     referenceOnChildSet.add(subPath);
                 }
             }
+            pageRepository.saveAll(pages);
+
         } catch (IOException e) {
             setStatusFailedAndErrorMessage(siteEntity, e.toString());
             throw new RuntimeException(e.getMessage());
@@ -88,26 +97,41 @@ public class PageParserImpl implements PageParser {
         Lemmatizer lemmatizer = Lemmatizer.getInstance();
         int siteId = page.getSite().getId();
 
+        List<LemmaEntity> lemmaEntities = new ArrayList<>();
+        List<SearchIndexEntity> searchIndexEntities = new ArrayList<>();
+
         Map<String, Integer> lemmas = lemmatizer.collectLemmas(page.getContent());
         for (Map.Entry<String, Integer> word : lemmas.entrySet()) {
+            var lemma = word.getKey();
 
-            LemmaEntity lemma;
-            if (lemmaRepository.existsBySiteIdAndLemma(siteId, word.getKey())) {
-                lemma = lemmaRepository.findBySiteIdAndLemma(siteId, word.getKey()).orElseThrow();
-                lemma.setFrequency(Math.incrementExact(lemma.getFrequency()));
+            LemmaEntity lemmaEntity;
+            if (lemmaRepository.existsBySiteIdAndLemma(siteId, lemma)) {
+                lemmaEntity = lemmaRepository.findBySiteIdAndLemma(siteId, lemma).orElseThrow();
+                lemmaEntity.setFrequency(Math.incrementExact(lemmaEntity.getFrequency()));
             } else {
-                lemma = new LemmaEntity()
+                lemmaEntity = new LemmaEntity()
                         .setSite(page.getSite())
-                        .setLemma(word.getKey())
+                        .setLemma(lemma)
                         .setFrequency(1);
             }
-            lemmaRepository.save(lemma);
+            lemmaEntities.add(lemmaEntity);
 
-            indexRepository.save(new SearchIndexEntity()
+            if (lemmaEntities.size() >= 100) {
+                lemmaRepository.saveAll(lemmaEntities);
+                lemmaEntities.clear();
+            }
+
+            searchIndexEntities.add(new SearchIndexEntity()
                     .setPage(page)
-                    .setLemma(lemma)
+                    .setLemma(lemmaEntity)
                     .setLemmaRank(word.getValue()));
+            if (searchIndexEntities.size() >= 50) {
+                indexRepository.saveAll(searchIndexEntities);
+                searchIndexEntities.clear();
+            }
         }
+        lemmaRepository.saveAll(lemmaEntities);
+        indexRepository.saveAll(searchIndexEntities);
     }
 
     private Document jsoupConnect(String path) throws IOException {

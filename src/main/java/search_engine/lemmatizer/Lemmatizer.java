@@ -60,17 +60,14 @@ public class Lemmatizer {
     public List<LemmaDto> getLemmaDto(String text) {
         String[] textArray = arrayContainsRussianWords(text);
 
-        List<LemmaDto> lemmas = new LinkedList<>();
+        List<LemmaDto> lemmas = new ArrayList<>();
         for (String word : textArray) {
 
-            if (!word.isEmpty() && isCorrectWordForm(word)) {
-                List<String> wordBaseForms = luceneMorphology.getMorphInfo(word);
-                if (anyWordBaseBelongToParticle(wordBaseForms)) continue;
-
-                var lemmaDto = new LemmaDto()
+            List<String> wordBaseForms = luceneMorphology.getMorphInfo(word);
+            if (!word.isEmpty() && isCorrectWordForm(word) && !anyWordBaseBelongToParticle(wordBaseForms)) {
+                lemmas.add(new LemmaDto()
                         .setIncomingForm(word)
-                        .setNormalForm(luceneMorphology.getNormalForms(word).get(0));
-                lemmas.add(lemmaDto);
+                        .setNormalForm(luceneMorphology.getNormalForms(word).get(0)));
             }
         }
         return lemmas;

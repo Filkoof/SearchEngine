@@ -38,7 +38,7 @@ public class SearchServiceImpl implements SearchService {
         if (query.isEmpty()) return new SearchResponse().setResult(false).setError("Задан пустой поисковый запрос");
         Pageable pageable = PageRequest.of(offset / limit, limit);
 
-        var data = site.isEmpty() ? searchAllSites(query) : searchSite(query, site);
+        var data = site.isEmpty() ? searchAllSites(query, pageable) : searchSite(query, site, pageable);
         return new SearchResponse()
                 .setResult(true)
                 .setCount(data.size())
@@ -46,22 +46,22 @@ public class SearchServiceImpl implements SearchService {
                 .setError("");
     }
 
-    private List<SearchDto> searchAllSites(String query) {
+    private List<SearchDto> searchAllSites(String query, Pageable pageable) {
         var siteList= sites.getSites();
         List<SearchDto> data = new ArrayList<>();
-        siteList.forEach(site -> data.addAll(searchSite(query, site.getUrl())));
+        siteList.forEach(site -> data.addAll(searchSite(query, site.getUrl(), pageable)));
         return data;
     }
 
-    private List<SearchDto> searchSite(String query, String siteUrl) {
+    private List<SearchDto> searchSite(String query, String siteUrl, Pageable pageable) {
         var site = siteRepository.findByUrl(siteUrl);
         var filteredLemmas = getFrequencyFilteredLemmas(query, site);
 
         Set<PageEntity> pages = new HashSet<>();
         for (LemmaEntity lemma : filteredLemmas) {
-            var pageEntities = pageRepository.findAllByLemmaId(lemma.getId());
-            if (pages.isEmpty()) pages.addAll(pageEntities);
-            pages.retainAll(pageEntities);
+            var pageEntities = pageRepository.findAllByLemmaId(lemma.getId(), pageable);
+            if (pages.isEmpty()) pages.addAll(pageEntities.toList());
+            pages.retainAll(pageEntities.toList());
         }
 
         double maxRelevance = pages.stream().map(page -> indexRepository.absoluteRelevanceByPageId(page.getId())).max(Double::compareTo).orElseThrow();
@@ -96,7 +96,7 @@ public class SearchServiceImpl implements SearchService {
                 countMatches++;
 
                 String regex = "[\\s*()A-Za-zА-Яа-я-,\\d/]*";
-                Pattern pattern = Pattern.compile( regex + lemmaDto.getIncomingForm().trim() + regex);
+                Pattern pattern = Pattern.compile( regex.concat(lemmaDto.getIncomingForm()).concat(regex));
                 Matcher matcher = pattern.matcher(content);
 
                 while(matcher.find()) {
@@ -112,7 +112,7 @@ public class SearchServiceImpl implements SearchService {
     private String getTitleFromContent(String content) {
         int beginIndex = content.indexOf("<title>");
         int endIndex = content.indexOf("</title>");
-        return content.substring(beginIndex, endIndex + 8);
+        return content.substring(beginIndex + 7, endIndex);
     }
 
     private double calculateRelativeRelevance(int pageId, double maxRelevance) {
