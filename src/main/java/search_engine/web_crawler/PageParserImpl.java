@@ -20,8 +20,6 @@ import search_engine.web_crawler.interfaces.PageParser;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 @Component
@@ -90,8 +88,6 @@ public class PageParserImpl implements PageParser {
         Lemmatizer lemmatizer = Lemmatizer.getInstance();
         int siteId = page.getSite().getId();
 
-        List<SearchIndexEntity> searchIndexEntities = new ArrayList<>();
-
         Map<String, Integer> lemmas = lemmatizer.collectLemmas(page.getContent());
         for (Map.Entry<String, Integer> word : lemmas.entrySet()) {
             var lemma = word.getKey();
@@ -100,25 +96,19 @@ public class PageParserImpl implements PageParser {
             if (lemmaRepository.existsBySiteIdAndLemma(siteId, lemma)) {
                 lemmaEntity = lemmaRepository.findBySiteIdAndLemma(siteId, lemma).orElseThrow();
                 lemmaEntity.setFrequency(Math.incrementExact(lemmaEntity.getFrequency()));
-                lemmaRepository.save(lemmaEntity);
             } else {
                 lemmaEntity = new LemmaEntity()
                         .setSite(page.getSite())
                         .setLemma(lemma)
                         .setFrequency(1);
-                lemmaRepository.save(lemmaEntity);
             }
+            lemmaRepository.save(lemmaEntity);
 
-            searchIndexEntities.add(new SearchIndexEntity()
+            indexRepository.save(new SearchIndexEntity()
                     .setPage(page)
                     .setLemma(lemmaEntity)
                     .setLemmaRank(word.getValue()));
-            if (searchIndexEntities.size() >= 50) {
-                indexRepository.saveAll(searchIndexEntities);
-                searchIndexEntities.clear();
-            }
         }
-        indexRepository.saveAll(searchIndexEntities);
     }
 
     private Document jsoupConnect(String path) throws IOException {

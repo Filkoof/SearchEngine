@@ -46,5 +46,12 @@ public class RecursiveWebCrawler extends RecursiveAction {
         }
 
         taskList.forEach(ForkJoinTask::join);
+        if (isCompleted()) getPool().shutdown();
+    }
+
+    private boolean isCompleted() {
+        return getPool().getActiveThreadCount() == 1
+                && getPool().getQueuedTaskCount() == 0
+                && getPool().getQueuedSubmissionCount() == 0;
     }
 }

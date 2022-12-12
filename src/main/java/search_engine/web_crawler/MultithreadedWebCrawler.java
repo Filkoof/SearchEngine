@@ -26,11 +26,11 @@ public class MultithreadedWebCrawler extends Thread {
 
         while (isAlive()) {
             if (isInterrupted()) shutdownAndSetStatusFailed(site);
+            if (forkJoinPool.isShutdown() && !site.getStatus().equals(StatusType.FAILED)) {
+                site.setStatus(StatusType.INDEXED);
+                siteRepository.save(site);
+            }
         }
-
-        site.setStatus(StatusType.INDEXED);
-        siteRepository.save(site);
-        interrupt();
     }
 
     private void shutdownAndSetStatusFailed(SiteEntity site) {
