@@ -57,13 +57,6 @@ class PageRepositoryTest extends ContextLoad {
     }
 
     @Test
-    @DisplayName("Проверка наличия по id сайта")
-    void existsBySiteId() {
-        boolean isExist = pageRepository.existsBySiteId(siteEntity.getId());
-        assertTrue(isExist);
-    }
-
-    @Test
     @DisplayName("Количество всех сущностей по id сайта")
     void countAllBySiteId() {
         int pageCount = pageRepository.countAllBySiteId(siteEntity.getId());

@@ -1,48 +1,28 @@
 package search_engine.controllers;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import search_engine.dto.SearchResponse;
+import search_engine.services.interfaces.SearchService;
+
+import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
 public class SearchController {
 
-    @GetMapping("/search")
-    public void search(String query,
-                       String site,
-                       @RequestParam(name = "offset", defaultValue = "0") int offset,
-                       @RequestParam(name = "limit", defaultValue = "20") int limit) {
-        /**
-         Формат ответа в случае успеха:
-         {
-         'result': true,
-         'count': 574,
-         'data': [
-         {
-         "site": "http://www.site.com",
-         "siteName": "Имя сайта",
-         "uri": "/path/to/page/6784",
-         "title": "Заголовок страницы,
-         которую выводим",
-         "snippet": "Фрагмент текста,
-         в котором найдены
-         совпадения, <b>выделенные
-         жирным</b>, в формате HTML",
-         "relevance": 0.93362
-         },
-         ...
-         ]
-         }
+    private final SearchService searchService;
 
-         Формат ответа в случае ошибки:
-         {
-         'result': false,
-         'error': "Задан пустой поисковый запрос"
-         }
-         */
+    @GetMapping("/search")
+    public ResponseEntity<SearchResponse> search(@RequestParam(name = "query", defaultValue = "") String query,
+                                                 @RequestParam(name = "site", defaultValue = "") String site,
+                                                 @RequestParam(name = "offset", defaultValue = "0") int offset,
+                                                 @RequestParam(name = "limit", defaultValue = "10") int limit) throws IOException {
+        return ResponseEntity.ok(searchService.search(query, site, offset, limit));
     }
 }

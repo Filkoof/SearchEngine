@@ -18,7 +18,6 @@ import search_engine.repository.PageRepository;
 import search_engine.repository.SiteRepository;
 import search_engine.web_crawler.interfaces.PageParser;
 
-import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -34,7 +33,7 @@ public class PageParserImpl implements PageParser {
 
     @Override
     public void startPageParser(NodePage nodePage) {
-        var siteEntity = siteRepository.findById(nodePage.getSiteId()).orElseThrow(EntityNotFoundException::new);
+        var siteEntity = siteRepository.findById(nodePage.getSiteId()).orElseThrow();
         updateStatusTime(siteEntity);
 
         try {
@@ -46,7 +45,7 @@ public class PageParserImpl implements PageParser {
                 var page = getPageEntity(subPath, siteEntity, document);
                 var referenceOnChildSet = nodePage.getReferenceOnChildSet();
 
-                if (isNeedSave(subPath, siteEntity)) {
+                if (isNeedSave(page.getPath())) {
                     pageRepository.save(page);
                     saveLemmaAndIndex(page);
                     referenceOnChildSet.add(subPath);
@@ -54,20 +53,20 @@ public class PageParserImpl implements PageParser {
             }
         } catch (IOException e) {
             setStatusFailedAndErrorMessage(siteEntity, e.toString());
-            throw new RuntimeException(e);
+            throw new RuntimeException(e.getMessage());
         }
     }
 
-    private boolean isNeedSave(String path, SiteEntity site) {
+    private boolean isNeedSave(String path) {
         return !pageRepository.existsByPath(path)
-                && path.startsWith(site.getUrl())
+                && path.startsWith("/")
                 && !path.matches("(\\S+(\\.(?i)(jpg|png|gif|bmp|pdf|xml))$)")
                 && !path.contains("#");
     }
 
     @Override
     public void parseSinglePage(NodePage nodePage) {
-        var siteEntity = siteRepository.findById(nodePage.getSiteId()).orElseThrow(EntityNotFoundException::new);
+        var siteEntity = siteRepository.findById(nodePage.getSiteId()).orElseThrow();
         siteRepository.save(siteEntity.setStatus(StatusType.INDEXING));
         updateStatusTime(siteEntity);
 
@@ -79,7 +78,7 @@ public class PageParserImpl implements PageParser {
             saveLemmaAndIndex(page);
         } catch (IOException e) {
             setStatusFailedAndErrorMessage(siteEntity, e.toString());
-            throw new RuntimeException(e);
+            throw new RuntimeException(e.getMessage());
         }
 
         siteRepository.save(siteEntity.setStatus(StatusType.INDEXED));
@@ -87,14 +86,15 @@ public class PageParserImpl implements PageParser {
 
     private void saveLemmaAndIndex(PageEntity page) throws IOException {
         Lemmatizer lemmatizer = Lemmatizer.getInstance();
-        Map<String, Integer> lemmas = lemmatizer.collectLemmas(page.getContent());
+        int siteId = page.getSite().getId();
 
+        Map<String, Integer> lemmas = lemmatizer.collectLemmas(page.getContent());
         for (Map.Entry<String, Integer> word : lemmas.entrySet()) {
 
             LemmaEntity lemma;
-            if (lemmaRepository.existsByLemma(word.getKey())) {
-                lemma = lemmaRepository.findByLemma(word.getKey());
-                lemma.setFrequency(lemma.getFrequency() + 1);
+            if (lemmaRepository.existsBySiteIdAndLemma(siteId, word.getKey())) {
+                lemma = lemmaRepository.findBySiteIdAndLemma(siteId, word.getKey()).orElseThrow();
+                lemma.setFrequency(Math.incrementExact(lemma.getFrequency()));
             } else {
                 lemma = new LemmaEntity()
                         .setSite(page.getSite())
@@ -119,7 +119,7 @@ public class PageParserImpl implements PageParser {
 
     private PageEntity getPageEntity(String path, SiteEntity site, Document document) {
         return new PageEntity().setSite(site)
-                .setPath(path)
+                .setPath(path.replaceAll(site.getUrl(), ""))
                 .setCode(document.connection().response().statusCode())
                 .setContent(document.html());
     }

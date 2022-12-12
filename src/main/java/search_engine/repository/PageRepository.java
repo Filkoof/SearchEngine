@@ -2,6 +2,7 @@ package search_engine.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import search_engine.entity.PageEntity;
 
@@ -14,11 +15,14 @@ public interface PageRepository extends JpaRepository<PageEntity, Integer>, Seri
 
     PageEntity findByPath(String path);
 
-    List<PageEntity> findAllBySiteId(int siteId);
+    @Query("""
+           SELECT p FROM PageEntity p
+           JOIN SearchIndexEntity s ON p.id = s.page.id
+           WHERE s.lemma.id = :lemmaId
+           """)
+    List<PageEntity> findAllByLemmaId(int lemmaId);
 
     boolean existsByPath(String path);
-
-    boolean existsBySiteId(int siteId);
 
     int countAllBySiteId(int siteId);
 
