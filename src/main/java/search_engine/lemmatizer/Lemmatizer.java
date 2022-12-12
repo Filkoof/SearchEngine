@@ -11,10 +11,11 @@ public class Lemmatizer {
 
     private final LuceneMorphology luceneMorphology;
     private static final String WORD_TYPE_REGEX = "\\W\\w&&[^а-яА-Я\\s]";
-    private static final String[] particlesNames = new String[]{"МЕЖД", "ПРЕДЛ", "СОЮЗ"};
+    private static final String[] particlesNames = new String[]
+            {"МЕЖД", "ПРЕДЛ", "СОЮЗ", "ВВОДН", "ЧАСТ", "МС", "CONJ", "PART"};
 
     public static Lemmatizer getInstance() throws IOException {
-        LuceneMorphology morphology= new RussianLuceneMorphology();
+        LuceneMorphology morphology = new RussianLuceneMorphology();
         return new Lemmatizer(morphology);
     }
 
@@ -60,10 +61,12 @@ public class Lemmatizer {
         return lemmaSet;
     }
 
-    public Set<LemmaDto> getLemmaDtoSet(String text) {
+    public List<LemmaDto> getLemmaDto(String text) {
         String[] textArray = arrayContainsRussianWords(text);
-        Set<LemmaDto> lemmaSet = new HashSet<>();
+
+        List<LemmaDto> lemmas = new LinkedList<>();
         for (String word : textArray) {
+
             if (!word.isEmpty() && isCorrectWordForm(word)) {
                 List<String> wordBaseForms = luceneMorphology.getMorphInfo(word);
                 if (anyWordBaseBelongToParticle(wordBaseForms)) continue;
@@ -71,10 +74,10 @@ public class Lemmatizer {
                 var lemmaDto = new LemmaDto()
                         .setIncomingForm(word)
                         .setNormalForm(luceneMorphology.getNormalForms(word).get(0));
-                lemmaSet.add(lemmaDto);
+                lemmas.add(lemmaDto);
             }
         }
-        return lemmaSet;
+        return lemmas;
     }
 
     private boolean anyWordBaseBelongToParticle(List<String> wordBaseForms) {

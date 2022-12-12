@@ -29,7 +29,7 @@ public interface LemmaRepository extends JpaRepository<LemmaEntity, Long> {
                   SELECT l.frequency / count(p.id) as percentage_lemma
                   FROM lemmas as l
                   JOIN page as p ON l.site_id = p.site_id
-                  WHERE l.site_id = 1
+                  WHERE l.site_id = :siteId
                   GROUP BY l.id
                   ) as percentage_lemmas_on_page
                   """, nativeQuery = true)

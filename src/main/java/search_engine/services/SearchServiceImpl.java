@@ -86,20 +86,34 @@ public class SearchServiceImpl implements SearchService {
 
 
     private String getSnippet(String content, List<LemmaEntity> queryLemmas) {
-        List<String> words = Arrays.stream(content.split("\\s+")).toList();
-        var lemmaDtoSet = getLemmas(content);
+        var contentLemmas = getLemmatizer().getLemmaDto(content);
 
-        String snippet = "";
-        for (LemmaDto lemmaDto : lemmaDtoSet) {
-            for (LemmaEntity lemmaEntity : queryLemmas) {
+        Map<String, Integer> snippets = new HashMap<>();
+        for (LemmaEntity lemmaEntity : queryLemmas) {
+            int countMatches = 0;
+            for (LemmaDto lemmaDto : contentLemmas) {
                 if (lemmaDto.getNormalForm().equals(lemmaEntity.getLemma())) {
-                    words.indexOf(lemmaDto.getIncomingForm());
+                    countMatches++;
 
-                    String regex = "[?\\sa-zA-ZА-Яа-я,-.\\d]+";
-                    Pattern pattern = Pattern.compile(regex + lemmaDto.getIncomingForm() + regex);
+                    String regex = "[\\s*()A-Za-zА-Яа-я-,\\d/]*";
+                    Pattern pattern = Pattern.compile( regex + lemmaDto.getIncomingForm().trim() + regex);
                     Matcher matcher = pattern.matcher(content);
-                    String result = matcher.group();
-                    result.replaceAll(lemmaDto.getIncomingForm(), "<b>" + lemmaDto.getIncomingForm() + "</b>");
+
+                    while(matcher.find()) {
+                        String match = matcher.group();
+                        snippets.put(match, countMatches);
+                    }
+                }
+            }
+        }
+
+
+        String snippet = Objects.requireNonNull(snippets.entrySet().stream().max(Map.Entry.comparingByValue()).orElse(null)).getKey();
+        var snippetLemmas = getLemmatizer().getLemmaDto(snippet);
+        for (LemmaEntity lemmaEntity : queryLemmas) {
+            for (LemmaDto lemmaDto : snippetLemmas) {
+                if (lemmaDto.getNormalForm().equals(lemmaEntity.getLemma())) {
+                    snippet = snippet.replaceAll(lemmaDto.getIncomingForm(), "<b>" + lemmaDto.getIncomingForm() + "<b>");
                 }
             }
         }
@@ -118,26 +132,30 @@ public class SearchServiceImpl implements SearchService {
         return absRelevance / maxRelevance;
     }
 
+
+    /*
+    Фильтрация из запроса лемм, которые встречаются на слишком большом количестве страниц.
+    Если фильтр не нашел редких лемм, возвращаем все леммы из запроса
+     */
     private List<LemmaEntity> getFrequencyFilteredLemmas(String query, SiteEntity site) {
         double maxPercentLemmaOnPage = lemmaRepository.findMaxPercentageLemmaOnPagesBySiteId(site.getId());
         double maxFrequencyPercentage = 0.75;
         double frequencyLimit = maxPercentLemmaOnPage * maxFrequencyPercentage;
-        var lemmas = getLemmas(query);
-        var lemmaEntityList = lemmas.stream().map(lemma -> lemmaRepository.findBySiteIdAndLemma(site.getId(), lemma.getNormalForm()).orElse(null)).toList();
-        var filterNull = lemmaEntityList.stream().filter(Objects::nonNull).toList();
-        var filterFrequency = filterNull.stream().filter(lemma -> lemmaRepository.percentageLemmaOnPagesById(lemma.getId()) < frequencyLimit).toList();
-        var sort = filterFrequency.stream().sorted(Comparator.comparing(LemmaEntity::getFrequency)).toList();
+
+        var lemmas = getLemmatizer().getLemmaSet(query);
+        var lemmaEntityList = lemmas.stream().map(lemma -> lemmaRepository.findBySiteIdAndLemma(site.getId(), lemma).orElse(null))
+                .filter(Objects::nonNull).toList();
+        var filterFrequency = lemmaEntityList.stream().filter(lemma -> lemmaRepository.percentageLemmaOnPagesById(lemma.getId()) < frequencyLimit).toList();
 
         return filterFrequency.isEmpty() ?
-                filterNull.stream().sorted(Comparator.comparing(LemmaEntity::getFrequency)).toList()
+                lemmaEntityList.stream().sorted(Comparator.comparing(LemmaEntity::getFrequency)).toList()
                 :
-                sort;
+                filterFrequency.stream().sorted(Comparator.comparing(LemmaEntity::getFrequency)).toList();
     }
 
-    private Set<LemmaDto> getLemmas(String text) {
+    private Lemmatizer getLemmatizer() {
         try {
-            Lemmatizer lemmatizer = Lemmatizer.getInstance();
-            return lemmatizer.getLemmaDtoSet(text);
+            return Lemmatizer.getInstance();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

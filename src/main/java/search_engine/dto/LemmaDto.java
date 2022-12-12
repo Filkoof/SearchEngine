@@ -7,6 +7,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class LemmaDto {
 
+    private int position;
     private String incomingForm;
     private String normalForm;
 }
