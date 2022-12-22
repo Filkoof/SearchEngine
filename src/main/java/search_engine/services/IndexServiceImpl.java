@@ -62,7 +62,7 @@ public class IndexServiceImpl implements IndexService {
         if (isSiteExist(site)) {
             var siteEntity = siteRepository.findByUrl(site.getUrl());
 
-            if (!indexRepository.findAll().isEmpty()) indexRepository.deleteAll();
+            indexRepository.deleteAllInBatch();
             lemmaRepository.deleteAllBySiteId(siteEntity.getId());
             pageRepository.deleteAllBySiteId(siteEntity.getId());
             siteRepository.deleteById(siteEntity.getId());

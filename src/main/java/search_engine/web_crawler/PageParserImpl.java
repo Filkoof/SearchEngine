@@ -20,7 +20,7 @@ import search_engine.web_crawler.interfaces.PageParser;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.Map;
+import java.util.*;
 
 @Component
 @RequiredArgsConstructor
@@ -32,7 +32,7 @@ public class PageParserImpl implements PageParser {
     private final IndexRepository indexRepository;
 
     @Override
-    public void startPageParser(NodePage nodePage) {
+    public synchronized void startPageParser(NodePage nodePage) {
         var siteEntity = siteRepository.findById(nodePage.getSiteId()).orElseThrow();
         updateStatusTime(siteEntity);
 
@@ -40,17 +40,19 @@ public class PageParserImpl implements PageParser {
             Document document = jsoupConnect(nodePage.getPath());
             var elements = document.select("a[href]");
 
+            List<PageEntity> pages = new ArrayList<>();
             for (Element element : elements) {
                 var subPath = element.attr("abs:href");
                 var page = getPageEntity(subPath, siteEntity, document);
                 var referenceOnChildSet = nodePage.getReferenceOnChildSet();
 
                 if (isNeedSave(page.getPath())) {
-                    pageRepository.save(page);
-                    saveLemmaAndIndex(page);
+                    pages.add(page);
                     referenceOnChildSet.add(subPath);
                 }
             }
+            pageRepository.saveAll(pages);
+            saveLemmaAndIndex(pages);
         } catch (IOException e) {
             setStatusFailedAndErrorMessage(siteEntity, e.toString());
             throw new RuntimeException(e.getMessage());
@@ -75,7 +77,7 @@ public class PageParserImpl implements PageParser {
 
             var page = getPageEntity(nodePage.getPath(), siteEntity, document);
             pageRepository.save(page);
-            saveLemmaAndIndex(page);
+            saveLemmaAndIndex(List.of(page));
         } catch (IOException e) {
             setStatusFailedAndErrorMessage(siteEntity, e.toString());
             throw new RuntimeException(e.getMessage());
@@ -84,31 +86,49 @@ public class PageParserImpl implements PageParser {
         siteRepository.save(siteEntity.setStatus(StatusType.INDEXED));
     }
 
-    private void saveLemmaAndIndex(PageEntity page) throws IOException {
+    private synchronized void saveLemmaAndIndex(List<PageEntity> pageEntities) throws IOException {
         Lemmatizer lemmatizer = Lemmatizer.getInstance();
-        int siteId = page.getSite().getId();
 
-        Map<String, Integer> lemmas = lemmatizer.collectLemmas(page.getContent());
-        for (Map.Entry<String, Integer> word : lemmas.entrySet()) {
-            var lemma = word.getKey();
+        List<LemmaEntity> lemmaEntities = new ArrayList<>();
+        List<SearchIndexEntity> searchIndexEntities = new ArrayList<>();
 
-            LemmaEntity lemmaEntity;
-            if (lemmaRepository.existsBySiteIdAndLemma(siteId, lemma)) {
-                lemmaEntity = lemmaRepository.findBySiteIdAndLemma(siteId, lemma).orElseThrow();
-                lemmaEntity.setFrequency(Math.incrementExact(lemmaEntity.getFrequency()));
-            } else {
-                lemmaEntity = new LemmaEntity()
-                        .setSite(page.getSite())
-                        .setLemma(lemma)
-                        .setFrequency(1);
+        for (PageEntity pageEntity : pageEntities) {
+            int siteId = pageEntity.getSite().getId();
+
+            Map<String, Integer> lemmas = lemmatizer.collectLemmas(pageEntity.getContent());
+            for (Map.Entry<String, Integer> word : lemmas.entrySet()) {
+                var lemma = word.getKey();
+
+                LemmaEntity lemmaEntity;
+                if (lemmaRepository.existsBySiteIdAndLemma(siteId, lemma)) {
+                    lemmaEntity = lemmaRepository.findBySiteIdAndLemma(siteId, lemma).orElseThrow();
+                    lemmaEntity.setFrequency(Math.incrementExact(lemmaEntity.getFrequency()));
+                    lemmaEntities.add(lemmaEntity);
+                } else {
+                    lemmaEntity = new LemmaEntity()
+                            .setSite(pageEntity.getSite())
+                            .setLemma(lemma)
+                            .setFrequency(1);
+                    lemmaEntities.add(lemmaEntity);
+                }
+
+                if (lemmaEntities.size() >= 100) {
+                    lemmaRepository.saveAll(lemmaEntities);
+                    lemmaEntities.clear();
+                }
+
+                searchIndexEntities.add(new SearchIndexEntity()
+                        .setPage(pageEntity)
+                        .setLemma(lemmaEntity)
+                        .setLemmaRank(word.getValue()));
+                if (searchIndexEntities.size() >= 5000) {
+                    indexRepository.saveAll(searchIndexEntities);
+                    searchIndexEntities.clear();
+                }
             }
-            lemmaRepository.save(lemmaEntity);
-
-            indexRepository.save(new SearchIndexEntity()
-                    .setPage(page)
-                    .setLemma(lemmaEntity)
-                    .setLemmaRank(word.getValue()));
         }
+        lemmaRepository.saveAll(lemmaEntities);
+        indexRepository.saveAll(searchIndexEntities);
     }
 
     private Document jsoupConnect(String path) throws IOException {

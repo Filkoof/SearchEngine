@@ -42,6 +42,7 @@ public interface LemmaRepository extends JpaRepository<LemmaEntity, Long>, Seria
     @Modifying
     void deleteAllBySiteId(int siteId);
 
+
     @Transactional
     @Modifying
     @Query("UPDATE LemmaEntity l SET l.frequency = l.frequency - 1 WHERE l.site.id = :siteId AND l.lemma = :lemma")
