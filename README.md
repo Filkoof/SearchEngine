@@ -17,4 +17,3 @@
 - Docker
 - Liquibase
 - GitHab Actions(CI/CD)
-- MapStruct
