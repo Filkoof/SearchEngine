@@ -1,11 +1,8 @@
 package search_engine.services;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import search_engine.config.SitesList;
-import search_engine.dto.LemmaDto;
 import search_engine.dto.SearchDto;
 import search_engine.dto.SearchResponse;
 import search_engine.entity.LemmaEntity;
@@ -36,9 +33,9 @@ public class SearchServiceImpl implements SearchService {
     @Override
     public SearchResponse search(String query, String site, int offset, int limit) {
         if (query.isEmpty()) return new SearchResponse().setResult(false).setError("Задан пустой поисковый запрос");
-        Pageable pageable = PageRequest.of(offset / limit, limit);
+//        Pageable pageable = PageRequest.of(offset / limit, limit);
 
-        var data = site.isEmpty() ? searchAllSites(query, pageable) : searchSite(query, site, pageable);
+        var data = site.isEmpty() ? searchAllSites(query) : searchSite(query, site);
         return new SearchResponse()
                 .setResult(true)
                 .setCount(data.size())
@@ -46,22 +43,22 @@ public class SearchServiceImpl implements SearchService {
                 .setError("");
     }
 
-    private List<SearchDto> searchAllSites(String query, Pageable pageable) {
+    private List<SearchDto> searchAllSites(String query) {
         var siteList= sites.getSites();
         List<SearchDto> data = new ArrayList<>();
-        siteList.forEach(site -> data.addAll(searchSite(query, site.getUrl(), pageable)));
+        siteList.forEach(site -> data.addAll(searchSite(query, site.getUrl())));
         return data;
     }
 
-    private List<SearchDto> searchSite(String query, String siteUrl, Pageable pageable) {
+    private List<SearchDto> searchSite(String query, String siteUrl) {
         var site = siteRepository.findByUrl(siteUrl);
         var filteredLemmas = getFrequencyFilteredLemmas(query, site);
 
         Set<PageEntity> pages = new HashSet<>();
         for (LemmaEntity lemma : filteredLemmas) {
-            var pageEntities = pageRepository.findAllByLemmaId(lemma.getId(), pageable);
-            if (pages.isEmpty()) pages.addAll(pageEntities.toList());
-            pages.retainAll(pageEntities.toList());
+            var pageEntities = pageRepository.findAllByLemmaId(lemma.getId());
+            if (pages.isEmpty()) pages.addAll(pageEntities);
+            pages.retainAll(pageEntities);
         }
 
         double maxRelevance = pages.stream().map(page -> indexRepository.absoluteRelevanceByPageId(page.getId())).max(Double::compareTo).orElseThrow();
@@ -86,27 +83,43 @@ public class SearchServiceImpl implements SearchService {
 
 
     private String getSnippet(String content, List<LemmaEntity> queryLemmas) {
-        var contentLemmas = getLemmatizer().getLemmaDto(content);
-
+        int countMatches = 0;
         Map<String, Integer> snippets = new HashMap<>();
         for (LemmaEntity lemmaEntity : queryLemmas) {
-            int countMatches = 0;
-            for (LemmaDto lemmaDto : contentLemmas) {
-                if (!lemmaDto.getNormalForm().equals(lemmaEntity.getLemma())) continue;
-                countMatches++;
+            countMatches++;
 
-                String regex = "[\\s*()A-Za-zА-Яа-я-,\\d/]*";
-                Pattern pattern = Pattern.compile( regex.concat(lemmaDto.getIncomingForm()).concat(regex));
-                Matcher matcher = pattern.matcher(content);
+            String lemma = deleteWordEnding(lemmaEntity.getLemma());
 
-                while(matcher.find()) {
-                    String match = matcher.group();
-                    snippets.put(match.replaceAll(lemmaDto.getIncomingForm(), "<b>" + lemmaDto.getIncomingForm() + "<b>"), countMatches);
-                }
+            String regex = "[\\s*()A-Za-zА-Яа-я-,\\d/]*";
+            Pattern pattern = Pattern.compile(regex.concat(lemma).concat(regex));
+            Matcher matcher = pattern.matcher(content);
+
+            while (matcher.find()) {
+                String match = matcher.group();
+                snippets.put(match, countMatches);
             }
         }
 
-        return Objects.requireNonNull(snippets.entrySet().stream().max(Map.Entry.comparingByValue()).orElse(null)).getKey();
+        if (snippets.isEmpty()) return "";
+
+        var snippet = Objects.requireNonNull(snippets.entrySet().stream().max(Map.Entry.comparingByValue()).orElse(null)).getKey();
+        for (LemmaEntity lemmaEntity : queryLemmas) {
+            String lemma = deleteWordEnding(lemmaEntity.getLemma());
+
+            Pattern pattern = Pattern.compile(lemma.concat("[A-Za-zА-Яа-я]{2,4}?"));
+            Matcher matcher = pattern.matcher(snippet);
+
+            while (matcher.find()) {
+                String match = matcher.group();
+                snippet = snippet.replaceAll(match, "<b>".concat(match).concat("</b>"));
+            }
+        }
+
+        return "";
+    }
+
+    private String deleteWordEnding(String word) {
+        return word.length() <= 3 ? word : word.substring(0, word.length() - 2);
     }
 
     private String getTitleFromContent(String content) {

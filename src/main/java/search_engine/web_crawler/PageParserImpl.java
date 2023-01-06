@@ -32,7 +32,7 @@ public class PageParserImpl implements PageParser {
     private final IndexRepository indexRepository;
 
     @Override
-    public synchronized void startPageParser(NodePage nodePage) {
+    public void startPageParser(NodePage nodePage) {
         var siteEntity = siteRepository.findById(nodePage.getSiteId()).orElseThrow();
         updateStatusTime(siteEntity);
 
@@ -40,7 +40,7 @@ public class PageParserImpl implements PageParser {
             Document document = jsoupConnect(nodePage.getPath());
             var elements = document.select("a[href]");
 
-            List<PageEntity> pages = new ArrayList<>();
+            Vector<PageEntity> pages = new Vector<>();
             for (Element element : elements) {
                 var subPath = element.attr("abs:href");
                 var page = getPageEntity(subPath, siteEntity, document);
@@ -76,8 +76,11 @@ public class PageParserImpl implements PageParser {
             Document document = jsoupConnect(nodePage.getPath());
 
             var page = getPageEntity(nodePage.getPath(), siteEntity, document);
+            Vector<PageEntity> pages = new Vector<>();
+            pages.add(page);
+
             pageRepository.save(page);
-            saveLemmaAndIndex(List.of(page));
+            saveLemmaAndIndex(pages);
         } catch (IOException e) {
             setStatusFailedAndErrorMessage(siteEntity, e.toString());
             throw new RuntimeException(e.getMessage());
@@ -86,11 +89,11 @@ public class PageParserImpl implements PageParser {
         siteRepository.save(siteEntity.setStatus(StatusType.INDEXED));
     }
 
-    private synchronized void saveLemmaAndIndex(List<PageEntity> pageEntities) throws IOException {
+    private void saveLemmaAndIndex(Vector<PageEntity> pageEntities) throws IOException {
         Lemmatizer lemmatizer = Lemmatizer.getInstance();
 
-        List<LemmaEntity> lemmaEntities = new ArrayList<>();
-        List<SearchIndexEntity> searchIndexEntities = new ArrayList<>();
+        Vector<LemmaEntity> lemmaEntities = new Vector<>();
+        Vector<SearchIndexEntity> searchIndexEntities = new Vector<>();
 
         for (PageEntity pageEntity : pageEntities) {
             int siteId = pageEntity.getSite().getId();
@@ -121,7 +124,7 @@ public class PageParserImpl implements PageParser {
                         .setPage(pageEntity)
                         .setLemma(lemmaEntity)
                         .setLemmaRank(word.getValue()));
-                if (searchIndexEntities.size() >= 5000) {
+                if (searchIndexEntities.size() >= 100) {
                     indexRepository.saveAll(searchIndexEntities);
                     searchIndexEntities.clear();
                 }

@@ -1,7 +1,5 @@
 package search_engine.repository;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -10,6 +8,7 @@ import search_engine.entity.PageEntity;
 
 import javax.transaction.Transactional;
 import java.io.Serializable;
+import java.util.List;
 
 @Repository
 public interface PageRepository extends JpaRepository<PageEntity, Integer>, Serializable {
@@ -21,7 +20,7 @@ public interface PageRepository extends JpaRepository<PageEntity, Integer>, Seri
            JOIN SearchIndexEntity s ON p.id = s.page.id
            WHERE s.lemma.id = :lemmaId
            """)
-    Page<PageEntity> findAllByLemmaId(int lemmaId, Pageable pageable);
+    List<PageEntity> findAllByLemmaId(int lemmaId);
 
     boolean existsByPath(String path);
 
