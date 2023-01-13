@@ -1,10 +1,4 @@
-<h1 align="center">Приветствую всех!  
-<img src="https://github.com/blackcater/blackcater/raw/main/images/Hi.gif" height="32"/></h1>
-<h3 align="center"> <a href="https://vk.com/filkoof" target="_blank">Я</a> еще в процессе написания этого проекта, заходите позже! (ветка с актуальными правками - dev)</h3>
-
-<div id="header" align="center">
-<img src="https://media.giphy.com/media/Dh5q0sShxgp13DwrvG/giphy.gif" width="1000"/>
-</div>
+<h1 align="center">Приветствую всех! <img src="https://github.com/blackcater/blackcater/raw/main/images/Hi.gif" height="32"/></h1>
 
 ## О проекте
 
@@ -17,3 +11,21 @@
 - Docker
 - Liquibase
 - GitHab Actions(CI/CD)
+
+### Индексация сайтов:
+Вкладка Management отвечает за управление процессом индексации. Индексировать возможно либо отдельно каждый сайт, введя его в поле. Либо начать индексацию списка сайтов из файла конфигурации.
+
+![image](https://user-images.githubusercontent.com/100158318/212397249-96517655-79fe-4972-b657-5da108601a11.png)
+
+Статистика индексации выводится во вкладке Dashboard. Общая, и отдельно для каждого сайта в соответствующих вкладках. А так же информационный статус процесса. 
+
+#### Статусы: 
+- INDEXING - статус ставится при старте индексации, говорит о том что процесс активен 
+- FAILED - статус ставится при ошибках индексации сайта, а так же при ручной остановки индексации с текстом ошибки "Индексация остановленна пользователем"
+- INDEXED - статус ставится при успешном окончании индексации
+
+![image](https://user-images.githubusercontent.com/100158318/212396913-dcbd9c69-bfd3-4774-8a3f-20d53366c088.png)
+
+По поисковому запросу находится страница с релевантным содержанием
+
+![image](https://user-images.githubusercontent.com/100158318/212416172-e5f8a983-9f6e-401c-bd50-15e5df803ce9.png)
