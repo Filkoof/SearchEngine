@@ -65,15 +65,15 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     private TotalStatistics getTotalStatistic() {
-        //todo: доделать тут count адекватный
-//        int sitesCount = siteRepository.findAll().size();
-//        int pagesCount = pageRepository.findAll().size();
-//        int lemmaCount = lemmaRepository.findAll().size();
+        long siteCount = siteRepository.count();
+        long pageCount = pageRepository.count();
+        long lemmaCount = lemmaRepository.count();
+
         var indexingSites = siteRepository.findAllByStatus(StatusType.INDEXING);
         return new TotalStatistics()
-                .setSites(4)
-                .setPages(10147)
-                .setLemmas(14868)
+                .setSites(siteCount)
+                .setPages(pageCount)
+                .setLemmas(lemmaCount)
                 .setIndexing(indexingSites.isPresent());
     }
 
