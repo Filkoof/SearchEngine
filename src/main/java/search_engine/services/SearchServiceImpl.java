@@ -1,6 +1,7 @@
 package search_engine.services;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import search_engine.config.SitesList;
 import search_engine.dto.SearchDto;
@@ -139,9 +140,7 @@ public class SearchServiceImpl implements SearchService {
     Если фильтр не нашел редких лемм, возвращаем все леммы из запроса
      */
     private List<LemmaEntity> getFrequencyFilteredLemmas(String query, SiteEntity site) {
-        double maxPercentLemmaOnPage = lemmaRepository.findMaxPercentageLemmaOnPagesBySiteId(site.getId());
-        double maxFrequencyPercentage = 0.75;
-        double frequencyLimit = maxPercentLemmaOnPage * maxFrequencyPercentage;
+        double frequencyLimit = getFrequencyLimit(site);
 
         var lemmas = getLemmatizer().getLemmaSet(query);
         var lemmaEntityList = lemmas.stream().map(lemma -> lemmaRepository.findBySiteIdAndLemma(site.getId(), lemma).orElse(null))
@@ -152,6 +151,13 @@ public class SearchServiceImpl implements SearchService {
                 lemmaEntityList.stream().sorted(Comparator.comparing(LemmaEntity::getFrequency)).toList()
                 :
                 filterFrequency.stream().sorted(Comparator.comparing(LemmaEntity::getFrequency)).toList();
+    }
+
+    @Cacheable("frequencyLimit")
+    public double getFrequencyLimit(SiteEntity site) {
+        double maxPercentLemmaOnPage = lemmaRepository.findMaxPercentageLemmaOnPagesBySiteId(site.getId());
+        double maxFrequencyPercentage = 0.75;
+        return maxPercentLemmaOnPage * maxFrequencyPercentage;
     }
 
     private Lemmatizer getLemmatizer() {
