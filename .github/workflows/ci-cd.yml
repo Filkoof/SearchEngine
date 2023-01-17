@@ -20,8 +20,8 @@ jobs:
           settings-path: ${{ github.workspace }}
 
       - name: Build with Maven
-        run: echo 'build'
-#        run: mvn -B clean package -DskipTests
+#        run: echo 'build'
+        run: mvn -B clean package -DskipTests
 
   test:
     runs-on: ubuntu-latest
@@ -41,8 +41,8 @@ jobs:
           settings-path: ${{ github.workspace }}
 
       - name: Maven testing
-        run: echo 'testing'
-#        run: mvn test
+#        run: echo 'testing'
+        run: mvn test
 
   sonar:
     name: Sonar analyze
@@ -79,5 +79,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: echo 'sonar'
-#        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=Filkoof_SearchEngine
+#        run: echo 'sonar'
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=Filkoof_SearchEngine

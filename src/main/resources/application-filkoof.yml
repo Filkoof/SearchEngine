@@ -15,11 +15,9 @@ server:
 
 indexing-settings:
   sites:
-#    - url: https://dombulgakova.ru
-#      name: Дом Булгакова
-#    - url: https://lenta.ru
-#      name: Лента.ру
-#    - url: https://skillbox.ru
-#      name: Skillbox
+    - url: https://lenta.ru
+      name: Лента.ру
+    - url: https://skillbox.ru
+      name: Skillbox
     - url: https://playback.ru
       name: PlayBack.Ru

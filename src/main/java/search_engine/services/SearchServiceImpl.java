@@ -61,7 +61,7 @@ public class SearchServiceImpl implements SearchService {
             pages.retainAll(pageEntities);
         }
 
-        double maxRelevance = pages.stream().map(page -> indexRepository.absoluteRelevanceByPageId(page.getId())).max(Double::compareTo).orElseThrow();
+        double maxRelevance = pages.stream().map(page -> indexRepository.absoluteRelevanceByPageId(page.getId())).max(Double::compareTo).orElse(0.45);
         List<SearchDto> data = new ArrayList<>();
         for (PageEntity page : pages) {
             var content = page.getContent();
@@ -115,7 +115,7 @@ public class SearchServiceImpl implements SearchService {
             }
         }
 
-        return "";
+        return snippet;
     }
 
     private String deleteWordEnding(String word) {

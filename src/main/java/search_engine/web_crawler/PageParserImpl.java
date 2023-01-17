@@ -124,7 +124,7 @@ public class PageParserImpl implements PageParser {
                         .setPage(pageEntity)
                         .setLemma(lemmaEntity)
                         .setLemmaRank(word.getValue()));
-                if (searchIndexEntities.size() >= 100) {
+                if (searchIndexEntities.size() >= 1000) {
                     indexRepository.saveAll(searchIndexEntities);
                     searchIndexEntities.clear();
                 }
