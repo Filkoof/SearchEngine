@@ -14,13 +14,14 @@ import search_engine.repository.LemmaRepository;
 import search_engine.repository.PageRepository;
 import search_engine.repository.SiteRepository;
 import search_engine.services.interfaces.IndexService;
-import search_engine.web_crawler.MultithreadedWebCrawler;
+import search_engine.web_crawler.RecursiveWebCrawler;
 import search_engine.web_crawler.interfaces.PageParser;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ForkJoinPool;
 
 @RequiredArgsConstructor
 @Service
@@ -32,11 +33,12 @@ public class IndexServiceImpl implements IndexService {
     private final IndexRepository indexRepository;
     private final PageParser pageParser;
     private final SitesList sites;
-    private final List<Thread> threads = new ArrayList<>();
+    private final ForkJoinPool forkJoinPool = new ForkJoinPool();
 
     @Override
     public IndexResponse startIndexing() {
-        if (threads.stream().anyMatch(Thread::isAlive)) return new IndexResponse()
+        var siteEntities = siteRepository.findAll();
+        if (siteEntities.stream().anyMatch(site -> site.getStatus().equals(StatusType.INDEXING))) return new IndexResponse()
                 .setResult(false)
                 .setError("Индексация уже запущена");
 
@@ -52,12 +54,12 @@ public class IndexServiceImpl implements IndexService {
             nodePages.add(nodePage);
         }
 
-        nodePages.forEach(nodePage -> threads.add(new MultithreadedWebCrawler(pageParser, nodePage, siteRepository)));
-        threads.forEach(Thread::start);
+        nodePages.forEach(nodePage -> forkJoinPool.execute(new RecursiveWebCrawler(siteRepository, pageParser, nodePage)));
 
         return new IndexResponse().setResult(true);
     }
 
+    //todo: проблема при старте индексации после остановки
     private void deleteAllInfoFromDataBase(Site site) {
         if (isSiteExist(site)) {
             var siteEntity = siteRepository.findByUrl(site.getUrl());
@@ -71,12 +73,19 @@ public class IndexServiceImpl implements IndexService {
 
     @Override
     public IndexResponse stopIndexing() {
-        boolean isSitesNotIndexing = !siteRepository.existsByStatus(StatusType.INDEXING);
-        if (isSitesNotIndexing) return new IndexResponse().setResult(false).setError("Индексация не запущена");
+        if (forkJoinPool.isShutdown()) return new IndexResponse().setResult(false).setError("Индексация не запущена");
 
-        threads.forEach(Thread::interrupt);
+        var siteEntities = siteRepository.findAll();
+        siteEntities.forEach(this::shutdownAndSetStatusFailed);
 
         return new IndexResponse().setResult(true);
+    }
+
+    private void shutdownAndSetStatusFailed(SiteEntity site) {
+        forkJoinPool.shutdownNow();
+
+        site.setStatus(StatusType.FAILED).setLastError("Индексация остановлена пользователем");
+        siteRepository.save(site);
     }
 
     @Override
