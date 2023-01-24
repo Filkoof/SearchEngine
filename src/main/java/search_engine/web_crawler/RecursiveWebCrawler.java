@@ -3,7 +3,6 @@ package search_engine.web_crawler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import search_engine.dto.NodePage;
-import search_engine.entity.SiteEntity;
 import search_engine.entity.enumerated.StatusType;
 import search_engine.repository.SiteRepository;
 import search_engine.web_crawler.interfaces.PageParser;
