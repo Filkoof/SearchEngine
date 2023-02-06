@@ -1,0 +1,903 @@
+'<!doctype html>
+<html>
+ <head>
+  <title>Интернет-магазин PlayBack.ru</title>
+  <meta name="description" content="Продажа по доступным ценам. PlayBack.ru - Интернет-Магазин - Большой выбор смартфонов, планшетов, носимой электроники по низким ценам, отличный сервис, гарантии производителя">
+  <meta name="keywords" content="купить, цена, описание, интернет-магазин, интернет, магазин, продажа, смартфоны">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Last-Modified" content="Sat, 30 Oct 2021 15:19:33 GMT">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="apple-touch-icon" href="/logo_apple.png">
+  <link rel="StyleSheet" href="/include_new/styles.css" type="text/css" media="all">
+  <link rel="stylesheet" href="/include_new/jquery-ui.css">
+  <script src="https://code.jquery.com/jquery-1.8.3.js"></script>
+  <script src="https://code.jquery.com/ui/1.10.0/jquery-ui.js"></script>
+  <script src="/jscripts/jquery.inputmask.js" type="text/javascript"></script>
+  <script src="/jscripts/jquery.inputmask.extensions.js" type="text/javascript"></script>
+  <script src="/jscripts/jquery.inputmask.numeric.extensions.js" type="text/javascript"></script>
+  <link rel="stylesheet" type="text/css" href="/fancybox/jquery.fancybox-1.3.4.css" media="screen">
+  <script type="text/javascript" src="/fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
+  <script type="text/javascript" src="/fancybox/jquery.fancybox-1.3.4.js"></script>
+  <script type="text/javascript" src="/include_new/playback.js"></script>
+  <script>
+  $( function() {
+    $( "#accordion" ).accordion({
+      heightStyle: "content",
+	  collapsible: true,
+	  active : false,
+	  activate: function( event, ui ) {
+         if ($(ui.newHeader).offset() != null) {
+        ui.newHeader,
+        $("html, body").animate({scrollTop: ($(ui.newHeader).offset().top)}, 500);
+      }
+    }
+    });
+	} );
+	$( function() {
+    var icons = {
+      header: "ui-icon-circle-arrow-e",
+      activeHeader: "ui-icon-circle-arrow-s"
+    };
+    $( "#accordion" ).accordion({
+      icons: icons
+    });
+    $( "#toggle" ).button().on( "click", function() {
+      if ( $( "#accordion" ).accordion( "option", "icons" ) ) {
+        $( "#accordion" ).accordion( "option", "icons", null );
+      } else {
+        $( "#accordion" ).accordion( "option", "icons", icons );
+      }
+    });
+  } );
+  </script>
+  <script type="text/javascript">
+  $(function() {
+
+$(window).scroll(function() {
+
+if($(this).scrollTop() != 0) {
+
+$(''#toTop'').fadeIn();
+
+} else {
+
+$(''#toTop'').fadeOut();
+
+}
+
+});
+
+$(''#toTop'').click(function() {
+
+$(''body,html'').animate({scrollTop:0},800);
+
+});
+
+});
+
+</script>
+ </head>
+ <body class="body_undertop" topmargin="0" leftmargin="0" bottommargin="0" rightmargin="0" align="center">
+  <table class="table1" style="box-shadow:0px 0px 32px #595959; margin:5px auto; " bgcolor="#ffffff" width="1024" border="0" cellpadding="0" cellspacing="0" align="center">
+   <tbody>
+    <tr>
+     <td colspan="3" width="1024">
+      <table width="100%" border="0" height="110px" cellpadding="0" cellspacing="0" style="margin-top: 0px; margin-bottom: 0px;">
+       <tbody>
+        <tr>
+         <td width="365px" rowspan="2" align="left">
+          <table width="250px" align="left">
+           <tbody>
+            <tr>
+             <td width="60px" height="60px"><img onclick="document.location=''http://www.playback.ru'';return false" src="/img_new/lolo.png" class="logotip" alt="Playback.ru - фотоаппараты, видеокамеры и аксессуары к ним" title="Playback.ru - фотоаппараты, видеокамеры и аксессуары к ним"></td>
+             <td valign="center" align="left"><a class="tele_span" href="/"><span class="tele_span_playback">PlayBack.ru</span></a><br><span style="cursor: pointer;" onclick="document.location=''/waytoplayback.html'';return false" class="getcallback2">5 минут от метро ВДНХ</span></td>
+            </tr>
+           </tbody>
+          </table></td>
+         <td width="3px" rowspan="2" align="center">&nbsp;</td>
+         <td width="290px" rowspan="2">
+          <table width="215px" align="center">
+           <tbody>
+            <tr>
+             <td valign="center" align="center"><span class="tele_span"><nobr><a href="tel:+74951437771">8(495)143-77-71</a></nobr></span><span class="grrafik"><nobr><br>пн-пт: c 11 до 20<br>сб-вс: с 11 до 18</nobr></span></td>
+            </tr>
+           </tbody>
+          </table></td>
+         <td width="3px" align="center" rowspan="2">&nbsp;</td>
+         <td width="185px">
+          <table width="175px" align="center">
+           <tbody>
+            <tr>
+             <td valign="center" align="center"><span class="blocknamezpom" style="cursor: pointer;" onclick="document.location=''/tell_about_the_problem.html'';return false">Возникла проблема?<br>Напишите нам!</span></td>
+            </tr>
+           </tbody>
+          </table> <span class="tele_span"></span></td>
+         <td width="3px" align="center">&nbsp;</td>
+         <td width="179px">
+          <table width="175px" align="center">
+           <tbody>
+            <tr>
+             <td width="53px" height="50px" rowspan="2" align="left"><a href="/basket.html"><img src="/img_new/basket.png" width="49px" border="0"></a></td>
+             <td valign="bottom" align="left" height="25px"><a class="tele_span2" href="/basket.html">Корзина</a><br><span class="take_me_call"></span></td>
+            </tr>
+            <tr>
+             <td height="10px" align="right" valign="top"><span class="basket_inc_label" id="sosotoyaniekorziny">пуста</span></td>
+            </tr>
+           </tbody>
+          </table></td>
+        </tr>
+        <tr>
+         <td colspan="3" style="text-align: right;">
+          <form action="/search.php" method="get" class="izkat"><input type="search" name="search_string" placeholder="поиск" class="ssstring"> <input type="submit" name="" value="Искать" class="iskat">
+          </form></td>
+        </tr>
+       </tbody>
+      </table></td> <!--	<tr>
+	<td colspan="3" style="color: #2556A3; font:17px Roboto-Regular,Helvetica,sans-serif; text-align: center; height: 35px;vertical-align: middle;padding-bottom:10px;">
+		<b>Уважаемые покупатели! Наш график работы в праздничные дни: 31 декабля - с 11 до 16,<br>1 января - выходной, со 2 по 8 января - с 11 до 18.</b>
+	</td>
+  </tr> ---->
+    </tr>
+    <tr>
+     <td colspan="3" style="text-align: center;">
+      <nav>
+       <ul class="topmenu">
+        <li><a href="" class="active" onclick="return false;"><img src="/img/imglist.png" height="9px"> Каталог<span class="fa fa-angle-down"></span></a>
+         <ul class="submenu">
+          <li><a href="/catalog/1511.html">Смартфоны</a></li>
+          <li><a href="/catalog/1300.html">Чехлы для смартфонов Xiaomi</a></li>
+          <li><a href="/catalog/1302.html">Защитные стекла для смартфонов Xiaomi</a></li>
+          <li><a href="/catalog/1310.html">Чехлы для Huawei/Honor</a></li>
+          <li><a href="/catalog/1308.html">Чехлы для смартфонов Samsung</a></li>
+          <li><a href="/catalog/1307.html">Защитные стекла для смартфонов Samsung</a></li>
+          <li><a href="/catalog/1141.html">Планшеты</a></li>
+          <li><a href="/catalog/1315.html">Зарядные устройства и кабели</a></li>
+          <li><a href="/catalog/1329.html">Держатели для смартфонов</a></li>
+          <li><a href="/catalog/665.html">Автодержатели</a></li>
+          <li><a href="/catalog/1304.html">Носимая электроника</a></li>
+          <li><a href="/catalog/1305.html">Наушники и колонки</a></li>
+          <li><a href="/catalog/1314.html">Гаджеты Xiaomi</a></li>
+          <li><a href="/catalog/805.html">Запчасти для телефонов</a></li>
+          <li><a href="/catalog/1311.html">Чехлы для планшетов</a></li>
+          <li><a href="/catalog/1317.html">Аксессуары для фото-видео</a></li>
+          <li><a href="/catalog/1318.html">Чехлы для смартфонов Apple</a></li>
+          <li><a href="/catalog/1412.html">Товары для автомобилистов</a></li>
+          <li><a href="/catalog/1429.html">USB Флеш-накопители</a></li>
+          <li><a href="/catalog/1473.html">Товары для детей</a></li>
+          <li><a href="/catalog/1507.html">Защитные стекла для смартфонов Realme</a></li>
+          <li><a href="/catalog/1508.html">Чехлы для смартфонов Realme</a></li>
+          <li><a href="/catalog/18.html">Карты памяти</a></li>
+          <li><a href="/catalog/1303.html">Защитные стекла для планшетов</a></li>
+          <li><a href="/catalog/1312.html">Защитные стекла для смартфонов</a></li>
+         </ul></li>
+        <li><a href="/dostavka.html">Доставка</a></li>
+        <li><a href="/pickup.html">Самовывоз</a></li>
+        <li><a href="/payment.html">Оплата</a></li>
+        <li><a href="/warranty.html">Гарантия и обмен</a></li>
+        <li><a href="/contacts.html">Контакты</a></li>
+       </ul>
+      </nav></td>
+    </tr>
+    <tr>
+     <td colspan="3" valign="top">
+      <table width="100%" border="0" cellpadding="0" cellspacing="0">
+       <tbody>
+        <tr>
+         <!----<td class="menu_full_cell" width="253">---->
+         <td colspan="2" class="item_full_cell">
+          <table width="100%" border="0" cellpadding="0" cellspacing="0" style="padding-top:15px;">
+           <tbody>
+            <tr>
+             <td colspan="2">
+              <table width="100%" cellpadding="0" cellspacing="0">
+               <tbody>
+                <tr>
+                 <td>
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                   <tbody>
+                    <tr>
+                     <td class="catalog_content_cell" width="33%">
+                      <table width="250" align="center" cellpadding="0" cellspacing="0" style="margin-bottom: 15px;">
+                       <tbody>
+                        <tr>
+                         <td colspan="2" class="item_img_cell"><img onclick="document.location=''/product/1122608.html'';return false" src="/img/product/200/1122608_1_200.jpg" alt="Изображение товара Смартфон Xiaomi Redmi 10 2022 NFC 4/128 ГБ RU, белая галька" title="Описание и характеристики Смартфон Xiaomi Redmi 10 2022 NFC 4/128 ГБ RU, белая галька" width="200" style="border:none; decoration: none; "></td>
+                        </tr>
+                        <tr>
+                         <td height="42" colspan="2" class="catalog_item_label_cell"><a href="/product/1122608.html" title="Описание и характеристики Смартфон Xiaomi Redmi 10 2022 NFC 4/128 ГБ RU, белая галька">Смартфон Xiaomi Redmi 10 2022 NFC 4/128 ГБ RU, белая галька</a></td>
+                        </tr>
+                        <tr>
+                         <td class="price_cell">12950р.</td>
+                         <td class="item_full_info" id="text1122608" onclick="addtobasket_w_fancy(1122608)"><span title="Купить Смартфон Xiaomi Redmi 10 2022 NFC 4/128 ГБ RU, белая галька" id="buyimg1122608" class="buybutton">Купить</span></td>
+                        </tr>
+                       </tbody>
+                      </table></td>
+                     <td class="catalog_content_cell" width="33%">
+                      <table width="250" align="center" cellpadding="0" cellspacing="0" style="margin-bottom: 15px;">
+                       <tbody>
+                        <tr>
+                         <td colspan="2" class="item_img_cell"><img onclick="document.location=''/product/1122606.html'';return false" src="/img/product/200/1122606_1_200.jpg" alt="Изображение товара Смартфон Xiaomi Redmi 10 2022 NFC 4/64 ГБ RU, серый карбон" title="Описание и характеристики Смартфон Xiaomi Redmi 10 2022 NFC 4/64 ГБ RU, серый карбон" width="200" style="border:none; decoration: none; "></td>
+                        </tr>
+                        <tr>
+                         <td height="42" colspan="2" class="catalog_item_label_cell"><a href="/product/1122606.html" title="Описание и характеристики Смартфон Xiaomi Redmi 10 2022 NFC 4/64 ГБ RU, серый карбон">Смартфон Xiaomi Redmi 10 2022 NFC 4/64 ГБ RU, серый карбон</a></td>
+                        </tr>
+                        <tr>
+                         <td class="price_cell">12100р.</td>
+                         <td class="item_full_info" id="text1122606" onclick="addtobasket_w_fancy(1122606)"><span title="Купить Смартфон Xiaomi Redmi 10 2022 NFC 4/64 ГБ RU, серый карбон" id="buyimg1122606" class="buybutton">Купить</span></td>
+                        </tr>
+                       </tbody>
+                      </table></td>
+                     <td class="catalog_content_cell" width="33%">
+                      <table width="250" align="center" cellpadding="0" cellspacing="0" style="margin-bottom: 15px;">
+                       <tbody>
+                        <tr>
+                         <td colspan="2" class="item_img_cell"><img onclick="document.location=''/product/1123304.html'';return false" src="/img/product/200/1123304_1_200.jpg" alt="Изображение товара Смартфон Xiaomi Redmi 10 5G 6/128 ГБ (без NFC) Global, Aurora Green" title="Описание и характеристики Смартфон Xiaomi Redmi 10 5G 6/128 ГБ (без NFC) Global, Aurora Green" width="200" style="border:none; decoration: none; "></td>
+                        </tr>
+                        <tr>
+                         <td height="42" colspan="2" class="catalog_item_label_cell"><a href="/product/1123304.html" title="Описание и характеристики Смартфон Xiaomi Redmi 10 5G 6/128 ГБ (без NFC) Global, Aurora Green">Смартфон Xiaomi Redmi 10 5G 6/128 ГБ (без NFC) Global, Aurora Green</a></td>
+                        </tr>
+                        <tr>
+                         <td class="price_cell">13100р.</td>
+                         <td class="item_full_info" id="text1123304" onclick="addtobasket_w_fancy(1123304)"><span title="Купить Смартфон Xiaomi Redmi 10 5G 6/128 ГБ (без NFC) Global, Aurora Green" id="buyimg1123304" class="buybutton">Купить</span></td>
+                        </tr>
+                       </tbody>
+                      </table></td>
+                    </tr>
+                    <tr>
+                     <td class="catalog_content_cell" width="33%">
+                      <table width="250" align="center" cellpadding="0" cellspacing="0" style="margin-bottom: 15px;">
+                       <tbody>
+                        <tr>
+                         <td colspan="2" class="item_img_cell"><img onclick="document.location=''/product/1123302.html'';return false" src="/img/product/200/1123302_1_200.jpg" alt="Изображение товара Смартфон Xiaomi Redmi 10 5G 6/128 ГБ (без NFC) Global, Graphite Gray" title="Описание и характеристики Смартфон Xiaomi Redmi 10 5G 6/128 ГБ (без NFC) Global, Graphite Gray" width="200" style="border:none; decoration: none; "></td>
+                        </tr>
+                        <tr>
+                         <td height="42" colspan="2" class="catalog_item_label_cell"><a href="/product/1123302.html" title="Описание и характеристики Смартфон Xiaomi Redmi 10 5G 6/128 ГБ (без NFC) Global, Graphite Gray">Смартфон Xiaomi Redmi 10 5G 6/128 ГБ (без NFC) Global, Graphite Gray</a></td>
+                        </tr>
+                        <tr>
+                         <td class="price_cell">13100р.</td>
+                         <td class="item_full_info" id="text1123302" onclick="addtobasket_w_fancy(1123302)"><span title="Купить Смартфон Xiaomi Redmi 10 5G 6/128 ГБ (без NFC) Global, Graphite Gray" id="buyimg1123302" class="buybutton">Купить</span></td>
+                        </tr>
+                       </tbody>
+                      </table></td>
+                     <td class="catalog_content_cell" width="33%">
+                      <table width="250" align="center" cellpadding="0" cellspacing="0" style="margin-bottom: 15px;">
+                       <tbody>
+                        <tr>
+                         <td colspan="2" class="item_img_cell"><img onclick="document.location=''/product/1122835.html'';return false" src="/img/product/200/1122835_1_200.jpg" alt="Изображение товара Смартфон Xiaomi Redmi 10A 2/32 ГБ RU, графитовый серый" title="Описание и характеристики Смартфон Xiaomi Redmi 10A 2/32 ГБ RU, графитовый серый" width="200" style="border:none; decoration: none; "></td>
+                        </tr>
+                        <tr>
+                         <td height="42" colspan="2" class="catalog_item_label_cell"><a href="/product/1122835.html" title="Описание и характеристики Смартфон Xiaomi Redmi 10A 2/32 ГБ RU, графитовый серый">Смартфон Xiaomi Redmi 10A 2/32 ГБ RU, графитовый серый</a></td>
+                        </tr>
+                        <tr>
+                         <td class="price_cell">6830р.</td>
+                         <td class="item_full_info" id="text1122835" onclick="addtobasket_w_fancy(1122835)"><span title="Купить Смартфон Xiaomi Redmi 10A 2/32 ГБ RU, графитовый серый" id="buyimg1122835" class="buybutton">Купить</span></td>
+                        </tr>
+                       </tbody>
+                      </table></td>
+                     <td class="catalog_content_cell" width="33%">
+                      <table width="250" align="center" cellpadding="0" cellspacing="0" style="margin-bottom: 15px;">
+                       <tbody>
+                        <tr>
+                         <td colspan="2" class="item_img_cell"><img onclick="document.location=''/product/1122836.html'';return false" src="/img/product/200/1122836_1_200.jpg" alt="Изображение товара Смартфон Xiaomi Redmi 10A 2/32 ГБ RU, серебристый" title="Описание и характеристики Смартфон Xiaomi Redmi 10A 2/32 ГБ RU, серебристый" width="200" style="border:none; decoration: none; "></td>
+                        </tr>
+                        <tr>
+                         <td height="42" colspan="2" class="catalog_item_label_cell"><a href="/product/1122836.html" title="Описание и характеристики Смартфон Xiaomi Redmi 10A 2/32 ГБ RU, серебристый">Смартфон Xiaomi Redmi 10A 2/32 ГБ RU, серебристый</a></td>
+                        </tr>
+                        <tr>
+                         <td class="price_cell">6830р.</td>
+                         <td class="item_full_info" id="text1122836" onclick="addtobasket_w_fancy(1122836)"><span title="Купить Смартфон Xiaomi Redmi 10A 2/32 ГБ RU, серебристый" id="buyimg1122836" class="buybutton">Купить</span></td>
+                        </tr>
+                       </tbody>
+                      </table></td>
+                    </tr>
+                    <tr>
+                     <td class="catalog_content_cell" width="33%">
+                      <table width="250" align="center" cellpadding="0" cellspacing="0" style="margin-bottom: 15px;">
+                       <tbody>
+                        <tr>
+                         <td colspan="2" class="item_img_cell"><img onclick="document.location=''/product/1122837.html'';return false" src="/img/product/200/1122837_1_200.jpg" alt="Изображение товара Смартфон Xiaomi Redmi 10A 2/32 ГБ RU, синий" title="Описание и характеристики Смартфон Xiaomi Redmi 10A 2/32 ГБ RU, синий" width="200" style="border:none; decoration: none; "></td>
+                        </tr>
+                        <tr>
+                         <td height="42" colspan="2" class="catalog_item_label_cell"><a href="/product/1122837.html" title="Описание и характеристики Смартфон Xiaomi Redmi 10A 2/32 ГБ RU, синий">Смартфон Xiaomi Redmi 10A 2/32 ГБ RU, синий</a></td>
+                        </tr>
+                        <tr>
+                         <td class="price_cell">6830р.</td>
+                         <td class="item_full_info" id="text1122837" onclick="addtobasket_w_fancy(1122837)"><span title="Купить Смартфон Xiaomi Redmi 10A 2/32 ГБ RU, синий" id="buyimg1122837" class="buybutton">Купить</span></td>
+                        </tr>
+                       </tbody>
+                      </table></td>
+                     <td class="catalog_content_cell" width="33%">
+                      <table width="250" align="center" cellpadding="0" cellspacing="0" style="margin-bottom: 15px;">
+                       <tbody>
+                        <tr>
+                         <td colspan="2" class="item_img_cell"><img onclick="document.location=''/product/1122828.html'';return false" src="/img/product/200/1122828_1_200.jpg" alt="Изображение товара Смартфон Xiaomi Redmi 10A 3/64 ГБ Global, графитовый серый" title="Описание и характеристики Смартфон Xiaomi Redmi 10A 3/64 ГБ Global, графитовый серый" width="200" style="border:none; decoration: none; "></td>
+                        </tr>
+                        <tr>
+                         <td height="42" colspan="2" class="catalog_item_label_cell"><a href="/product/1122828.html" title="Описание и характеристики Смартфон Xiaomi Redmi 10A 3/64 ГБ Global, графитовый серый">Смартфон Xiaomi Redmi 10A 3/64 ГБ Global, графитовый серый</a></td>
+                        </tr>
+                        <tr>
+                         <td class="price_cell">8780р.</td>
+                         <td class="item_full_info" id="text1122828" onclick="addtobasket_w_fancy(1122828)"><span title="Купить Смартфон Xiaomi Redmi 10A 3/64 ГБ Global, графитовый серый" id="buyimg1122828" class="buybutton">Купить</span></td>
+                        </tr>
+                       </tbody>
+                      </table></td>
+                     <td class="catalog_content_cell" width="33%">
+                      <table width="250" align="center" cellpadding="0" cellspacing="0" style="margin-bottom: 15px;">
+                       <tbody>
+                        <tr>
+                         <td colspan="2" class="item_img_cell"><img onclick="document.location=''/product/1122829.html'';return false" src="/img/product/200/1122829_1_200.jpg" alt="Изображение товара Смартфон Xiaomi Redmi 10A 3/64 ГБ Global, серебристый" title="Описание и характеристики Смартфон Xiaomi Redmi 10A 3/64 ГБ Global, серебристый" width="200" style="border:none; decoration: none; "></td>
+                        </tr>
+                        <tr>
+                         <td height="42" colspan="2" class="catalog_item_label_cell"><a href="/product/1122829.html" title="Описание и характеристики Смартфон Xiaomi Redmi 10A 3/64 ГБ Global, серебристый">Смартфон Xiaomi Redmi 10A 3/64 ГБ Global, серебристый</a></td>
+                        </tr>
+                        <tr>
+                         <td class="price_cell">8780р.</td>
+                         <td class="item_full_info" id="text1122829" onclick="addtobasket_w_fancy(1122829)"><span title="Купить Смартфон Xiaomi Redmi 10A 3/64 ГБ Global, серебристый" id="buyimg1122829" class="buybutton">Купить</span></td>
+                        </tr>
+                       </tbody>
+                      </table></td>
+                    </tr>
+                    <tr>
+                     <td class="catalog_content_cell" width="33%">
+                      <table width="250" align="center" cellpadding="0" cellspacing="0" style="margin-bottom: 15px;">
+                       <tbody>
+                        <tr>
+                         <td colspan="2" class="item_img_cell"><img onclick="document.location=''/product/1122830.html'';return false" src="/img/product/200/1122830_1_200.jpg" alt="Изображение товара Смартфон Xiaomi Redmi 10A 3/64 ГБ Global, синий" title="Описание и характеристики Смартфон Xiaomi Redmi 10A 3/64 ГБ Global, синий" width="200" style="border:none; decoration: none; "></td>
+                        </tr>
+                        <tr>
+                         <td height="42" colspan="2" class="catalog_item_label_cell"><a href="/product/1122830.html" title="Описание и характеристики Смартфон Xiaomi Redmi 10A 3/64 ГБ Global, синий">Смартфон Xiaomi Redmi 10A 3/64 ГБ Global, синий</a></td>
+                        </tr>
+                        <tr>
+                         <td class="price_cell">8780р.</td>
+                         <td class="item_full_info" id="text1122830" onclick="addtobasket_w_fancy(1122830)"><span title="Купить Смартфон Xiaomi Redmi 10A 3/64 ГБ Global, синий" id="buyimg1122830" class="buybutton">Купить</span></td>
+                        </tr>
+                       </tbody>
+                      </table></td>
+                     <td class="catalog_content_cell" width="33%">
+                      <table width="250" align="center" cellpadding="0" cellspacing="0" style="margin-bottom: 15px;">
+                       <tbody>
+                        <tr>
+                         <td colspan="2" class="item_img_cell"><img onclick="document.location=''/product/1122833.html'';return false" src="/img/product/200/1122833_1_200.jpg" alt="Изображение товара Смартфон Xiaomi Redmi 10A 4/128 ГБ Global, синий" title="Описание и характеристики Смартфон Xiaomi Redmi 10A 4/128 ГБ Global, синий" width="200" style="border:none; decoration: none; "></td>
+                        </tr>
+                        <tr>
+                         <td height="42" colspan="2" class="catalog_item_label_cell"><a href="/product/1122833.html" title="Описание и характеристики Смартфон Xiaomi Redmi 10A 4/128 ГБ Global, синий">Смартфон Xiaomi Redmi 10A 4/128 ГБ Global, синий</a></td>
+                        </tr>
+                        <tr>
+                         <td class="price_cell">9780р.</td>
+                         <td class="item_full_info" id="text1122833" onclick="addtobasket_w_fancy(1122833)"><span title="Купить Смартфон Xiaomi Redmi 10A 4/128 ГБ Global, синий" id="buyimg1122833" class="buybutton">Купить</span></td>
+                        </tr>
+                       </tbody>
+                      </table></td>
+                     <td class="catalog_content_cell" width="33%">
+                      <table width="250" align="center" cellpadding="0" cellspacing="0" style="margin-bottom: 15px;">
+                       <tbody>
+                        <tr>
+                         <td colspan="2" class="item_img_cell"><img onclick="document.location=''/product/1122389.html'';return false" src="/img/product/200/1122389_1_200.jpg" alt="Изображение товара Смартфон Xiaomi Redmi 10C NFC 4/128 ГБ RU, ocean blue" title="Описание и характеристики Смартфон Xiaomi Redmi 10C NFC 4/128 ГБ RU, ocean blue" width="200" style="border:none; decoration: none; "></td>
+                        </tr>
+                        <tr>
+                         <td height="42" colspan="2" class="catalog_item_label_cell"><a href="/product/1122389.html" title="Описание и характеристики Смартфон Xiaomi Redmi 10C NFC 4/128 ГБ RU, ocean blue">Смартфон Xiaomi Redmi 10C NFC 4/128 ГБ RU, ocean blue</a></td>
+                        </tr>
+                        <tr>
+                         <td class="price_cell">11100р.</td>
+                         <td class="item_full_info" id="text1122389" onclick="addtobasket_w_fancy(1122389)"><span title="Купить Смартфон Xiaomi Redmi 10C NFC 4/128 ГБ RU, ocean blue" id="buyimg1122389" class="buybutton">Купить</span></td>
+                        </tr>
+                       </tbody>
+                      </table></td>
+                    </tr>
+                    <tr>
+                     <td class="catalog_content_cell" width="33%">
+                      <table width="250" align="center" cellpadding="0" cellspacing="0" style="margin-bottom: 15px;">
+                       <tbody>
+                        <tr>
+                         <td colspan="2" class="item_img_cell"><img onclick="document.location=''/product/111102.html'';return false" src="/img/product/200/111102_1_200.jpg" alt="Изображение товара Смартфон Xiaomi Redmi 9A 2/32 ГБ Global, зеленый" title="Описание и характеристики Смартфон Xiaomi Redmi 9A 2/32 ГБ Global, зеленый" width="200" style="border:none; decoration: none; "></td>
+                        </tr>
+                        <tr>
+                         <td height="42" colspan="2" class="catalog_item_label_cell"><a href="/product/111102.html" title="Описание и характеристики Смартфон Xiaomi Redmi 9A 2/32 ГБ Global, зеленый">Смартфон Xiaomi Redmi 9A 2/32 ГБ Global, зеленый</a></td>
+                        </tr>
+                        <tr>
+                         <td class="price_cell">5360р.</td>
+                         <td class="item_full_info" id="text111102" onclick="addtobasket_w_fancy(111102)"><span title="Купить Смартфон Xiaomi Redmi 9A 2/32 ГБ Global, зеленый" id="buyimg111102" class="buybutton">Купить</span></td>
+                        </tr>
+                       </tbody>
+                      </table></td>
+                     <td class="catalog_content_cell" width="33%">
+                      <table width="250" align="center" cellpadding="0" cellspacing="0" style="margin-bottom: 15px;">
+                       <tbody>
+                        <tr>
+                         <td colspan="2" class="item_img_cell"><img onclick="document.location=''/product/111165.html'';return false" src="/img/product/200/111165_1_200.jpg" alt="Изображение товара Смартфон Xiaomi Redmi 9A 2/32 ГБ RU, зеленый" title="Описание и характеристики Смартфон Xiaomi Redmi 9A 2/32 ГБ RU, зеленый" width="200" style="border:none; decoration: none; "></td>
+                        </tr>
+                        <tr>
+                         <td height="42" colspan="2" class="catalog_item_label_cell"><a href="/product/111165.html" title="Описание и характеристики Смартфон Xiaomi Redmi 9A 2/32 ГБ RU, зеленый">Смартфон Xiaomi Redmi 9A 2/32 ГБ RU, зеленый</a></td>
+                        </tr>
+                        <tr>
+                         <td class="price_cell">5480р.</td>
+                         <td class="item_full_info" id="text111165" onclick="addtobasket_w_fancy(111165)"><span title="Купить Смартфон Xiaomi Redmi 9A 2/32 ГБ RU, зеленый" id="buyimg111165" class="buybutton">Купить</span></td>
+                        </tr>
+                       </tbody>
+                      </table></td>
+                     <td class="catalog_content_cell" width="33%">
+                      <table width="250" align="center" cellpadding="0" cellspacing="0" style="margin-bottom: 15px;">
+                       <tbody>
+                        <tr>
+                         <td colspan="2" class="item_img_cell"><img onclick="document.location=''/product/1122794.html'';return false" src="/img/product/200/1122794_1_200.jpg" alt="Изображение товара Смартфон Xiaomi Redmi 9A 2/32 ГБ RU, ледяная синева" title="Описание и характеристики Смартфон Xiaomi Redmi 9A 2/32 ГБ RU, ледяная синева" width="200" style="border:none; decoration: none; "></td>
+                        </tr>
+                        <tr>
+                         <td height="42" colspan="2" class="catalog_item_label_cell"><a href="/product/1122794.html" title="Описание и характеристики Смартфон Xiaomi Redmi 9A 2/32 ГБ RU, ледяная синева">Смартфон Xiaomi Redmi 9A 2/32 ГБ RU, ледяная синева</a></td>
+                        </tr>
+                        <tr>
+                         <td class="price_cell">5480р.</td>
+                         <td class="item_full_info" id="text1122794" onclick="addtobasket_w_fancy(1122794)"><span title="Купить Смартфон Xiaomi Redmi 9A 2/32 ГБ RU, ледяная синева" id="buyimg1122794" class="buybutton">Купить</span></td>
+                        </tr>
+                       </tbody>
+                      </table></td>
+                    </tr>
+                    <tr>
+                     <td class="catalog_content_cell" width="33%">
+                      <table width="250" align="center" cellpadding="0" cellspacing="0" style="margin-bottom: 15px;">
+                       <tbody>
+                        <tr>
+                         <td colspan="2" class="item_img_cell"><img onclick="document.location=''/product/1123107.html'';return false" src="/img/product/200/1123107_1_200.jpg" alt="Изображение товара Смартфон Xiaomi Redmi 9C 4/128 ГБ (без NFC) Global, фиолетовый" title="Описание и характеристики Смартфон Xiaomi Redmi 9C 4/128 ГБ (без NFC) Global, фиолетовый" width="200" style="border:none; decoration: none; "></td>
+                        </tr>
+                        <tr>
+                         <td height="42" colspan="2" class="catalog_item_label_cell"><a href="/product/1123107.html" title="Описание и характеристики Смартфон Xiaomi Redmi 9C 4/128 ГБ (без NFC) Global, фиолетовый">Смартфон Xiaomi Redmi 9C 4/128 ГБ (без NFC) Global, фиолетовый</a></td>
+                        </tr>
+                        <tr>
+                         <td class="price_cell">9980р.</td>
+                         <td class="item_full_info" id="text1123107" onclick="addtobasket_w_fancy(1123107)"><span title="Купить Смартфон Xiaomi Redmi 9C 4/128 ГБ (без NFC) Global, фиолетовый" id="buyimg1123107" class="buybutton">Купить</span></td>
+                        </tr>
+                       </tbody>
+                      </table></td>
+                     <td class="catalog_content_cell" width="33%">
+                      <table width="250" align="center" cellpadding="0" cellspacing="0" style="margin-bottom: 15px;">
+                       <tbody>
+                        <tr>
+                         <td colspan="2" class="item_img_cell"><img onclick="document.location=''/product/1122791.html'';return false" src="/img/product/200/1122791_1_200.jpg" alt="Изображение товара Смартфон Xiaomi Redmi 9C NFC 2/32 ГБ RU, зеленый" title="Описание и характеристики Смартфон Xiaomi Redmi 9C NFC 2/32 ГБ RU, зеленый" width="200" style="border:none; decoration: none; "></td>
+                        </tr>
+                        <tr>
+                         <td height="42" colspan="2" class="catalog_item_label_cell"><a href="/product/1122791.html" title="Описание и характеристики Смартфон Xiaomi Redmi 9C NFC 2/32 ГБ RU, зеленый">Смартфон Xiaomi Redmi 9C NFC 2/32 ГБ RU, зеленый</a></td>
+                        </tr>
+                        <tr>
+                         <td class="price_cell">6990р.</td>
+                         <td class="item_full_info" id="text1122791" onclick="addtobasket_w_fancy(1122791)"><span title="Купить Смартфон Xiaomi Redmi 9C NFC 2/32 ГБ RU, зеленый" id="buyimg1122791" class="buybutton">Купить</span></td>
+                        </tr>
+                       </tbody>
+                      </table></td>
+                     <td class="catalog_content_cell" width="33%">
+                      <table width="250" align="center" cellpadding="0" cellspacing="0" style="margin-bottom: 15px;">
+                       <tbody>
+                        <tr>
+                         <td colspan="2" class="item_img_cell"><img onclick="document.location=''/product/1122858.html'';return false" src="/img/product/200/1122858_1_200.jpg" alt="Изображение товара Смартфон Xiaomi Redmi 9C NFC 3/64 ГБ RU, зеленый" title="Описание и характеристики Смартфон Xiaomi Redmi 9C NFC 3/64 ГБ RU, зеленый" width="200" style="border:none; decoration: none; "></td>
+                        </tr>
+                        <tr>
+                         <td height="42" colspan="2" class="catalog_item_label_cell"><a href="/product/1122858.html" title="Описание и характеристики Смартфон Xiaomi Redmi 9C NFC 3/64 ГБ RU, зеленый">Смартфон Xiaomi Redmi 9C NFC 3/64 ГБ RU, зеленый</a></td>
+                        </tr>
+                        <tr>
+                         <td class="price_cell">8280р.</td>
+                         <td class="item_full_info" id="text1122858" onclick="addtobasket_w_fancy(1122858)"><span title="Купить Смартфон Xiaomi Redmi 9C NFC 3/64 ГБ RU, зеленый" id="buyimg1122858" class="buybutton">Купить</span></td>
+                        </tr>
+                       </tbody>
+                      </table></td>
+                    </tr>
+                    <tr>
+                     <td class="catalog_content_cell" width="33%">
+                      <table width="250" align="center" cellpadding="0" cellspacing="0" style="margin-bottom: 15px;">
+                       <tbody>
+                        <tr>
+                         <td colspan="2" class="item_img_cell"><img onclick="document.location=''/product/111414.html'';return false" src="/img/product/200/111414_1_200.jpg" alt="Изображение товара Смартфон Xiaomi Redmi 9C NFC 3/64 ГБ RU, черный" title="Описание и характеристики Смартфон Xiaomi Redmi 9C NFC 3/64 ГБ RU, черный" width="200" style="border:none; decoration: none; "></td>
+                        </tr>
+                        <tr>
+                         <td height="42" colspan="2" class="catalog_item_label_cell"><a href="/product/111414.html" title="Описание и характеристики Смартфон Xiaomi Redmi 9C NFC 3/64 ГБ RU, черный">Смартфон Xiaomi Redmi 9C NFC 3/64 ГБ RU, черный</a></td>
+                        </tr>
+                        <tr>
+                         <td class="price_cell">8280р.</td>
+                         <td class="item_full_info" id="text111414" onclick="addtobasket_w_fancy(111414)"><span title="Купить Смартфон Xiaomi Redmi 9C NFC 3/64 ГБ RU, черный" id="buyimg111414" class="buybutton">Купить</span></td>
+                        </tr>
+                       </tbody>
+                      </table></td>
+                     <td class="catalog_content_cell" width="33%">
+                      <table width="250" align="center" cellpadding="0" cellspacing="0" style="margin-bottom: 15px;">
+                       <tbody>
+                        <tr>
+                         <td colspan="2" class="item_img_cell"><img onclick="document.location=''/product/1122560.html'';return false" src="/img/product/200/1122560_1_200.jpg" alt="Изображение товара Смартфон Xiaomi Redmi 9C NFC 4/128 ГБ Global, черный" title="Описание и характеристики Смартфон Xiaomi Redmi 9C NFC 4/128 ГБ Global, черный" width="200" style="border:none; decoration: none; "></td>
+                        </tr>
+                        <tr>
+                         <td height="42" colspan="2" class="catalog_item_label_cell"><a href="/product/1122560.html" title="Описание и характеристики Смартфон Xiaomi Redmi 9C NFC 4/128 ГБ Global, черный">Смартфон Xiaomi Redmi 9C NFC 4/128 ГБ Global, черный</a></td>
+                        </tr>
+                        <tr>
+                         <td class="price_cell">10700р.</td>
+                         <td class="item_full_info" id="text1122560" onclick="addtobasket_w_fancy(1122560)"><span title="Купить Смартфон Xiaomi Redmi 9C NFC 4/128 ГБ Global, черный" id="buyimg1122560" class="buybutton">Купить</span></td>
+                        </tr>
+                       </tbody>
+                      </table></td>
+                     <td class="catalog_content_cell" width="33%">
+                      <table width="250" align="center" cellpadding="0" cellspacing="0" style="margin-bottom: 15px;">
+                       <tbody>
+                        <tr>
+                         <td colspan="2" class="item_img_cell"><img onclick="document.location=''/product/1121947.html'';return false" src="/img/product/200/1121947_1_200.jpg" alt="Изображение товара Смартфон Xiaomi Redmi 9C NFC 4/128 ГБ RU, зеленый" title="Описание и характеристики Смартфон Xiaomi Redmi 9C NFC 4/128 ГБ RU, зеленый" width="200" style="border:none; decoration: none; "></td>
+                        </tr>
+                        <tr>
+                         <td height="42" colspan="2" class="catalog_item_label_cell"><a href="/product/1121947.html" title="Описание и характеристики Смартфон Xiaomi Redmi 9C NFC 4/128 ГБ RU, зеленый">Смартфон Xiaomi Redmi 9C NFC 4/128 ГБ RU, зеленый</a></td>
+                        </tr>
+                        <tr>
+                         <td class="price_cell">11550р.</td>
+                         <td class="item_full_info" id="text1121947" onclick="addtobasket_w_fancy(1121947)"><span title="Купить Смартфон Xiaomi Redmi 9C NFC 4/128 ГБ RU, зеленый" id="buyimg1121947" class="buybutton">Купить</span></td>
+                        </tr>
+                       </tbody>
+                      </table></td>
+                    </tr>
+                    <tr>
+                     <td class="catalog_content_cell" width="33%">
+                      <table width="250" align="center" cellpadding="0" cellspacing="0" style="margin-bottom: 15px;">
+                       <tbody>
+                        <tr>
+                         <td colspan="2" class="item_img_cell"><img onclick="document.location=''/product/1121818.html'';return false" src="/img/product/200/1121818_1_200.jpg" alt="Изображение товара Смартфон Xiaomi Redmi Note 10 Pro 8/128 ГБ Global, серый оникс" title="Описание и характеристики Смартфон Xiaomi Redmi Note 10 Pro 8/128 ГБ Global, серый оникс" width="200" style="border:none; decoration: none; "></td>
+                        </tr>
+                        <tr>
+                         <td height="42" colspan="2" class="catalog_item_label_cell"><a href="/product/1121818.html" title="Описание и характеристики Смартфон Xiaomi Redmi Note 10 Pro 8/128 ГБ Global, серый оникс">Смартфон Xiaomi Redmi Note 10 Pro 8/128 ГБ Global, серый оникс</a></td>
+                        </tr>
+                        <tr>
+                         <td class="price_cell">17200р.</td>
+                         <td class="item_full_info" id="text1121818" onclick="addtobasket_w_fancy(1121818)"><span title="Купить Смартфон Xiaomi Redmi Note 10 Pro 8/128 ГБ Global, серый оникс" id="buyimg1121818" class="buybutton">Купить</span></td>
+                        </tr>
+                       </tbody>
+                      </table></td>
+                     <td class="catalog_content_cell" width="33%">
+                      <table width="250" align="center" cellpadding="0" cellspacing="0" style="margin-bottom: 15px;">
+                       <tbody>
+                        <tr>
+                         <td colspan="2" class="item_img_cell"><img onclick="document.location=''/product/112736.html'';return false" src="/img/product/200/112736_1_200.jpg" alt="Изображение товара Смартфон Xiaomi Redmi Note 10 Pro 8/128 ГБ RU, Glacier Blue" title="Описание и характеристики Смартфон Xiaomi Redmi Note 10 Pro 8/128 ГБ RU, Glacier Blue" width="200" style="border:none; decoration: none; "></td>
+                        </tr>
+                        <tr>
+                         <td height="42" colspan="2" class="catalog_item_label_cell"><a href="/product/112736.html" title="Описание и характеристики Смартфон Xiaomi Redmi Note 10 Pro 8/128 ГБ RU, Glacier Blue">Смартфон Xiaomi Redmi Note 10 Pro 8/128 ГБ RU, Glacier Blue</a></td>
+                        </tr>
+                        <tr>
+                         <td class="price_cell">21900р.</td>
+                         <td class="item_full_info" id="text112736" onclick="addtobasket_w_fancy(112736)"><span title="Купить Смартфон Xiaomi Redmi Note 10 Pro 8/128 ГБ RU, Glacier Blue" id="buyimg112736" class="buybutton">Купить</span></td>
+                        </tr>
+                       </tbody>
+                      </table></td>
+                     <td class="catalog_content_cell" width="33%">
+                      <table width="250" align="center" cellpadding="0" cellspacing="0" style="margin-bottom: 15px;">
+                       <tbody>
+                        <tr>
+                         <td colspan="2" class="item_img_cell"><img onclick="document.location=''/product/112732.html'';return false" src="/img/product/200/112732_1_200.jpg" alt="Изображение товара Смартфон Xiaomi Redmi Note 10 Pro 8/128GB RU, Gradient Bronze" title="Описание и характеристики Смартфон Xiaomi Redmi Note 10 Pro 8/128GB RU, Gradient Bronze" width="200" style="border:none; decoration: none; "></td>
+                        </tr>
+                        <tr>
+                         <td height="42" colspan="2" class="catalog_item_label_cell"><a href="/product/112732.html" title="Описание и характеристики Смартфон Xiaomi Redmi Note 10 Pro 8/128GB RU, Gradient Bronze">Смартфон Xiaomi Redmi Note 10 Pro 8/128GB RU, Gradient Bronze</a></td>
+                        </tr>
+                        <tr>
+                         <td class="price_cell">21900р.</td>
+                         <td class="item_full_info" id="text112732" onclick="addtobasket_w_fancy(112732)"><span title="Купить Смартфон Xiaomi Redmi Note 10 Pro 8/128GB RU, Gradient Bronze" id="buyimg112732" class="buybutton">Купить</span></td>
+                        </tr>
+                       </tbody>
+                      </table></td>
+                    </tr>
+                    <tr>
+                     <td class="catalog_content_cell" width="33%">
+                      <table width="250" align="center" cellpadding="0" cellspacing="0" style="margin-bottom: 15px;">
+                       <tbody>
+                        <tr>
+                         <td colspan="2" class="item_img_cell"><img onclick="document.location=''/product/1123368.html'';return false" src="/img/product/200/1123368_1_200.jpg" alt="Изображение товара Смартфон Xiaomi Redmi Note 10 Pro NFC 8/256 ГБ Global, серый оникс" title="Описание и характеристики Смартфон Xiaomi Redmi Note 10 Pro NFC 8/256 ГБ Global, серый оникс" width="200" style="border:none; decoration: none; "></td>
+                        </tr>
+                        <tr>
+                         <td height="42" colspan="2" class="catalog_item_label_cell"><a href="/product/1123368.html" title="Описание и характеристики Смартфон Xiaomi Redmi Note 10 Pro NFC 8/256 ГБ Global, серый оникс">Смартфон Xiaomi Redmi Note 10 Pro NFC 8/256 ГБ Global, серый оникс</a></td>
+                        </tr>
+                        <tr>
+                         <td class="price_cell">17540р.</td>
+                         <td class="item_full_info" id="text1123368" onclick="addtobasket_w_fancy(1123368)"><span title="Купить Смартфон Xiaomi Redmi Note 10 Pro NFC 8/256 ГБ Global, серый оникс" id="buyimg1123368" class="buybutton">Купить</span></td>
+                        </tr>
+                       </tbody>
+                      </table></td>
+                     <td class="catalog_content_cell" width="33%">
+                      <table width="250" align="center" cellpadding="0" cellspacing="0" style="margin-bottom: 15px;">
+                       <tbody>
+                        <tr>
+                         <td colspan="2" class="item_img_cell"><img onclick="document.location=''/product/1122787.html'';return false" src="/img/product/200/1122787_1_200.jpg" alt="Изображение товара Смартфон Xiaomi Redmi Note 10S 6/128 ГБ Global (без NFC), серый оникс" title="Описание и характеристики Смартфон Xiaomi Redmi Note 10S 6/128 ГБ Global (без NFC), серый оникс" width="200" style="border:none; decoration: none; "></td>
+                        </tr>
+                        <tr>
+                         <td height="42" colspan="2" class="catalog_item_label_cell"><a href="/product/1122787.html" title="Описание и характеристики Смартфон Xiaomi Redmi Note 10S 6/128 ГБ Global (без NFC), серый оникс">Смартфон Xiaomi Redmi Note 10S 6/128 ГБ Global (без NFC), серый оникс</a></td>
+                        </tr>
+                        <tr>
+                         <td class="price_cell">13450р.</td>
+                         <td class="item_full_info" id="text1122787" onclick="addtobasket_w_fancy(1122787)"><span title="Купить Смартфон Xiaomi Redmi Note 10S 6/128 ГБ Global (без NFC), серый оникс" id="buyimg1122787" class="buybutton">Купить</span></td>
+                        </tr>
+                       </tbody>
+                      </table></td>
+                     <td class="catalog_content_cell" width="33%">
+                      <table width="250" align="center" cellpadding="0" cellspacing="0" style="margin-bottom: 15px;">
+                       <tbody>
+                        <tr>
+                         <td colspan="2" class="item_img_cell"><img onclick="document.location=''/product/1123376.html'';return false" src="/img/product/200/1123376_1_200.jpg" alt="Изображение товара Смартфон Xiaomi Redmi Note 10S 6/128 ГБ Global (без NFC), синий океан" title="Описание и характеристики Смартфон Xiaomi Redmi Note 10S 6/128 ГБ Global (без NFC), синий океан" width="200" style="border:none; decoration: none; "></td>
+                        </tr>
+                        <tr>
+                         <td height="42" colspan="2" class="catalog_item_label_cell"><a href="/product/1123376.html" title="Описание и характеристики Смартфон Xiaomi Redmi Note 10S 6/128 ГБ Global (без NFC), синий океан">Смартфон Xiaomi Redmi Note 10S 6/128 ГБ Global (без NFC), синий океан</a></td>
+                        </tr>
+                        <tr>
+                         <td class="price_cell">13450р.</td>
+                         <td class="item_full_info" id="text1123376" onclick="addtobasket_w_fancy(1123376)"><span title="Купить Смартфон Xiaomi Redmi Note 10S 6/128 ГБ Global (без NFC), синий океан" id="buyimg1123376" class="buybutton">Купить</span></td>
+                        </tr>
+                       </tbody>
+                      </table></td>
+                    </tr>
+                    <tr>
+                     <td class="catalog_content_cell" width="33%">
+                      <table width="250" align="center" cellpadding="0" cellspacing="0" style="margin-bottom: 15px;">
+                       <tbody>
+                        <tr>
+                         <td colspan="2" class="item_img_cell"><img onclick="document.location=''/product/1122580.html'';return false" src="/img/product/200/1122580_1_200.jpg" alt="Изображение товара Смартфон Xiaomi Redmi Note 10S 8/128 ГБ Global, серый оникс" title="Описание и характеристики Смартфон Xiaomi Redmi Note 10S 8/128 ГБ Global, серый оникс" width="200" style="border:none; decoration: none; "></td>
+                        </tr>
+                        <tr>
+                         <td height="42" colspan="2" class="catalog_item_label_cell"><a href="/product/1122580.html" title="Описание и характеристики Смартфон Xiaomi Redmi Note 10S 8/128 ГБ Global, серый оникс">Смартфон Xiaomi Redmi Note 10S 8/128 ГБ Global, серый оникс</a></td>
+                        </tr>
+                        <tr>
+                         <td class="price_cell">15200р.</td>
+                         <td class="item_full_info" id="text1122580" onclick="addtobasket_w_fancy(1122580)"><span title="Купить Смартфон Xiaomi Redmi Note 10S 8/128 ГБ Global, серый оникс" id="buyimg1122580" class="buybutton">Купить</span></td>
+                        </tr>
+                       </tbody>
+                      </table></td>
+                     <td class="catalog_content_cell" width="33%">
+                      <table width="250" align="center" cellpadding="0" cellspacing="0" style="margin-bottom: 15px;">
+                       <tbody>
+                        <tr>
+                         <td colspan="2" class="item_img_cell"><img onclick="document.location=''/product/1121340.html'';return false" src="/img/product/200/1121340_1_200.jpg" alt="Изображение товара Смартфон Xiaomi Redmi Note 10S NFC 6/128 ГБ RU, серый оникс" title="Описание и характеристики Смартфон Xiaomi Redmi Note 10S NFC 6/128 ГБ RU, серый оникс" width="200" style="border:none; decoration: none; "></td>
+                        </tr>
+                        <tr>
+                         <td height="42" colspan="2" class="catalog_item_label_cell"><a href="/product/1121340.html" title="Описание и характеристики Смартфон Xiaomi Redmi Note 10S NFC 6/128 ГБ RU, серый оникс">Смартфон Xiaomi Redmi Note 10S NFC 6/128 ГБ RU, серый оникс</a></td>
+                        </tr>
+                        <tr>
+                         <td class="price_cell">14350р.</td>
+                         <td class="item_full_info" id="text1121340" onclick="addtobasket_w_fancy(1121340)"><span title="Купить Смартфон Xiaomi Redmi Note 10S NFC 6/128 ГБ RU, серый оникс" id="buyimg1121340" class="buybutton">Купить</span></td>
+                        </tr>
+                       </tbody>
+                      </table></td>
+                     <td class="catalog_content_cell" width="33%">
+                      <table width="250" align="center" cellpadding="0" cellspacing="0" style="margin-bottom: 15px;">
+                       <tbody>
+                        <tr>
+                         <td colspan="2" class="item_img_cell"><img onclick="document.location=''/product/1121672.html'';return false" src="/img/product/200/1121672_1_200.jpg" alt="Изображение товара Смартфон Xiaomi Redmi Note 10S NFC 6/64 ГБ RU, серый оникс" title="Описание и характеристики Смартфон Xiaomi Redmi Note 10S NFC 6/64 ГБ RU, серый оникс" width="200" style="border:none; decoration: none; "></td>
+                        </tr>
+                        <tr>
+                         <td height="42" colspan="2" class="catalog_item_label_cell"><a href="/product/1121672.html" title="Описание и характеристики Смартфон Xiaomi Redmi Note 10S NFC 6/64 ГБ RU, серый оникс">Смартфон Xiaomi Redmi Note 10S NFC 6/64 ГБ RU, серый оникс</a></td>
+                        </tr>
+                        <tr>
+                         <td class="price_cell">14300р.</td>
+                         <td class="item_full_info" id="text1121672" onclick="addtobasket_w_fancy(1121672)"><span title="Купить Смартфон Xiaomi Redmi Note 10S NFC 6/64 ГБ RU, серый оникс" id="buyimg1121672" class="buybutton">Купить</span></td>
+                        </tr>
+                       </tbody>
+                      </table></td>
+                    </tr>
+                    <tr>
+                     <td class="catalog_content_cell" width="33%">
+                      <table width="250" align="center" cellpadding="0" cellspacing="0" style="margin-bottom: 15px;">
+                       <tbody>
+                        <tr>
+                         <td colspan="2" class="item_img_cell"><img onclick="document.location=''/product/1122217.html'';return false" src="/img/product/200/1122217_1_200.jpg" alt="Изображение товара Смартфон Xiaomi Redmi Note 10T 4/128 ГБ RU, Nighttime Blue" title="Описание и характеристики Смартфон Xiaomi Redmi Note 10T 4/128 ГБ RU, Nighttime Blue" width="200" style="border:none; decoration: none; "></td>
+                        </tr>
+                        <tr>
+                         <td height="42" colspan="2" class="catalog_item_label_cell"><a href="/product/1122217.html" title="Описание и характеристики Смартфон Xiaomi Redmi Note 10T 4/128 ГБ RU, Nighttime Blue">Смартфон Xiaomi Redmi Note 10T 4/128 ГБ RU, Nighttime Blue</a></td>
+                        </tr>
+                        <tr>
+                         <td class="price_cell">13600р.</td>
+                         <td class="item_full_info" id="text1122217" onclick="addtobasket_w_fancy(1122217)"><span title="Купить Смартфон Xiaomi Redmi Note 10T 4/128 ГБ RU, Nighttime Blue" id="buyimg1122217" class="buybutton">Купить</span></td>
+                        </tr>
+                       </tbody>
+                      </table></td>
+                     <td class="catalog_content_cell" width="33%">
+                      <table width="250" align="center" cellpadding="0" cellspacing="0" style="margin-bottom: 15px;">
+                       <tbody>
+                        <tr>
+                         <td colspan="2" class="item_img_cell"><img onclick="document.location=''/product/1122363.html'';return false" src="/img/product/200/1122363_1_200.jpg" alt="Изображение товара Смартфон Xiaomi Redmi Note 11 4/64 ГБ RU, звездный синий" title="Описание и характеристики Смартфон Xiaomi Redmi Note 11 4/64 ГБ RU, звездный синий" width="200" style="border:none; decoration: none; "></td>
+                        </tr>
+                        <tr>
+                         <td height="42" colspan="2" class="catalog_item_label_cell"><a href="/product/1122363.html" title="Описание и характеристики Смартфон Xiaomi Redmi Note 11 4/64 ГБ RU, звездный синий">Смартфон Xiaomi Redmi Note 11 4/64 ГБ RU, звездный синий</a></td>
+                        </tr>
+                        <tr>
+                         <td class="price_cell">12980р.</td>
+                         <td class="item_full_info" id="text1122363" onclick="addtobasket_w_fancy(1122363)"><span title="Купить Смартфон Xiaomi Redmi Note 11 4/64 ГБ RU, звездный синий" id="buyimg1122363" class="buybutton">Купить</span></td>
+                        </tr>
+                       </tbody>
+                      </table></td>
+                     <td class="catalog_content_cell" width="33%">
+                      <table width="250" align="center" cellpadding="0" cellspacing="0" style="margin-bottom: 15px;">
+                       <tbody>
+                        <tr>
+                         <td colspan="2" class="item_img_cell"><img onclick="document.location=''/product/1122365.html'';return false" src="/img/product/200/1122365_1_200.jpg" alt="Изображение товара Смартфон Xiaomi Redmi Note 11 4/64 ГБ RU, синие сумерки" title="Описание и характеристики Смартфон Xiaomi Redmi Note 11 4/64 ГБ RU, синие сумерки" width="200" style="border:none; decoration: none; "></td>
+                        </tr>
+                        <tr>
+                         <td height="42" colspan="2" class="catalog_item_label_cell"><a href="/product/1122365.html" title="Описание и характеристики Смартфон Xiaomi Redmi Note 11 4/64 ГБ RU, синие сумерки">Смартфон Xiaomi Redmi Note 11 4/64 ГБ RU, синие сумерки</a></td>
+                        </tr>
+                        <tr>
+                         <td class="price_cell">12980р.</td>
+                         <td class="item_full_info" id="text1122365" onclick="addtobasket_w_fancy(1122365)"><span title="Купить Смартфон Xiaomi Redmi Note 11 4/64 ГБ RU, синие сумерки" id="buyimg1122365" class="buybutton">Купить</span></td>
+                        </tr>
+                       </tbody>
+                      </table></td>
+                    </tr>
+                    <tr>
+                     <td class="catalog_content_cell" width="33%">
+                      <table width="250" align="center" cellpadding="0" cellspacing="0" style="margin-bottom: 15px;">
+                       <tbody>
+                        <tr>
+                         <td colspan="2" class="item_img_cell"><img onclick="document.location=''/product/1122715.html'';return false" src="/img/product/200/1122715_1_200.jpg" alt="Изображение товара Смартфон Xiaomi Redmi Note 11 6/128 ГБ (без NFC) Global, синие сумерки" title="Описание и характеристики Смартфон Xiaomi Redmi Note 11 6/128 ГБ (без NFC) Global, синие сумерки" width="200" style="border:none; decoration: none; "></td>
+                        </tr>
+                        <tr>
+                         <td height="42" colspan="2" class="catalog_item_label_cell"><a href="/product/1122715.html" title="Описание и характеристики Смартфон Xiaomi Redmi Note 11 6/128 ГБ (без NFC) Global, синие сумерки">Смартфон Xiaomi Redmi Note 11 6/128 ГБ (без NFC) Global, синие сумерки</a></td>
+                        </tr>
+                        <tr>
+                         <td class="price_cell">14680р.</td>
+                         <td class="item_full_info" id="text1122715" onclick="addtobasket_w_fancy(1122715)"><span title="Купить Смартфон Xiaomi Redmi Note 11 6/128 ГБ (без NFC) Global, синие сумерки" id="buyimg1122715" class="buybutton">Купить</span></td>
+                        </tr>
+                       </tbody>
+                      </table></td>
+                     <td class="catalog_content_cell" width="33%">
+                      <table width="250" align="center" cellpadding="0" cellspacing="0" style="margin-bottom: 15px;">
+                       <tbody>
+                        <tr>
+                         <td colspan="2" class="item_img_cell"><img onclick="document.location=''/product/1122364.html'';return false" src="/img/product/200/1122364_1_200.jpg" alt="Изображение товара Смартфон Xiaomi Redmi Note 11 NFC 4/64 ГБ RU, серый графит" title="Описание и характеристики Смартфон Xiaomi Redmi Note 11 NFC 4/64 ГБ RU, серый графит" width="200" style="border:none; decoration: none; "></td>
+                        </tr>
+                        <tr>
+                         <td height="42" colspan="2" class="catalog_item_label_cell"><a href="/product/1122364.html" title="Описание и характеристики Смартфон Xiaomi Redmi Note 11 NFC 4/64 ГБ RU, серый графит">Смартфон Xiaomi Redmi Note 11 NFC 4/64 ГБ RU, серый графит</a></td>
+                        </tr>
+                        <tr>
+                         <td class="price_cell">12980р.</td>
+                         <td class="item_full_info" id="text1122364" onclick="addtobasket_w_fancy(1122364)"><span title="Купить Смартфон Xiaomi Redmi Note 11 NFC 4/64 ГБ RU, серый графит" id="buyimg1122364" class="buybutton">Купить</span></td>
+                        </tr>
+                       </tbody>
+                      </table></td>
+                     <td class="catalog_content_cell" width="33%">
+                      <table width="250" align="center" cellpadding="0" cellspacing="0" style="margin-bottom: 15px;">
+                       <tbody>
+                        <tr>
+                         <td colspan="2" class="item_img_cell"><img onclick="document.location=''/product/1122443.html'';return false" src="/img/product/200/1122443_1_200.jpg" alt="Изображение товара Смартфон Xiaomi Redmi Note 11 Pro 5G 6/128 ГБ Global, графитовый серый" title="Описание и характеристики Смартфон Xiaomi Redmi Note 11 Pro 5G 6/128 ГБ Global, графитовый серый" width="200" style="border:none; decoration: none; "></td>
+                        </tr>
+                        <tr>
+                         <td height="42" colspan="2" class="catalog_item_label_cell"><a href="/product/1122443.html" title="Описание и характеристики Смартфон Xiaomi Redmi Note 11 Pro 5G 6/128 ГБ Global, графитовый серый">Смартфон Xiaomi Redmi Note 11 Pro 5G 6/128 ГБ Global, графитовый серый</a></td>
+                        </tr>
+                        <tr>
+                         <td class="price_cell">19920р.</td>
+                         <td class="item_full_info" id="text1122443" onclick="addtobasket_w_fancy(1122443)"><span title="Купить Смартфон Xiaomi Redmi Note 11 Pro 5G 6/128 ГБ Global, графитовый серый" id="buyimg1122443" class="buybutton">Купить</span></td>
+                        </tr>
+                       </tbody>
+                      </table></td>
+                    </tr>
+                    <tr>
+                     <td class="catalog_content_cell" width="33%">
+                      <table width="250" align="center" cellpadding="0" cellspacing="0" style="margin-bottom: 15px;">
+                       <tbody>
+                        <tr>
+                         <td colspan="2" class="item_img_cell"><img onclick="document.location=''/product/1122444.html'';return false" src="/img/product/200/1122444_1_200.jpg" alt="Изображение товара Смартфон Xiaomi Redmi Note 11 Pro 5G 6/128 ГБ Global, полярный белый" title="Описание и характеристики Смартфон Xiaomi Redmi Note 11 Pro 5G 6/128 ГБ Global, полярный белый" width="200" style="border:none; decoration: none; "></td>
+                        </tr>
+                        <tr>
+                         <td height="42" colspan="2" class="catalog_item_label_cell"><a href="/product/1122444.html" title="Описание и характеристики Смартфон Xiaomi Redmi Note 11 Pro 5G 6/128 ГБ Global, полярный белый">Смартфон Xiaomi Redmi Note 11 Pro 5G 6/128 ГБ Global, полярный белый</a></td>
+                        </tr>
+                        <tr>
+                         <td class="price_cell">19920р.</td>
+                         <td class="item_full_info" id="text1122444" onclick="addtobasket_w_fancy(1122444)"><span title="Купить Смартфон Xiaomi Redmi Note 11 Pro 5G 6/128 ГБ Global, полярный белый" id="buyimg1122444" class="buybutton">Купить</span></td>
+                        </tr>
+                       </tbody>
+                      </table></td>
+                     <td class="catalog_content_cell" width="33%">
+                      <table width="250" align="center" cellpadding="0" cellspacing="0" style="margin-bottom: 15px;">
+                       <tbody>
+                        <tr>
+                         <td colspan="2" class="item_img_cell"><img onclick="document.location=''/product/1122442.html'';return false" src="/img/product/200/1122442_1_200.jpg" alt="Изображение товара Смартфон Xiaomi Redmi Note 11 Pro 5G 6/64 ГБ Global, графитовый серый" title="Описание и характеристики Смартфон Xiaomi Redmi Note 11 Pro 5G 6/64 ГБ Global, графитовый серый" width="200" style="border:none; decoration: none; "></td>
+                        </tr>
+                        <tr>
+                         <td height="42" colspan="2" class="catalog_item_label_cell"><a href="/product/1122442.html" title="Описание и характеристики Смартфон Xiaomi Redmi Note 11 Pro 5G 6/64 ГБ Global, графитовый серый">Смартфон Xiaomi Redmi Note 11 Pro 5G 6/64 ГБ Global, графитовый серый</a></td>
+                        </tr>
+                        <tr>
+                         <td class="price_cell">17700р.</td>
+                         <td class="item_full_info" id="text1122442" onclick="addtobasket_w_fancy(1122442)"><span title="Купить Смартфон Xiaomi Redmi Note 11 Pro 5G 6/64 ГБ Global, графитовый серый" id="buyimg1122442" class="buybutton">Купить</span></td>
+                        </tr>
+                       </tbody>
+                      </table></td>
+                     <td class="catalog_content_cell" width="33%">
+                      <table width="250" align="center" cellpadding="0" cellspacing="0" style="margin-bottom: 15px;">
+                       <tbody>
+                        <tr>
+                         <td colspan="2" class="item_img_cell"><img onclick="document.location=''/product/1123109.html'';return false" src="/img/product/200/1123109_1_200.jpg" alt="Изображение товара Смартфон Xiaomi Redmi Note 11 Pro+ 5G 6/128 ГБ Global, forest green" title="Описание и характеристики Смартфон Xiaomi Redmi Note 11 Pro+ 5G 6/128 ГБ Global, forest green" width="200" style="border:none; decoration: none; "></td>
+                        </tr>
+                        <tr>
+                         <td height="42" colspan="2" class="catalog_item_label_cell"><a href="/product/1123109.html" title="Описание и характеристики Смартфон Xiaomi Redmi Note 11 Pro+ 5G 6/128 ГБ Global, forest green">Смартфон Xiaomi Redmi Note 11 Pro+ 5G 6/128 ГБ Global, forest green</a></td>
+                        </tr>
+                        <tr>
+                         <td class="price_cell">23480р.</td>
+                         <td class="item_full_info" id="text1123109" onclick="addtobasket_w_fancy(1123109)"><span title="Купить Смартфон Xiaomi Redmi Note 11 Pro+ 5G 6/128 ГБ Global, forest green" id="buyimg1123109" class="buybutton">Купить</span></td>
+                        </tr>
+                       </tbody>
+                      </table></td>
+                    </tr>
+                    <tr>
+                     <td class="catalog_content_cell" width="33%">
+                      <table width="250" align="center" cellpadding="0" cellspacing="0" style="margin-bottom: 15px;">
+                       <tbody>
+                        <tr>
+                         <td colspan="2" class="item_img_cell"><img onclick="document.location=''/product/1122593.html'';return false" src="/img/product/200/1122593_1_200.jpg" alt="Изображение товара Смартфон Xiaomi Redmi Note 11 Pro+ 5G 6/128 ГБ Global, graphite gray" title="Описание и характеристики Смартфон Xiaomi Redmi Note 11 Pro+ 5G 6/128 ГБ Global, graphite gray" width="200" style="border:none; decoration: none; "></td>
+                        </tr>
+                        <tr>
+                         <td height="42" colspan="2" class="catalog_item_label_cell"><a href="/product/1122593.html" title="Описание и характеристики Смартфон Xiaomi Redmi Note 11 Pro+ 5G 6/128 ГБ Global, graphite gray">Смартфон Xiaomi Redmi Note 11 Pro+ 5G 6/128 ГБ Global, graphite gray</a></td>
+                        </tr>
+                        <tr>
+                         <td class="price_cell">23480р.</td>
+                         <td class="item_full_info" id="text1122593" onclick="addtobasket_w_fancy(1122593)"><span title="Купить Смартфон Xiaomi Redmi Note 11 Pro+ 5G 6/128 ГБ Global, graphite gray" id="buyimg1122593" class="buybutton">Купить</span></td>
+                        </tr>
+                       </tbody>
+                      </table></td>
+                     <td class="catalog_content_cell" width="33%">
+                      <table width="250" align="center" cellpadding="0" cellspacing="0" style="margin-bottom: 15px;">
+                       <tbody>
+                        <tr>
+                         <td colspan="2" class="item_img_cell"><img onclick="document.location=''/product/1122595.html'';return false" src="/img/product/200/1122595_1_200.jpg" alt="Изображение товара Смартфон Xiaomi Redmi Note 11 Pro+ 5G 6/128 ГБ Global, star blue" title="Описание и характеристики Смартфон Xiaomi Redmi Note 11 Pro+ 5G 6/128 ГБ Global, star blue" width="200" style="border:none; decoration: none; "></td>
+                        </tr>
+                        <tr>
+                         <td height="42" colspan="2" class="catalog_item_label_cell"><a href="/product/1122595.html" title="Описание и характеристики Смартфон Xiaomi Redmi Note 11 Pro+ 5G 6/128 ГБ Global, star blue">Смартфон Xiaomi Redmi Note 11 Pro+ 5G 6/128 ГБ Global, star blue</a></td>
+                        </tr>
+                        <tr>
+                         <td class="price_cell">23480р.</td>
+                         <td class="item_full_info" id="text1122595" onclick="addtobasket_w_fancy(1122595)"><span title="Купить Смартфон Xiaomi Redmi Note 11 Pro+ 5G 6/128 ГБ Global, star blue" id="buyimg1122595" class="buybutton">Купить</span></td>
+                        </tr>
+                       </tbody>
+                      </table></td>
+                     <td class="clear_spec_cell" width="33%">&nbsp;</td>
+                    </tr>
+                   </tbody>
+                  </table></td>
+                </tr>
+               </tbody>
+              </table></td>
+            </tr>
+           </tbody>
+          </table></td>
+        </tr>
+        <tr>
+         <td colspan="3" align="center">
+          <div class="footer">
+           <div class="footer_block"><span class="footer_h1">Информация</span> <br> <a href="/">Наши спецпредложения</a> <br> <a href="/dostavka.html">Доставка</a> <br> <a href="/payment.html">Оплата</a> <br> <a href="/warranty.html">Гарантия</a> <br> <a href="/contacts.html">Контакты</a> <br> <a href="/privacy_policy.html">Положение о конфиденциальности и защите персональных данных</a>
+           </div>
+           <div class="footer_block_cont"><span class="footer_tel">+7(495)143-77-71</span> <br><br> <a class="footer_email" href="http://vk.com/playback_ru" target="_blank"><img src="/img/VK.png" title="Наша страница Вконтакте"></a> &nbsp;&nbsp; <br><br>
+           </div>
+           <div class="footer_block_cont" style="width:260px;"><span class="footer_h1">График работы:</span> <br> пн-пт: c 11-00 до 20-00 <br> сб-вс: с 11-00 до 18-00 <br><br> <span class="footer_h1">Наш адрес:</span> <br> Москва, Звездный бульвар, 10, <br> строение 1, 2 этаж, офис 10.
+           </div>
+           <div class="footer_block">
+           </div>
+           <div class="footer_block">
+            <script type="text/javascript" src="//vk.com/js/api/openapi.js?105"></script>
+            <div id="vk_groups"></div>
+            <script type="text/javascript">
+VK.Widgets.Group("vk_groups", {mode: 0, width: "260", height: "210", color1: ''FFFFFF'', color2: ''0C5696'', color3: ''0064BA''}, 48023501);
+</script>
+           </div>
+          </div>
+          <div style="width: 1024px; font-family: Roboto-Regular,Helvetica,sans-serif; text-align: right; font-size: 12px; text-align: left; padding-left: 10px; color: #595959; background: url(/img/footer-fon.png) repeat;">
+           2005-2023 ©Интернет магазин PlayBack.ru
+          </div> <!-- Yandex.Metrika counter --> <script type="text/javascript">
+   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+   m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+   ym(232370, "init", {
+        clickmap:true,
+        trackLinks:true,
+        accurateTrackBounce:true,
+        webvisor:true
+   });
+</script>
+          <noscript>
+           <div>
+            <img src="https://mc.yandex.ru/watch/232370" style="position:absolute; left:-9999px;" alt="">
+           </div>
+          </noscript> <!-- /Yandex.Metrika counter --> <!-- BEGIN JIVOSITE CODE {literal} --> <script type="text/javascript">
+(function(){ var widget_id = ''8LKJc6dMce'';var d=document;var w=window;function l(){
+  var s = document.createElement(''script''); s.type = ''text/javascript''; s.async = true;
+  s.src = ''//code.jivosite.com/script/widget/''+widget_id
+    ; var ss = document.getElementsByTagName(''script'')[0]; ss.parentNode.insertBefore(s, ss);}
+  if(d.readyState==''complete''){l();}else{if(w.attachEvent){w.attachEvent(''onload'',l);}
+  else{w.addEventListener(''load'',l,false);}}})();
+</script> <!-- {/literal} END JIVOSITE CODE --></td>
+        </tr>
+       </tbody>
+      </table> <a href="#" class="scrollup">Наверх</a></td>
+    </tr>
+   </tbody>
+  </table>
+ </body>
+</html>'

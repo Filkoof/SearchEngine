@@ -40,7 +40,7 @@ public class PageParserImpl implements PageParser {
             Document document = jsoupConnect(nodePage.getPath());
             var elements = document.select("a[href]");
 
-            Vector<PageEntity> pages = new Vector<>();
+            List<PageEntity> pages = new ArrayList<>();
             for (Element element : elements) {
                 var subPath = element.attr("abs:href");
                 var page = getPageEntity(subPath, siteEntity, document);
@@ -51,7 +51,11 @@ public class PageParserImpl implements PageParser {
                     referenceOnChildSet.add(subPath);
                 }
             }
-            pageRepository.saveAll(pages);
+
+            synchronized (pageRepository) {
+                pageRepository.saveAll(pages);
+            }
+
             saveLemmaAndIndex(pages);
         } catch (IOException e) {
             setStatusFailedAndErrorMessage(siteEntity, e.toString());
@@ -60,10 +64,12 @@ public class PageParserImpl implements PageParser {
     }
 
     private boolean isNeedSave(String path) {
-        return !pageRepository.existsByPath(path)
-                && path.startsWith("/")
-                && !path.matches("(\\S+(\\.(?i)(jpg|png|gif|bmp|pdf|xml))$)")
-                && !path.contains("#");
+        synchronized (pageRepository) {
+            return !pageRepository.existsByPath(path)
+                    && path.startsWith("/")
+                    && !path.matches("(\\S+(\\.(?i)(jpg|png|gif|bmp|pdf|xml))$)")
+                    && !path.contains("#");
+        }
     }
 
     @Override
@@ -89,11 +95,11 @@ public class PageParserImpl implements PageParser {
         siteRepository.save(siteEntity.setStatus(StatusType.INDEXED));
     }
 
-    private void saveLemmaAndIndex(Vector<PageEntity> pageEntities) throws IOException {
+    private void saveLemmaAndIndex(List<PageEntity> pageEntities) throws IOException {
         Lemmatizer lemmatizer = Lemmatizer.getInstance();
 
-        Vector<LemmaEntity> lemmaEntities = new Vector<>();
-        Vector<SearchIndexEntity> searchIndexEntities = new Vector<>();
+        List<LemmaEntity> lemmaEntities = new ArrayList<>();
+        List<SearchIndexEntity> searchIndexEntities = new ArrayList<>();
 
         for (PageEntity pageEntity : pageEntities) {
             int siteId = pageEntity.getSite().getId();
@@ -103,8 +109,10 @@ public class PageParserImpl implements PageParser {
                 var lemma = word.getKey();
 
                 LemmaEntity lemmaEntity;
-                if (lemmaRepository.existsBySiteIdAndLemma(siteId, lemma)) {
-                    lemmaEntity = lemmaRepository.findBySiteIdAndLemma(siteId, lemma).orElseThrow();
+                if (existsBySiteIdAndLemma(siteId, lemma)) {
+                    synchronized (lemmaRepository) {
+                        lemmaEntity = lemmaRepository.findBySiteIdAndLemma(siteId, lemma).orElseThrow();
+                    }
                     lemmaEntity.setFrequency(Math.incrementExact(lemmaEntity.getFrequency()));
                     lemmaEntities.add(lemmaEntity);
                 } else {
@@ -115,23 +123,39 @@ public class PageParserImpl implements PageParser {
                     lemmaEntities.add(lemmaEntity);
                 }
 
-                if (lemmaEntities.size() >= 100) {
-                    lemmaRepository.saveAll(lemmaEntities);
-                    lemmaEntities.clear();
+                synchronized (lemmaRepository) {
+                    if (lemmaEntities.size() >= 100) {
+                        lemmaRepository.saveAll(lemmaEntities);
+                        lemmaEntities.clear();
+                    }
                 }
 
                 searchIndexEntities.add(new SearchIndexEntity()
                         .setPage(pageEntity)
                         .setLemma(lemmaEntity)
                         .setLemmaRank(word.getValue()));
-                if (searchIndexEntities.size() >= 1000) {
-                    indexRepository.saveAll(searchIndexEntities);
-                    searchIndexEntities.clear();
+
+                synchronized (indexRepository) {
+                    if (searchIndexEntities.size() >= 5000) {
+                        indexRepository.saveAll(searchIndexEntities);
+                        searchIndexEntities.clear();
+                    }
                 }
+
             }
         }
-        lemmaRepository.saveAll(lemmaEntities);
-        indexRepository.saveAll(searchIndexEntities);
+        synchronized (lemmaRepository) {
+            lemmaRepository.saveAll(lemmaEntities);
+        }
+        synchronized (indexRepository) {
+            indexRepository.saveAll(searchIndexEntities);
+        }
+    }
+
+    private boolean existsBySiteIdAndLemma(int siteId, String lemma) {
+        synchronized (lemmaRepository) {
+            return lemmaRepository.existsBySiteIdAndLemma(siteId, lemma);
+        }
     }
 
     private Document jsoupConnect(String path) throws IOException {

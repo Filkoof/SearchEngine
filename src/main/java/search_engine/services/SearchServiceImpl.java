@@ -3,6 +3,7 @@ package search_engine.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import search_engine.annotation.Profiling;
 import search_engine.config.SitesList;
 import search_engine.dto.SearchDto;
 import search_engine.dto.SearchResponse;
@@ -21,6 +22,7 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Profiling(enabled = true)
 @Service
 @RequiredArgsConstructor
 public class SearchServiceImpl implements SearchService {
@@ -82,8 +84,9 @@ public class SearchServiceImpl implements SearchService {
         return data;
     }
 
-
     private String getSnippet(String content, List<LemmaEntity> queryLemmas) {
+       /* long before = System.nanoTime();
+
         int countMatches = 0;
         Map<String, Integer> snippets = new HashMap<>();
         for (LemmaEntity lemmaEntity : queryLemmas) {
@@ -116,7 +119,9 @@ public class SearchServiceImpl implements SearchService {
             }
         }
 
-        return snippet;
+        long after = System.nanoTime();
+        System.out.println("Время получения сниппета: ".concat(String.valueOf(after - before)));*/
+        return "snippet";
     }
 
     private String deleteWordEnding(String word) {
