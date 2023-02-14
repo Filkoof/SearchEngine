@@ -24,6 +24,7 @@ class SearchServiceImplTest extends ContextLoad {
     private SiteEntity site;
     private LemmaEntity lemmaFirst;
     private LemmaEntity lemmaSecond;
+    private List<LemmaEntity> lemmaEntities = new ArrayList<>();
 
     @BeforeEach
     void saveTestObjects() {
@@ -44,6 +45,9 @@ class SearchServiceImplTest extends ContextLoad {
                 .setLemma("характеристики")
                 .setSite(site)
                 .setFrequency(1);
+
+        lemmaEntities.add(lemmaFirst);
+        lemmaEntities.add(lemmaSecond);
     }
 
     @Test
@@ -52,10 +56,6 @@ class SearchServiceImplTest extends ContextLoad {
         var getSnippet = searchClass.getDeclaredMethod("getSnippet", String.class, List.class);
 
         getSnippet.setAccessible(true);
-
-        List<LemmaEntity> lemmaEntities = new ArrayList<>();
-        lemmaEntities.add(lemmaFirst);
-        lemmaEntities.add(lemmaSecond);
 
         String content = Files.readAllLines(Paths.get("src/test/resources/contentText")).toString();
 

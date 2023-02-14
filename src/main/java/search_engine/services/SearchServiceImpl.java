@@ -85,7 +85,7 @@ public class SearchServiceImpl implements SearchService {
     }
 
     private String getSnippet(String content, List<LemmaEntity> queryLemmas) {
-       /* long before = System.nanoTime();
+        long before = System.nanoTime();
 
         int countMatches = 0;
         Map<String, Integer> snippets = new HashMap<>();
@@ -120,7 +120,7 @@ public class SearchServiceImpl implements SearchService {
         }
 
         long after = System.nanoTime();
-        System.out.println("Время получения сниппета: ".concat(String.valueOf(after - before)));*/
+        System.out.println("Время получения сниппета: ".concat(String.valueOf(after - before)));
         return "snippet";
     }
 
