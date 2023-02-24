@@ -2,6 +2,9 @@ package search_engine.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import search_engine.annotation.Profiling;
 import search_engine.config.SitesList;
@@ -22,7 +25,7 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@Profiling(enabled = true)
+//@Profiling(enabled = false)
 @Service
 @RequiredArgsConstructor
 public class SearchServiceImpl implements SearchService {
@@ -36,9 +39,9 @@ public class SearchServiceImpl implements SearchService {
     @Override
     public SearchResponse search(String query, String site, int offset, int limit) {
         if (query.isEmpty()) return new SearchResponse().setResult(false).setError("Задан пустой поисковый запрос");
-//        Pageable pageable = PageRequest.of(offset / limit, limit);
+        Pageable pageable = PageRequest.of(offset / limit, limit);
 
-        var data = site.isEmpty() ? searchAllSites(query) : searchSite(query, site);
+        var data = site.isEmpty() ? searchAllSites(query, pageable) : searchSite(query, site, pageable);
         return new SearchResponse()
                 .setResult(true)
                 .setCount(data.size())
@@ -46,23 +49,18 @@ public class SearchServiceImpl implements SearchService {
                 .setError("");
     }
 
-    private List<SearchDto> searchAllSites(String query) {
+    private List<SearchDto> searchAllSites(String query, Pageable pageable) {
         var siteList= sites.getSites();
         List<SearchDto> data = new ArrayList<>();
-        siteList.forEach(site -> data.addAll(searchSite(query, site.getUrl())));
+        siteList.forEach(site -> data.addAll(searchSite(query, site.getUrl(), pageable)));
         return data;
     }
 
-    private List<SearchDto> searchSite(String query, String siteUrl) {
+    private List<SearchDto> searchSite(String query, String siteUrl, Pageable pageable) {
         var site = siteRepository.findByUrl(siteUrl);
         var filteredLemmas = getFrequencyFilteredLemmas(query, site);
 
-        Set<PageEntity> pages = new HashSet<>();
-        for (LemmaEntity lemma : filteredLemmas) {
-            var pageEntities = pageRepository.findAllByLemmaId(lemma.getId());
-            if (pages.isEmpty()) pages.addAll(pageEntities);
-            pages.retainAll(pageEntities);
-        }
+        Page<PageEntity> pages = pageRepository.findAllByLemmas(filteredLemmas, pageable);
 
         double maxRelevance = pages.stream().map(page -> indexRepository.absoluteRelevanceByPageId(page.getId())).max(Double::compareTo).orElse(0.45);
         List<SearchDto> data = new ArrayList<>();
@@ -148,6 +146,7 @@ public class SearchServiceImpl implements SearchService {
         double frequencyLimit = getFrequencyLimit(site);
 
         var lemmas = getLemmatizer().getLemmaSet(query);
+
         var lemmaEntityList = lemmas.stream().map(lemma -> lemmaRepository.findBySiteIdAndLemma(site.getId(), lemma).orElse(null))
                 .filter(Objects::nonNull).toList();
         var filterFrequency = lemmaEntityList.stream().filter(lemma -> lemmaRepository.percentageLemmaOnPagesById(lemma.getId()) < frequencyLimit).toList();

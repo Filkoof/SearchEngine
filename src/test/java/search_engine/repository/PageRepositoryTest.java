@@ -6,12 +6,15 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import search_engine.ContextLoad;
+import search_engine.entity.LemmaEntity;
 import search_engine.entity.PageEntity;
 import search_engine.entity.SiteEntity;
 import search_engine.entity.enumerated.StatusType;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -21,6 +24,8 @@ class PageRepositoryTest extends ContextLoad {
     private PageRepository pageRepository;
     @Autowired
     private SiteRepository siteRepository;
+    @Autowired
+    private LemmaRepository lemmaRepository;
     private SiteEntity siteEntity;
     private PageEntity pageEntity;
 
@@ -41,6 +46,31 @@ class PageRepositoryTest extends ContextLoad {
                 .setContent("content");
         pageRepository.save(pageEntity);
     }
+
+//    @Test
+//    void findAllByLemmas() {
+//        LemmaEntity lemmaEntity = new LemmaEntity();
+//        lemmaEntity.setSite(siteEntity)
+//                .setLemma("кот")
+//                .setSite(siteEntity)
+//                .setFrequency(2);
+//        lemmaRepository.save(lemmaEntity);
+//
+//        LemmaEntity lemmaEntity2 = new LemmaEntity();
+//        lemmaEntity.setSite(siteEntity)
+//                .setLemma("кот")
+//                .setSite(siteEntity)
+//                .setFrequency(2);
+//        lemmaRepository.save(lemmaEntity2);
+//
+//        List<LemmaEntity> lemmaEntities = new ArrayList<>();
+//        lemmaEntities.add(lemmaEntity);
+//        lemmaEntities.add(lemmaEntity2);
+//
+//
+//        var pages = pageRepository.findAllByLemmas(lemmaEntities);
+//        assertNotNull(pages);
+//    }
 
     @Test
     @DisplayName("Найти сущность по id")

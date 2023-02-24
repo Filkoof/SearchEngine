@@ -41,21 +41,21 @@ class LemmaRepositoryTest extends ContextLoad {
     }
 
     @Test
-    @DisplayName("Проверка наличия по лемме")
+    @DisplayName("Проверка наличия по id сайта и лемме")
     void existsByLemma() {
         boolean isExist = lemmaRepository.existsBySiteIdAndLemma(siteEntity.getId(), lemmaEntity.getLemma());
         assertTrue(isExist);
     }
 
     @Test
-    @DisplayName("Найти сущность по лемме")
+    @DisplayName("Найти сущность по id сайта и лемме")
     void findByLemma() {
         var lemma = lemmaRepository.findBySiteIdAndLemma(siteEntity.getId(), lemmaEntity.getLemma());
         assertNotNull(lemma);
     }
 
     @Test
-    @DisplayName("Удалить всё по id сайта")
+    @DisplayName("Количество содержимого в бд")
     void countAllBySiteId() {
         int lemmasCount = lemmaRepository.countAllBySiteId(siteEntity.getId());
         assertEquals(1, lemmasCount);
